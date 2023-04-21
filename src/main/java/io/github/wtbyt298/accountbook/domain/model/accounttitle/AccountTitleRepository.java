@@ -12,7 +12,7 @@ public interface AccountTitleRepository {
 	void save(AccountTitle accountTitle);
 
 	/**
-	 * 勘定科目を勘定科目IDで検索する
+	 * 勘定科目をIDで検索する
 	 */
 	AccountTitle findById(AccountTitleId id);
 	

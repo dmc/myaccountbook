@@ -17,8 +17,8 @@ public class DetailRow {
 	private final LoanType detailLoanType;
 	final Amount amount;
 	
-	public DetailRow(AccountTitleId accountTitleId, SubAccountTitleId subAccountTitleId, AccountingType accountingType, LoanType detailLoanType, Amount amount) {
-		this.accountTitleId = accountTitleId;
+	public DetailRow(AccountTitleId accountTitle, SubAccountTitleId subAccountTitleId, AccountingType accountingType, LoanType detailLoanType, Amount amount) {
+		this.accountTitleId = accountTitle;
 		this.subAccountTitleId = subAccountTitleId;
 		this.accountingType = accountingType;
 		this.detailLoanType = detailLoanType;
