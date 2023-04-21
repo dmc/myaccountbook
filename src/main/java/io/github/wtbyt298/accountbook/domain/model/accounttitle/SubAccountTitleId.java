@@ -17,7 +17,7 @@ public class SubAccountTitleId {
 	 */
 	public static SubAccountTitleId valueOf(String value) {
 		if (value.length() != DEFAULT_LENGTH) {
-			throw new IllegalArgumentException("補助科目IDは1文字で指定してください。");
+			throw new IllegalArgumentException("補助科目IDは" + DEFAULT_LENGTH + "文字で指定してください。");
 		}
 		return new SubAccountTitleId(value);
 	}

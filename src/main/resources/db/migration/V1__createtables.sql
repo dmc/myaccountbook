@@ -32,6 +32,7 @@ CREATE TABLE journal_entries (
     deal_date date NOT NULL,
     entry_description varchar(64) NOT NULL,
     fiscal_yearmonth varchar(6) NOT NULL,
+    total_amount int NOT NULL,
     user_id varchar(32) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );

@@ -16,12 +16,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function5;
+import org.jooq.Function6;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -75,6 +75,11 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
      * <code>accountbook_test.journal_entries.fiscal_yearmonth</code>.
      */
     public final TableField<JournalEntriesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(6).nullable(false), this, "");
+
+    /**
+     * The column <code>accountbook_test.journal_entries.total_amount</code>.
+     */
+    public final TableField<JournalEntriesRecord, Integer> TOTAL_AMOUNT = createField(DSL.name("total_amount"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>accountbook_test.journal_entries.user_id</code>.
@@ -189,18 +194,18 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<String, LocalDate, String, String, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<String, LocalDate, String, String, Integer, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function5<? super String, ? super LocalDate, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super String, ? super LocalDate, ? super String, ? super String, ? super Integer, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -208,7 +213,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super String, ? super LocalDate, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super String, ? super LocalDate, ? super String, ? super String, ? super Integer, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
