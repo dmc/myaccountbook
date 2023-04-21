@@ -40,12 +40,12 @@ public class EntryDetail {
 		return true;
 	}
 	
-//	/**
-//	 * @return 借方合計と貸方合計が一致している場合true
-//	 */
-//	boolean isSameTotal() {
-//		return debitSum().equals(creditSum());
-//	}
+	/**
+	 * @return 借方合計と貸方合計が一致している場合true
+	 */
+	boolean isSameTotal() {
+		return debitSum().equals(creditSum());
+	}
 	
 	/**
 	 * @return 借方合計金額
