@@ -1,5 +1,8 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
 
 /**
@@ -48,26 +51,30 @@ public class JournalEntry {
 	}
 	
 	/**
-	 * 仕訳伝票の内部データを永続化用のDTOのビルダーに通知する
+	 * @return 会計年月
 	 */
-	public void notifyState(JournalEntryNotification note) {
-		note.entryId(entryId.value);
-		note.dealDate(dealDate.value);
-		note.description(description.value);
-		note.fiscalYearMonth(dealDate.yearMonth());
+	public String fiscalYearMonth() {
+		return dealDate.yearMonth();
 	}
 	
 	/**
-	 * 仕訳明細の内部データを永続化用のDTOのビルダーに通知する
+	 * 以下、永続化用のメソッド定義
+	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
 	 */
-	public void notifyState(EntryDetailNotification note) {
-		for (DetailRow row : entryDetail.detailRows) {
-			note.entryId(entryId.value);
-			note.accountTitleId(row.accountTitleId.toString());
-			note.subAccountTitleId(row.subAccountTitleId.toString());
-			note.loanType(row.detailLoanType.toString());
-			note.amount(row.amount.value());
-		}
+	public String id() {
+		return entryId.value;
+	}
+	
+	public LocalDate dealDate() {
+		return dealDate.value;
+	}
+	
+	public String description() {
+		return description.value;
+	}
+	
+	public List<DetailRow> entryDetail() {
+		return Collections.unmodifiableList(entryDetail.detailRows);
 	}
 	
 }

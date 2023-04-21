@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
 import io.github.wtbyt298.accountbook.domain.service.JournalEntryFactory;
-import io.github.wtbyt298.accountbook.presentation.httprequest.journalentry.JournalEntryRegisterParam;
 
 /**
  * 仕訳登録処理クラス
@@ -24,8 +23,8 @@ public class JournalEntryRegisterUseCase {
 	 * @param registerParam 仕訳登録用のDTO
 	 */
 	@Transactional
-	public void register(JournalEntryRegisterParam registerParam) {
-		JournalEntry entry = journalEntryFactory.create(registerParam);
+	public void register(JournalEntryRegisterCommand command) {
+		JournalEntry entry = journalEntryFactory.create(command);
 		journalEntryRepository.save(entry);
 	}
 	

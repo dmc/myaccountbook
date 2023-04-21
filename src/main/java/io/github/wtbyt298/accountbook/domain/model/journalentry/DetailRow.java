@@ -11,10 +11,10 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.A
  */
 public class DetailRow {
 	
-	final AccountTitleId accountTitleId;
-	final SubAccountTitleId subAccountTitleId;
-	final AccountingType accountingType;
-	final LoanType detailLoanType;
+	private final AccountTitleId accountTitleId;
+	private final SubAccountTitleId subAccountTitleId;
+	private final AccountingType accountingType;
+	private final LoanType detailLoanType;
 	final Amount amount;
 	
 	public DetailRow(AccountTitleId accountTitleId, SubAccountTitleId subAccountTitleId, AccountingType accountingType, LoanType detailLoanType, Amount amount) {
@@ -46,6 +46,26 @@ public class DetailRow {
 	 */
 	boolean canCombinate(DetailRow other) {
 		return this.accountingType.canCombinate(other.accountingType);
+	}
+	
+	/**
+	 * 以下、永続化用のメソッド定義
+	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
+	 */
+	public String accountTitleId() {
+		return accountTitleId.toString();
+	}
+	
+	public String subAccountTitleId() {
+		return subAccountTitleId.toString();
+	}
+	
+	public String detailLoanType() {
+		return detailLoanType.toString();
+	}
+	
+	public int amount() {
+		return amount.value();
 	}
 	
 }
