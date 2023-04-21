@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
 import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
 
 class EntryDetailTest {
 
@@ -17,11 +16,11 @@ class EntryDetailTest {
 	@BeforeAll
 	static void prepare() {
 		//会計区分と貸借区分と金額以外はここでは重要でないのでnullを渡している
-		DetailRow debit1 = new DetailRow(null, null, AccountingType.ASSETS, LoanType.DEBIT, Amount.valueOf(100));
-		DetailRow debit2 = new DetailRow(null, null, AccountingType.ASSETS, LoanType.DEBIT, Amount.valueOf(200));
-		DetailRow debit3 = new DetailRow(null, null, AccountingType.EXPENSES, LoanType.DEBIT, Amount.valueOf(300));
-		DetailRow credit1 = new DetailRow(null, null, AccountingType.LIABILITIES, LoanType.CREDIT, Amount.valueOf(100));
-		DetailRow credit2 = new DetailRow(null, null, AccountingType.REVENUE, LoanType.CREDIT, Amount.valueOf(500));
+		DetailRow debit1 = new DetailRow(null, null, LoanType.DEBIT, Amount.valueOf(100));
+		DetailRow debit2 = new DetailRow(null, null,  LoanType.DEBIT, Amount.valueOf(200));
+		DetailRow debit3 = new DetailRow(null, null, LoanType.DEBIT, Amount.valueOf(300));
+		DetailRow credit1 = new DetailRow(null, null, LoanType.CREDIT, Amount.valueOf(100));
+		DetailRow credit2 = new DetailRow(null, null, LoanType.CREDIT, Amount.valueOf(500));
 		details.add(debit1);
 		details.add(debit2);
 		details.add(debit3);
