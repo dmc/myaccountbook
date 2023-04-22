@@ -17,12 +17,5 @@ class EntryIdTest {
 		EntryId id = EntryId.valueOf("ABCDE12345");
 		assertEquals("ABCDE12345", id.toString());
 	}
-	
-	@Test
-	void 保持している文字列が同一なら等価判定() {
-		EntryId id1 = EntryId.valueOf("test");
-		EntryId id2 = EntryId.valueOf("test");
-		assertEquals(id1, id2);
-	}
 
 }

@@ -28,7 +28,7 @@ public class Description {
  
 	@Override
 	public String toString() {
-		return this.value;
+		return value;
 	}
 	
 }

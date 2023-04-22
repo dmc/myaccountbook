@@ -8,12 +8,12 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.A
  */
 public class AccountTitle {
 
-	final AccountTitleId accountTitleId;
+	final AccountTitleId id;
 	final String name;
 	final AccountingType accountingType;
 	
-	private AccountTitle(AccountTitleId accountTitleId, String name, AccountingType accountingType) {
-		this.accountTitleId = accountTitleId;
+	private AccountTitle(AccountTitleId id, String name, AccountingType accountingType) {
+		this.id = id;
 		this.name = name;
 		this.accountingType = accountingType;
 	}
@@ -22,8 +22,8 @@ public class AccountTitle {
 		return new AccountTitle(accountTitleId, name, accountingType);
 	}
 	
-	public String id() {
-		return accountTitleId.value;
+	public AccountingType accountingType() {
+		return accountingType;
 	}
 	
 	/**
@@ -33,6 +33,11 @@ public class AccountTitle {
 	 */
 	public boolean canCombinate(AccountTitle other) {
 		return this.accountingType.canCombinate(other.accountingType);
+	}
+	
+	@Override
+	public String toString() {
+		return id.toString() + "：" + name.toString();
 	}
 	
 }

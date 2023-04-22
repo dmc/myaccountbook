@@ -38,20 +38,7 @@ public class EntryId {
 	
 	@Override
 	public String toString() {
-		return this.value;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (! (obj instanceof EntryId)) return false;
-		EntryId other = (EntryId) obj;
-		return this.value.equals(other.value);
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.value);
+		return value;
 	}
 	
 }

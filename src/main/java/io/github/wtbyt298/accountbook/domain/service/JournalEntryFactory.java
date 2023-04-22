@@ -3,7 +3,6 @@ package io.github.wtbyt298.accountbook.domain.service;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.EntryDetailRegisterCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.JournalEntryRegisterCommand;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
@@ -13,7 +12,6 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitleI
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
 import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
 
 /**
  * 仕訳のファクトリクラス

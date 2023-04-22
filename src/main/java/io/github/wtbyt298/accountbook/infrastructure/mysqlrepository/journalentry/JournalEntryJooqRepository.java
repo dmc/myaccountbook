@@ -1,15 +1,11 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.journalentry;
 
 import static generated.tables.JournalEntries.*;
-
 import java.util.List;
-
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import static generated.tables.EntryDetails.*;
-
 import io.github.wtbyt298.accountbook.domain.model.journalentry.DetailRow;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
