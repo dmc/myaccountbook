@@ -1,26 +1,24 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
-import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
-import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitleId;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
 import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
 
 /**
  * 明細行クラス
  */
 public class DetailRow {
 	
-	private final AccountTitleId accountTitleId;
-	private final SubAccountTitleId subAccountTitleId;
-	private final AccountingType accountingType;
+	//TODO フィールドが多いので設計を見直したい
+	private final AccountTitle accountTitle;
+	private final SubAccountTitle subAccountTitle;
 	private final LoanType detailLoanType;
 	final Amount amount;
 	
-	public DetailRow(AccountTitleId accountTitle, SubAccountTitleId subAccountTitleId, AccountingType accountingType, LoanType detailLoanType, Amount amount) {
-		this.accountTitleId = accountTitle;
-		this.subAccountTitleId = subAccountTitleId;
-		this.accountingType = accountingType;
+	public DetailRow(AccountTitle accountTitle, SubAccountTitle subAccountTitle, LoanType detailLoanType, Amount amount) {
+		this.accountTitle = accountTitle;
+		this.subAccountTitle = subAccountTitle;
 		this.detailLoanType = detailLoanType;
 		this.amount = amount;
 	}
@@ -45,7 +43,7 @@ public class DetailRow {
 	 * @return 組み合わせ可能である場合true
 	 */
 	boolean canCombinate(DetailRow other) {
-		return this.accountingType.canCombinate(other.accountingType);
+		return this.accountTitle.canCombinate(other.accountTitle);
 	}
 	
 	/**
@@ -53,11 +51,11 @@ public class DetailRow {
 	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
 	 */
 	public String accountTitleId() {
-		return accountTitleId.toString();
+		return accountTitle.id();
 	}
 	
 	public String subAccountTitleId() {
-		return subAccountTitleId.toString();
+		return subAccountTitle.id();
 	}
 	
 	public String detailLoanType() {

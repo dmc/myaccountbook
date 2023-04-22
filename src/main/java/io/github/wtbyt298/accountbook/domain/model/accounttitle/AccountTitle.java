@@ -9,10 +9,10 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.A
 public class AccountTitle {
 
 	private final AccountTitleId id;
-	private final String name;
+	private final AccountTitleName name;
 	private final AccountingType accountingType;
 	
-	private AccountTitle(AccountTitleId id, String name, AccountingType accountingType) {
+	private AccountTitle(AccountTitleId id, AccountTitleName name, AccountingType accountingType) {
 		this.id = id;
 		this.name = name;
 		this.accountingType = accountingType;
@@ -21,23 +21,31 @@ public class AccountTitle {
 	/**
 	 * 再構築用のファクトリメソッド
 	 */
-	public static AccountTitle reconstruct(AccountTitleId accountTitleId, String name, AccountingType accountingType) {
+	public static AccountTitle reconstruct(AccountTitleId accountTitleId, AccountTitleName name, AccountingType accountingType) {
 		return new AccountTitle(accountTitleId, name, accountingType);
 	}
 	
 	/**
-	 * 会計区分を返す
+	 * @return 勘定科目IDの文字列
 	 */
-	public AccountingType accountingType() {
-		return accountingType;
+	public String id() {
+		return id.toString();
 	}
 	
 	/**
-	 * 補助科目をIDで検索する
+	 * IDで検索して補助科目を返す
 	 */
-	public SubAccountTitle findChildById(SubAccountTitleId subId) {
+	public SubAccountTitle findChild(SubAccountTitleId subId) {
 		//仮実装
 		return SubAccountTitle.EMPTY;
+	}
+	
+	/**
+	 * 自身を借方科目とした場合に、相手の勘定科目が貸方科目として組み合わせ可能かどうかを判断する
+	 * @return 組み合わせ可能である場合true
+	 */
+	public boolean canCombinate(AccountTitle other) {
+		return this.accountingType.canCombinate(other.accountingType);
 	}
 	
 	@Override

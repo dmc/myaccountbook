@@ -7,6 +7,7 @@ import generated.tables.records.AccounttitlesRecord;
 import static generated.tables.Accounttitles.*;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleName;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
 import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
 
@@ -35,7 +36,7 @@ public class AccountTitleJooqRepository implements AccountTitleRepository {
 		}
 		return AccountTitle.reconstruct(
 				AccountTitleId.valueOf(result.getAccounttitleId()), 
-				result.getAccounttitleName(), 
+				AccountTitleName.valueOf(result.getAccounttitleName()), 
 				AccountingType.valueOf(result.getAccountingType())
 				);
 	}

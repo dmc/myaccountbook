@@ -8,6 +8,7 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.JournalEn
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
@@ -15,7 +16,7 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
 
 /**
  * 仕訳のファクトリクラス
- * 仕訳の新規作成と再構築を行う
+ * 仕訳の新規作成時の詳細な処理を行う
  */
 @Service
 public class JournalEntryFactory {
@@ -52,11 +53,12 @@ public class JournalEntryFactory {
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
 		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		AccountTitle accountTitle = accountTitleRepository.findById(accountTitleId);
+		SubAccountTitle subAccountTitle = accountTitle.findChild(subAccountTitleId);
 		//その他の処理
 		LoanType detailLoanType = LoanType.valueOf(command.getDetailLoanType());
 		Amount amount = Amount.valueOf(command.getAmount());
 		//エンティティを返す
-		return new DetailRow(accountTitleId, subAccountTitleId, accountTitle.accountingType(), detailLoanType, amount);
+		return new DetailRow(accountTitle, subAccountTitle, detailLoanType, amount);
 	}
 	
 }

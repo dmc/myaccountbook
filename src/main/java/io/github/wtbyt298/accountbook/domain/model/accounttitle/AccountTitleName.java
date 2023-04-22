@@ -3,7 +3,7 @@ package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 /**
  * 勘定科目名クラス
  */
-class AccountTitleName {
+public class AccountTitleName {
 	
 	private static final int MAX_LENGTH = 32;
 	final String value;
@@ -12,7 +12,7 @@ class AccountTitleName {
 		this.value = value;
 	}
 	
-	static AccountTitleName valueOf(String value) {
+	public static AccountTitleName valueOf(String value) {
 		if (value.isEmpty()) {
 			throw new IllegalArgumentException("勘定科目名が空白です。");
 		}

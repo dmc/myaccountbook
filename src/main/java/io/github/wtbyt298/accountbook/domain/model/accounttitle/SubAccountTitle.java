@@ -15,17 +15,10 @@ public class SubAccountTitle {
 	}
 	
 	/**
-	 * @return 補助科目ID
+	 * @return 補助科目IDの文字列
 	 */
 	public String id() {
-		return id.value;
-	}
-	
-	/**
-	 * @return 補助科目名
-	 */
-	public String name() {
-		return name.value;
+		return id.toString();
 	}
 	
 	@Override
