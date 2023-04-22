@@ -48,11 +48,14 @@ public class JournalEntryFactory {
 	 * 1件の明細コマンドオブジェクトから明細行を作成する
 	 */
 	private DetailRow createDetailRow(EntryDetailRegisterCommand command) {
+		//勘定科目に関する処理
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
 		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		AccountTitle accountTitle = accountTitleRepository.findById(accountTitleId);
+		//その他の処理
 		LoanType detailLoanType = LoanType.valueOf(command.getDetailLoanType());
 		Amount amount = Amount.valueOf(command.getAmount());
+		//エンティティを返す
 		return new DetailRow(accountTitleId, subAccountTitleId, accountTitle.accountingType(), detailLoanType, amount);
 	}
 	

@@ -14,6 +14,20 @@ public class SubAccountTitle {
 		this.name = name;
 	}
 	
+	/**
+	 * @return 補助科目ID
+	 */
+	public String id() {
+		return id.value;
+	}
+	
+	/**
+	 * @return 補助科目名
+	 */
+	public String name() {
+		return name.value;
+	}
+	
 	@Override
 	public String toString() {
 		return id.toString() + "：" + name.toString();
