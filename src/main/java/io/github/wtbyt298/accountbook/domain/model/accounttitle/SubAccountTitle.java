@@ -24,7 +24,7 @@ public class SubAccountTitle {
 	/**
 	 * 補助科目名を変更する
 	 */
-	void changeName(SubAccountTitleName newName) {
+	void rename(SubAccountTitleName newName) {
 		name = newName;
 	}
 	

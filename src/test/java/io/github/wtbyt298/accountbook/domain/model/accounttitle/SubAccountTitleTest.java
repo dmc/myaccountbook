@@ -27,7 +27,7 @@ class SubAccountTitleTest {
 		);
 		
 		//when
-		subAccountTitle.changeName(SubAccountTitleName.valueOf("外食"));
+		subAccountTitle.rename(SubAccountTitleName.valueOf("外食"));
 		
 		//then
 		assertEquals("1：外食", subAccountTitle.toString());

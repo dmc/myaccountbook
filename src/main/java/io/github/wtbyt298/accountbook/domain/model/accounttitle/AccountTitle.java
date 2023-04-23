@@ -64,7 +64,7 @@ public class AccountTitle {
 		if (! containsChild(subId)) {
 			throw new IllegalArgumentException("指定した補助科目は存在しません。");
 		}
-		target.changeName(newName);
+		target.rename(newName);
 	}
 	
 	/**
