@@ -14,26 +14,25 @@ public class EntryId {
 	}
 	
 	/**
-	 * 再構築用のファクトリメソッド
-	 * @param DBから取得した伝票番号
-	 */
-	public static EntryId valueOf(String value) {
-		return new EntryId(value);
-	}
-	
-	/**
 	 * 新規作成用のファクトリメソッド
 	 */
 	public static EntryId newInstance() {
-		final String newId = nextIdentity();
+		String newId = nextIdentity().toString();
 		return new EntryId(newId);
+	}
+	
+	/**
+	 * 再構築用のファクトリメソッド
+	 */
+	public static EntryId fromString(String value) {
+		return new EntryId(value);
 	}
 
 	/**
 	 * ランダムなUUID文字列を生成する
 	 */
-	private static String nextIdentity() {
-		return UUID.randomUUID().toString();
+	private static UUID nextIdentity() {
+		return UUID.randomUUID();
 	}
 	
 	@Override

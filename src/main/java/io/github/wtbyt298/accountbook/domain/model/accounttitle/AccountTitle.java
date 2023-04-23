@@ -50,6 +50,9 @@ public class AccountTitle {
 		if (subAccountTitles.size() == MAX_CHILDREN_COUNT) {
 			throw new RuntimeException("これ以上補助科目を追加できません。");
 		}
+		if (subAccountTitles.containsKey(newSubAccountTitle.id())) {
+			throw new IllegalArgumentException("指定した補助科目は既に存在しています。");
+		}
 		subAccountTitles.put(newSubAccountTitle.id(), newSubAccountTitle);
 	}
 	

@@ -7,6 +7,7 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
 
 class DetailRowTest {
 	
+	//TODO テストコードを改良する
 	private static DetailRow debit;
 	private static DetailRow credit;
 	

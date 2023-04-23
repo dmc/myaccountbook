@@ -11,6 +11,7 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
 
 class EntryDetailTest {
 
+	//TODO テストコードを改良する
 	private static List<DetailRow> details = new ArrayList<>();
 	
 	@BeforeAll

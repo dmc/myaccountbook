@@ -9,14 +9,20 @@ class DealDateTest {
 
 	@Test
 	void LocalDate型で初期化できる() {
+		//when
 		DealDate date = DealDate.valueOf(LocalDate.of(2023, 4, 1));
-		assertEquals("2023-04-01", date.toString());
+		
+		//then
+		assertEquals(LocalDate.of(2023, 4, 1), date.value);
 	}
 	
 	@Test
 	void 年月をyyyyMM形式の文字列として出力する() {
+		//when
 		DealDate date = DealDate.valueOf(LocalDate.of(2023, 4, 1));
+		
+		//then
 		assertEquals("202304", date.yearMonth());
 	}
-
+	
 }
