@@ -7,14 +7,5 @@ import lombok.Getter;
  */
 @Getter
 public class JournalEntryDto {
-
-	private final String id;
-	private final String dealDate;
-	private final String description;
-	private final int totalAmount;
-	
-	public JournalEntryDto() {
-		
-	}
 	
 }

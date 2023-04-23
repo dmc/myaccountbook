@@ -34,11 +34,10 @@ public class AccountTitleJooqRepository implements AccountTitleRepository {
 		if (result.size() == 0) {
 			throw new RuntimeException("勘定科目が見つかりませんでした。");
 		}
-		return AccountTitle.reconstruct(
-				AccountTitleId.valueOf(result.getAccounttitleId()), 
-				AccountTitleName.valueOf(result.getAccounttitleName()), 
-				AccountingType.valueOf(result.getAccountingType())
-				);
+		return new AccountTitle(AccountTitleId.valueOf(result.getAccounttitleId()), 
+								AccountTitleName.valueOf(result.getAccounttitleName()), 
+								AccountingType.valueOf(result.getAccountingType())
+								);
 	}
 	
 }

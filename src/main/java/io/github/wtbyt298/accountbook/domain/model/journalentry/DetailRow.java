@@ -51,11 +51,11 @@ public class DetailRow {
 	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
 	 */
 	public String accountTitleId() {
-		return accountTitle.id();
+		return accountTitle.id().toString();
 	}
 	
 	public String subAccountTitleId() {
-		return subAccountTitle.id();
+		return subAccountTitle.id().toString();
 	}
 	
 	public String detailLoanType() {

@@ -1,5 +1,6 @@
 package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 
+import java.util.Map;
 import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
 
 /**
@@ -8,36 +9,67 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.A
  */
 public class AccountTitle {
 
+	private static final int MAX_CHILDREN_COUNT = 10; //保持できる補助科目の最大数
 	private final AccountTitleId id;
 	private final AccountTitleName name;
 	private final AccountingType accountingType;
+	private Map<SubAccountTitleId, SubAccountTitle> subAccountTitles;
 	
-	private AccountTitle(AccountTitleId id, AccountTitleName name, AccountingType accountingType) {
+	public AccountTitle(AccountTitleId id, AccountTitleName name, AccountingType accountingType, Map<SubAccountTitleId, SubAccountTitle> subAccountTitles) {
 		this.id = id;
 		this.name = name;
 		this.accountingType = accountingType;
+		this.subAccountTitles = subAccountTitles;
 	}
 	
 	/**
-	 * 再構築用のファクトリメソッド
+	 * @return 勘定科目ID
 	 */
-	public static AccountTitle reconstruct(AccountTitleId accountTitleId, AccountTitleName name, AccountingType accountingType) {
-		return new AccountTitle(accountTitleId, name, accountingType);
-	}
-	
-	/**
-	 * @return 勘定科目IDの文字列
-	 */
-	public String id() {
-		return id.toString();
+	public AccountTitleId id() {
+		return id;
 	}
 	
 	/**
 	 * IDで検索して補助科目を返す
+	 * 補助科目を持っていない場合はEMPTYを返す
 	 */
 	public SubAccountTitle findChild(SubAccountTitleId subId) {
-		//仮実装
-		return SubAccountTitle.EMPTY;
+		if (subAccountTitles.isEmpty()) {
+			return SubAccountTitle.EMPTY;
+		}
+		if (! containsChild(subId)) {
+			throw new IllegalArgumentException("指定した補助科目は存在しません。");
+		}
+		return subAccountTitles.get(subId);
+	}
+	
+	/**
+	 * 補助科目を追加する
+	 */
+	public void addSubAccountTitle(SubAccountTitle newSubAccountTitle) {
+		if (subAccountTitles.size() == MAX_CHILDREN_COUNT) {
+			throw new RuntimeException("これ以上補助科目を追加できません。");
+		}
+		subAccountTitles.put(newSubAccountTitle.id(), newSubAccountTitle);
+	}
+	
+	/**
+	 * 補助科目名を変更する
+	 */
+	public void changeSubAccountTitleName(SubAccountTitleId subId, SubAccountTitleName newName) {
+		SubAccountTitle target = subAccountTitles.get(subId);
+		if (! containsChild(subId)) {
+			throw new IllegalArgumentException("指定した補助科目は存在しません。");
+		}
+		target.changeName(newName);
+	}
+	
+	/**
+	 * IDで指定した補助科目を保持しているかどうかを判断する
+	 * @param subId 補助科目ID
+	 */
+	private boolean containsChild(SubAccountTitleId subId) {
+		return subAccountTitles.containsKey(subId);
 	}
 	
 	/**

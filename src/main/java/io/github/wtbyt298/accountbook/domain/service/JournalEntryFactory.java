@@ -28,9 +28,11 @@ public class JournalEntryFactory {
 	 * 仕訳登録用のコマンドオブジェクトから仕訳を作成する
 	 */
 	public JournalEntry create(JournalEntryRegisterCommand command) {
+		//ドメインオブジェクトの生成処理
 		DealDate dealDate = DealDate.valueOf(command.getDealDate());
 		Description description = Description.valueOf(command.getDescription());
 		EntryDetail entryDetail = createEntryDetail(command.getDetailCommands());
+		//仕訳IDはファクトリメソッド内で新規生成している
 		return JournalEntry.create(dealDate, description, entryDetail);
 	}
 	
@@ -51,8 +53,9 @@ public class JournalEntryFactory {
 	private DetailRow createDetailRow(EntryDetailRegisterCommand command) {
 		//勘定科目に関する処理
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
-		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		AccountTitle accountTitle = accountTitleRepository.findById(accountTitleId);
+		//補助科目に関する処理
+		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		SubAccountTitle subAccountTitle = accountTitle.findChild(subAccountTitleId);
 		//その他の処理
 		LoanType detailLoanType = LoanType.valueOf(command.getDetailLoanType());

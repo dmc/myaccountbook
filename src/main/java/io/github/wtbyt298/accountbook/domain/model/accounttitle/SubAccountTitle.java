@@ -6,19 +6,26 @@ package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 public class SubAccountTitle {
 	
 	static final SubAccountTitle EMPTY = new SubAccountTitle(SubAccountTitleId.valueOf("0"), SubAccountTitleName.valueOf("補助科目なし"));
-	final SubAccountTitleId id;
-	final SubAccountTitleName name;
+	private final SubAccountTitleId id;
+	private SubAccountTitleName name;
 	
-	SubAccountTitle(SubAccountTitleId id, SubAccountTitleName name) {
+	public SubAccountTitle(SubAccountTitleId id, SubAccountTitleName name) {
 		this.id = id;
 		this.name = name;
 	}
 	
 	/**
-	 * @return 補助科目IDの文字列
+	 * @return 補助科目ID
 	 */
-	public String id() {
-		return id.toString();
+	public SubAccountTitleId id() {
+		return id;
+	}
+	
+	/**
+	 * 補助科目名を変更する
+	 */
+	void changeName(SubAccountTitleName newName) {
+		name = newName;
 	}
 	
 	@Override

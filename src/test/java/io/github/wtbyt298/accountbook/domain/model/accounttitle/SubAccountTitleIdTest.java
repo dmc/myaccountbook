@@ -17,4 +17,22 @@ class SubAccountTitleIdTest {
 		assertThrows(IllegalArgumentException.class, () -> SubAccountTitleId.valueOf("11")); //長さ2の場合
 	}
 
+	@Test
+	void 保持している文字列が同一なら等価判定() {
+		SubAccountTitleId id1 = SubAccountTitleId.valueOf("0");
+		SubAccountTitleId id2 = SubAccountTitleId.valueOf("0");
+		SubAccountTitleId id3 = SubAccountTitleId.valueOf("1");
+		assertEquals(id1, id2);
+		assertNotEquals(id1, id3);
+	}
+	
+	@Test
+	void 等価と判定されるならハッシュ値も等しくなる() {
+		SubAccountTitleId id1 = SubAccountTitleId.valueOf("0");
+		SubAccountTitleId id2 = SubAccountTitleId.valueOf("0");
+		SubAccountTitleId id3 = SubAccountTitleId.valueOf("1");
+		assertEquals(id1.hashCode(), id2.hashCode());
+		assertNotEquals(id1.hashCode(), id3.hashCode());
+	}
+	
 }
