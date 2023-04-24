@@ -8,14 +8,14 @@ import lombok.Getter;
  * 仕訳登録用のDTOクラス
  */
 @Getter
-public class JournalEntryRegisterCommand {
+public class RegisterJournalEntryCommand {
 	
 	private final String entryId;
 	private final LocalDate dealDate;
 	private final String description;
-	private final List<EntryDetailRegisterCommand> detailCommands;
+	private final List<RegisterEntryDetailCommand> detailCommands;
 	
-	public JournalEntryRegisterCommand(String entryId, LocalDate dealDate, String description, List<EntryDetailRegisterCommand> detailCommands) {
+	public RegisterJournalEntryCommand(String entryId, LocalDate dealDate, String description, List<RegisterEntryDetailCommand> detailCommands) {
 		this.entryId = entryId;
 		this.dealDate = dealDate;
 		this.description = description;

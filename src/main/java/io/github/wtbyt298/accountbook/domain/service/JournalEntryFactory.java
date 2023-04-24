@@ -3,8 +3,8 @@ package io.github.wtbyt298.accountbook.domain.service;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import io.github.wtbyt298.accountbook.application.usecase.journalentry.EntryDetailRegisterCommand;
-import io.github.wtbyt298.accountbook.application.usecase.journalentry.JournalEntryRegisterCommand;
+import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
+import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
@@ -27,7 +27,7 @@ public class JournalEntryFactory {
 	/**
 	 * 仕訳登録用のコマンドオブジェクトから仕訳を作成する
 	 */
-	public JournalEntry create(JournalEntryRegisterCommand command) {
+	public JournalEntry create(RegisterJournalEntryCommand command) {
 		//ドメインオブジェクトの生成処理
 		DealDate dealDate = DealDate.valueOf(command.getDealDate());
 		Description description = Description.valueOf(command.getDescription());
@@ -39,9 +39,9 @@ public class JournalEntryFactory {
 	/**
 	 * コマンドオブジェクトから仕訳明細を作成する
 	 */
-	private EntryDetail createEntryDetail(List<EntryDetailRegisterCommand> commands) {
+	private EntryDetail createEntryDetail(List<RegisterEntryDetailCommand> commands) {
 		List<DetailRow> detailRows = new ArrayList<>();
-		for (EntryDetailRegisterCommand command : commands) {
+		for (RegisterEntryDetailCommand command : commands) {
 			detailRows.add(createDetailRow(command));
 		}
 		return new EntryDetail(detailRows);
@@ -50,7 +50,7 @@ public class JournalEntryFactory {
 	/**
 	 * 1件の明細コマンドオブジェクトから明細行を作成する
 	 */
-	private DetailRow createDetailRow(EntryDetailRegisterCommand command) {
+	private DetailRow createDetailRow(RegisterEntryDetailCommand command) {
 		//勘定科目に関する処理
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
 		AccountTitle accountTitle = accountTitleRepository.findById(accountTitleId);

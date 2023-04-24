@@ -10,7 +10,7 @@ import io.github.wtbyt298.accountbook.domain.service.JournalEntryFactory;
  * 仕訳登録処理クラス
  */
 @Service
-public class JournalEntryRegisterUseCase {
+public class RegisterJournalEntryUseCase {
 
 	@Autowired
 	private JournalEntryRepository journalEntryRepository;
@@ -23,7 +23,7 @@ public class JournalEntryRegisterUseCase {
 	 * @param registerParam 仕訳登録用のDTO
 	 */
 	@Transactional
-	public void register(JournalEntryRegisterCommand command) {
+	public void register(RegisterJournalEntryCommand command) {
 		JournalEntry entry = journalEntryFactory.create(command);
 		journalEntryRepository.save(entry);
 	}

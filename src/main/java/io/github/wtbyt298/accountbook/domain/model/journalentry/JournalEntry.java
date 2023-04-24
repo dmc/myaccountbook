@@ -53,22 +53,33 @@ public class JournalEntry {
 		return dealDate.yearMonth();
 	}
 	
+	 //以下、永続化用のメソッド定義
+	 //※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
+	 
 	/**
-	 * 以下、永続化用のメソッド定義
-	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
+	 * @return 仕訳ID
 	 */
 	public String id() {
 		return entryId.value;
 	}
 	
+	/**
+	 * @return 取引日
+	 */
 	public LocalDate dealDate() {
 		return dealDate.value;
 	}
 	
+	/**
+	 * @return 摘要
+	 */
 	public String description() {
 		return description.value;
 	}
 	
+	/**
+	 * @return 明細行のリスト
+	 */
 	public List<DetailRow> entryDetail() {
 		return Collections.unmodifiableList(entryDetail.detailRows);
 	}

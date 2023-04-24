@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.httprequest.journalentry;
+package io.github.wtbyt298.accountbook.presentation.request.journalentry;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.Valid;
@@ -10,10 +10,10 @@ import java.util.*;
 
 /**
  * 仕訳登録用のDTO
- * ユーザーの入力値を受け取り、Application層まで運ぶ
+ * ユーザーがWebページにて入力した値を受け取る
  */
 @Data
-public class JournalEntryRegisterParam {
+public class RegisterJournalEntryParam {
 
 	@NotNull(message = "取引日を入力してください。")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -24,6 +24,6 @@ public class JournalEntryRegisterParam {
 	private String description;
 
 	@Valid
-	private List<JournalEntryDetailParam> detailParams;
+	private List<RegisterEntryDetailParam> detailParams;
 	
 }

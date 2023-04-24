@@ -10,7 +10,7 @@ import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
  * 仕訳取消処理クラス
  */
 @Service
-public class JournalEntryCancelUseCase {
+public class CancelJournalEntryUseCase {
 	
 	@Autowired
 	private JournalEntryRepository journalEntryRepository;
