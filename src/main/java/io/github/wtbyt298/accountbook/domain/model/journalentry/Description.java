@@ -17,7 +17,7 @@ public class Description {
 	 * ファクトリメソッド
 	 */
 	public static Description valueOf(String value) {
-		if (value.isEmpty()) {
+		if (value.isBlank()) {
 			throw new IllegalArgumentException("摘要が空白です。");
 		}
 		if (value.length() > MAX_LENGTH) {

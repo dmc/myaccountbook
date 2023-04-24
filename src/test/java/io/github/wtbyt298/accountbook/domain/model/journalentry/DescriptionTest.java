@@ -31,9 +31,9 @@ class DescriptionTest {
 	}
 	
 	@Test
-	void 空文字列で初期化すると例外発生() {
+	void 空白で初期化すると例外発生() {
 		//when
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> Description.valueOf(""));
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> Description.valueOf(" "));
 		
 		//then
 		assertEquals("摘要が空白です。", exception.getMessage());
