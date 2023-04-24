@@ -4,8 +4,8 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 /**
- * 仕訳登録用のDTO
- * JournalEntryRegisterParamの部品
+ * 仕訳登録画面のフォームクラス
+ * RegisterjournalEntryParamの子要素
  */
 @Data
 public class RegisterEntryDetailParam {
@@ -14,7 +14,7 @@ public class RegisterEntryDetailParam {
 	private String detailLoanType;
 	
 	@NotBlank(message = "勘定科目を選択してください。")
-	private String margedId; //例"101-0"　※"勘定科目ID-補助科目ID"の形式
+	private String mergedId; //例"101-0"　※"勘定科目ID-補助科目ID"の形式
 	
 	@NotNull(message = "金額を入力してください。")
 	@Min(value = 1, message = "金額は1以上で入力してください。")
@@ -25,7 +25,7 @@ public class RegisterEntryDetailParam {
 	 * @return 勘定科目ID
 	 */
 	public String getAccountTitleId() {
-		return margedId.substring(0, margedId.indexOf("-") - 1);
+		return mergedId.substring(0, mergedId.indexOf("-") - 1);
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class RegisterEntryDetailParam {
 	 * @return 補助科目ID
 	 */
 	public String getSubAccountTitleId() {
-		return margedId.substring(margedId.indexOf("-") + 1, margedId.length());
+		return mergedId.substring(mergedId.indexOf("-") + 1, mergedId.length());
 	}
 	
 }

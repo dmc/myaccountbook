@@ -20,10 +20,10 @@ public class RegisterJournalEntryUseCase {
 	
 	/**
 	 * 仕訳を登録する
-	 * @param registerParam 仕訳登録用のDTO
+	 * @param registerCommand 仕訳登録用のDTO
 	 */
 	@Transactional
-	public void register(RegisterJournalEntryCommand command) {
+	public void execute(RegisterJournalEntryCommand command) {
 		JournalEntry entry = journalEntryFactory.create(command);
 		journalEntryRepository.save(entry);
 	}

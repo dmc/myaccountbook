@@ -31,7 +31,7 @@ public class User {
 		return new User(userId, password, mailAddress, userStatus);
 	}
 	
-	//無効なユーザに変更する処理
+	//無効なユーザに変更する
 	public void disable() {
 		if (userStatus.equals(UserStatus.INACTIVE)) {
 			throw new RuntimeException("ユーザが既に退会しています。");

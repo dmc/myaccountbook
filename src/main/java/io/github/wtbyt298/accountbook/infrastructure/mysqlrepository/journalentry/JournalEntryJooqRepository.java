@@ -41,6 +41,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 			.set(JOURNAL_ENTRIES.ENTRY_DESCRIPTION, entry.description())
 			.set(JOURNAL_ENTRIES.FISCAL_YEARMONTH, entry.fiscalYearMonth())
 			.set(JOURNAL_ENTRIES.TOTAL_AMOUNT, entry.totalAmount().value())
+			.set(JOURNAL_ENTRIES.USER_ID, "TEST_USER") //TODO ユーザ認証機能実装後に修正する
 			.execute();
 	}
 	

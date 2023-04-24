@@ -8,10 +8,10 @@ import lombok.Getter;
 @Getter
 public class RegisterEntryDetailCommand {
 
-	private final String accountTitleId;
-	private final String subAccountTitleId;
-	private final String detailLoanType;
-	private final int amount;
+	private final String accountTitleId;    //勘定科目ID
+	private final String subAccountTitleId; //補助科目ID
+	private final String detailLoanType;    //明細の貸借
+	private final int amount;               //仕訳金額
 	
 	public RegisterEntryDetailCommand(String accountTitleId, String subAccountTitleId, String detailLoanType, int amount) {
 		this.accountTitleId = accountTitleId;

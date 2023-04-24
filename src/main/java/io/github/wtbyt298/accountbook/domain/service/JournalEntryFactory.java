@@ -14,6 +14,8 @@ import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
 import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
 
+//TODO コードが汚くなっているので設計の見直しを行う
+
 /**
  * 仕訳のファクトリクラス
  * 仕訳の新規作成時の詳細な処理を行う

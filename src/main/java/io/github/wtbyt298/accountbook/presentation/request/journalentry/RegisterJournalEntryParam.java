@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * 仕訳登録用のDTO
- * ユーザーがWebページにて入力した値を受け取る
+ * 仕訳登録画面のフォームクラス
  */
 @Data
 public class RegisterJournalEntryParam {

@@ -10,13 +10,11 @@ import lombok.Getter;
 @Getter
 public class RegisterJournalEntryCommand {
 	
-	private final String entryId;
-	private final LocalDate dealDate;
-	private final String description;
-	private final List<RegisterEntryDetailCommand> detailCommands;
+	private final LocalDate dealDate; //取引日
+	private final String description; //摘要
+	private final List<RegisterEntryDetailCommand> detailCommands; //仕訳明細のリスト
 	
-	public RegisterJournalEntryCommand(String entryId, LocalDate dealDate, String description, List<RegisterEntryDetailCommand> detailCommands) {
-		this.entryId = entryId;
+	public RegisterJournalEntryCommand(LocalDate dealDate, String description, List<RegisterEntryDetailCommand> detailCommands) {
 		this.dealDate = dealDate;
 		this.description = description;
 		this.detailCommands = detailCommands;
