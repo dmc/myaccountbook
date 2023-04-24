@@ -7,46 +7,76 @@ class AmountTest {
 
 	@Test
 	void 正の数を引数に渡すと正しいインスタンスが生成される() {
+		//when
 		Amount five = Amount.valueOf(5);
-		assertEquals(5, five.value());
+		
+		//then
+		assertEquals(5, five.value);
 	}
 	
 	@Test
 	void ゼロを引数に渡しても正しいインスタンスが生成される() {
+		//when
 		Amount zero = Amount.valueOf(0);
+		
+		//then
 		assertEquals(0, zero.value());
 	}
 	
 	@Test
 	void 負の数を引数に渡すと例外発生() {
-		assertThrows(IllegalArgumentException.class, () -> Amount.valueOf(-1));
+		//when
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> Amount.valueOf(-1));
+		
+		//then
+		assertEquals("金額には0以上の数値を指定してください。", exception.getMessage());
 	}
 	
 	@Test
-	void 金額と金額を加算して新しい金額を返す() {
+	void 金額と金額を加算して新しい金額を返す() {		
+		//given
 		Amount five = Amount.valueOf(5);
 		Amount ten = Amount.valueOf(10);
-		assertEquals(Amount.valueOf(15), five.plus(ten));
+		
+		//when
+		Amount result = five.plus(ten);
+		
+		//then
+		assertEquals(Amount.valueOf(15), result);
 	}
-
 	@Test
 	void 整数aの値がb以上なら減算可能() {
+		//given
 		Amount ten = Amount.valueOf(10);
 		Amount five = Amount.valueOf(5);
-		assertEquals(Amount.valueOf(5), ten.minus(five));
+		
+		//when
+		Amount result = ten.minus(five);
+		
+		//then
+		assertEquals(Amount.valueOf(5), result);
 	}
 	
 	@Test
 	void 整数aの値がbより小さいときは減算できない() {
-		Amount five = Amount.valueOf(5);
+		//given
+		Amount five = Amount.valueOf(5); 
 		Amount ten = Amount.valueOf(10);
-		assertThrows(IllegalArgumentException.class, () -> five.minus(ten));
+		  
+		//when
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> five.minus(ten));
+		
+		//then
+		assertEquals("結果が負の値となるため計算できません。", exception.getMessage());
 	}
 	
 	@Test
 	void 金額が等しければハッシュ値も等しくなる() {
+		//when
 		Amount a = Amount.valueOf(10);
 		Amount b = Amount.valueOf(10);
+		
+		//then
 		assertEquals(a.hashCode(), b.hashCode());
 	}
 	

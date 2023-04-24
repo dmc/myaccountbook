@@ -5,10 +5,10 @@ import java.util.Objects;
 /**
  * 金額クラス
  */
-public class Amount implements Comparable<Amount> {
+public class Amount {
 	
 	private static final int MIN = 0;
-	private final int value;
+	final int value;
 	
 	private Amount (int value) {
 		this.value = value;
@@ -20,17 +20,9 @@ public class Amount implements Comparable<Amount> {
 	 */
 	public static Amount valueOf(int value) {
 		if (value < MIN) {
-			throw new IllegalArgumentException("金額にはゼロまたは正の数を指定してください。");
+			throw new IllegalArgumentException("金額には" + MIN + "以上の数値を指定してください。");
 		}
 		return new Amount(value);
-	}
-	
-	/**
-	 * 保持している金額を返す
-	 * 永続化の際を除いてむやみに使ってはならない
-	 */
-	public int value() {
-		return this.value;
 	}
 	
 	/**
@@ -60,6 +52,13 @@ public class Amount implements Comparable<Amount> {
 		return (this.value - other.value) >= MIN;
 	}
 	
+	/**
+	 * @return 金額
+	 */
+	public int value() {
+		return value;
+	}
+	
 	@Override
 	public String toString() {
 		return String.valueOf(value);
@@ -76,11 +75,6 @@ public class Amount implements Comparable<Amount> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(value);
-	}
-	
-	@Override
-	public int compareTo(Amount other) {
-		return Integer.compare(this.value, other.value);
 	}
 
 }
