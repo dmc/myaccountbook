@@ -15,10 +15,10 @@ public class AllowedCombinationRule {
 	
 	static {
 		allowed = new HashMap<>();
-		allowed.put(ASSETS, EnumSet.of(ASSETS, LIABILITIES, NETASSETS, REVENUE));
+		allowed.put(ASSETS, EnumSet.of(ASSETS, LIABILITIES, EQUITY, REVENUE));
 		allowed.put(LIABILITIES, EnumSet.of(ASSETS, LIABILITIES, REVENUE));
-		allowed.put(NETASSETS, EnumSet.of(ASSETS, NETASSETS));
-		allowed.put(EXPENSES, EnumSet.of(ASSETS, LIABILITIES, NETASSETS, REVENUE));
+		allowed.put(EQUITY, EnumSet.of(ASSETS, EQUITY));
+		allowed.put(EXPENSES, EnumSet.of(ASSETS, LIABILITIES, EQUITY, REVENUE));
 		allowed.put(REVENUE, EnumSet.noneOf(AccountingType.class)); //収益は貸方にのみ指定可能
 	}
 	

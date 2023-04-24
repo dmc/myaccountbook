@@ -10,7 +10,7 @@ public enum AccountingType {
 
 	ASSETS(new Assets()),            //資産
 	LIABILITIES(new Liabilities()), //負債
-	NETASSETS(new NetAssets()),     //純資産
+	EQUITY(new Equity()),			 //純資産
 	EXPENSES(new Expenses()),       //費用
 	REVENUE(new Revenue());         //収益
 	

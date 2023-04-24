@@ -6,7 +6,7 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.SummaryType;
 /**
  * 純資産クラス
  */
-class NetAssets implements IAccountingElement {
+class Equity implements IAccountingElement {
 
 	@Override
 	public String lavel() {
