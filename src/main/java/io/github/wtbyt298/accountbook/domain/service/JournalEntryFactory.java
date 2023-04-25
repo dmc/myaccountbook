@@ -2,7 +2,7 @@ package io.github.wtbyt298.accountbook.domain.service;
 
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
@@ -20,7 +20,7 @@ import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
  * 仕訳のファクトリクラス
  * 仕訳の新規作成時の詳細な処理を行う
  */
-@Service
+@Component
 public class JournalEntryFactory {
 	
 	@Autowired

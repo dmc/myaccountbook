@@ -17,12 +17,6 @@ public class JournalEntry {
 	private final EntryDetail entryDetail; //仕訳明細
 	
 	private JournalEntry(EntryId entryId, DealDate dealDate, Description description, EntryDetail entryDetail) {
-		if (! entryDetail.isSameTotal()) {
-			throw new IllegalArgumentException("明細の貸借合計が一致していません。");
-		}
-		if (! entryDetail.isCollectCombination()) {
-			throw new IllegalArgumentException("明細の貸借組み合わせが正しくありません。");
-		}
 		this.entryId = entryId;
 		this.dealDate = dealDate;
 		this.description = description;
@@ -33,6 +27,12 @@ public class JournalEntry {
 	 * 新規作成用のファクトリメソッド
 	 */
 	public static JournalEntry create(DealDate dealDate, Description description, EntryDetail entryDetail) {
+		if (! entryDetail.isSameTotal()) {
+			throw new IllegalArgumentException("明細の貸借合計が一致していません。");
+		}
+		if (! entryDetail.isCollectCombination()) {
+			throw new IllegalArgumentException("明細の貸借組み合わせが正しくありません。");
+		}
 		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetail);
 	}
 	
@@ -54,7 +54,7 @@ public class JournalEntry {
 	}
 	
 	 //以下、永続化用のメソッド定義
-	 //※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
+	 //※リポジトリクラスで内部データの取得のために呼び出す以外には極力使用しない
 	 
 	/**
 	 * @return 仕訳ID
