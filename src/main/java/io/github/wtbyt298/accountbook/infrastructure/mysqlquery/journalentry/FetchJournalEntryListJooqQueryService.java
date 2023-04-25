@@ -1,0 +1,91 @@
+package io.github.wtbyt298.accountbook.infrastructure.mysqlquery.journalentry;
+
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import static generated.tables.JournalEntries.*;
+import static generated.tables.EntryDetails.*;
+import static generated.tables.Accounttitles.*;
+import static generated.tables.SubAccounttitles.*;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import static org.jooq.impl.DSL.*;
+import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
+import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+
+/**
+ * 仕訳の一覧取得処理クラス
+ * DBから取得した値を戻り値クラスに詰め替えて返す
+ */
+@Component
+public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryListQueryService {
+	
+	//TODO コードが読みにくくなっているのでリファクタリングする
+	
+	@Autowired
+	private DSLContext jooq;
+
+	/**
+	 * 仕訳の一覧を取得する
+	 * 年月を絞り込みの条件とする
+	 */
+	@Override
+	public List<JournalEntryDto> findAll(YearMonth yearMonth) {
+		List<JournalEntryDto> resultList = new ArrayList<>();
+		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
+		String filterKey = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
+		Result<Record> result = jooq.select()
+									.from(JOURNAL_ENTRIES)
+									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(filterKey))
+									.and(JOURNAL_ENTRIES.USER_ID.eq("TEST_USER")) //TODO ログイン機能実装後に修正する
+									.orderBy(JOURNAL_ENTRIES.DEAL_DATE) //デフォルトでは取引日で昇順にソートされる
+									.fetch();
+		if (result.isEmpty()) {
+			throw new RuntimeException("該当する仕訳が見つかりませんでした。");
+		}
+		for (Record record : result) {
+			JournalEntryDto dto = new JournalEntryDto(
+				record.get(JOURNAL_ENTRIES.ENTRY_ID), 
+				record.get(JOURNAL_ENTRIES.DEAL_DATE), 
+				record.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
+				record.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
+				findEntryDetailById(record.get(JOURNAL_ENTRIES.ENTRY_ID))
+			);
+			resultList.add(dto);
+		}
+		return resultList;
+	
+	}
+	
+	/**
+	 * 仕訳IDに一致する仕訳明細を全て取得する
+	 */
+	private List<EntryDetailDto> findEntryDetailById(String entryId) {
+		List<EntryDetailDto> resultList = new ArrayList<>();
+		Result<Record> result = jooq.select()
+									.from(ENTRY_DETAILS
+									.leftOuterJoin(ACCOUNTTITLES).on(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(ACCOUNTTITLES.ACCOUNTTITLE_ID))
+									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)))
+									.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId))
+									.fetch();
+		if (result.isEmpty()) {
+			throw new RuntimeException("該当する仕訳明細が見つかりませんでした。");
+		}
+		for (Record record : result) {
+			EntryDetailDto dto = new EntryDetailDto(
+				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
+				record.get(coalesce(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME,"")), //補助科目名がnullの場合は空文字列を返す
+				record.get(ENTRY_DETAILS.LOAN_TYPE),
+				record.get(ENTRY_DETAILS.AMOUNT)
+			);
+			resultList.add(dto);
+		}
+		return resultList;
+	}
+	
+}

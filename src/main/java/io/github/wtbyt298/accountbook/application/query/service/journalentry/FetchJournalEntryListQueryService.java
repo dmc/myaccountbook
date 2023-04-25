@@ -1,5 +1,6 @@
 package io.github.wtbyt298.accountbook.application.query.service.journalentry;
 
+import java.time.YearMonth;
 import java.util.List;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
@@ -8,8 +9,8 @@ import io.github.wtbyt298.accountbook.application.query.model.journalentry.Journ
  * 仕訳一覧取得用のインタフェース
  * 実装クラスはインフラ層に置く
  */
-public interface IJournalEntryListQueryService {
+public interface FetchJournalEntryListQueryService {
 
-	List<JournalEntryDto> findAll(); //TODO 引数に年月を指定する
+	List<JournalEntryDto> findAll(YearMonth yearMonth);
 	
 }
