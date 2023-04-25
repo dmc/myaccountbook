@@ -17,11 +17,14 @@ public class CancelJournalEntryUseCase {
 	
 	/**
 	 * 仕訳を取消（削除）する
-	 * @param id 取消対象の仕訳ID
+	 * @param entryId 取消対象の仕訳ID
 	 */
 	@Transactional
-	public void cancel(EntryId id) {
-		journalEntryRepository.drop(id);
+	public void execute(EntryId entryId) {
+		if (! journalEntryRepository.exists(entryId)) {
+			throw new IllegalArgumentException("指定した仕訳は存在しません。");
+		}
+		journalEntryRepository.drop(entryId);
 	}
 	
 }

@@ -65,13 +65,25 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳を削除する
 	 */
 	@Override
-	public void drop(EntryId id) {
+	public void drop(EntryId entryId) {
 		jooq.deleteFrom(ENTRY_DETAILS)
-			.where(ENTRY_DETAILS.ENTRY_ID.eq(id.toString()))
+			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.toString()))
 			.execute();
 		jooq.deleteFrom(JOURNAL_ENTRIES)
-			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(id.toString()))
+			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.toString()))
 			.execute();
+	}
+	
+	/**
+	 * IDで指定した仕訳が存在するかどうかを判断する
+	 */
+	@Override
+	public boolean exists(EntryId entryId) {
+		final int resultCount = jooq.selectFrom(JOURNAL_ENTRIES)
+									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.toString()))
+									.execute();
+		if (resultCount == 0) return false;
+		return true;
 	}
 
 }
