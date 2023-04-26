@@ -11,13 +11,13 @@ class UserTest {
 		//when
 		User user = User.create(
 			UserId.valueOf("TEST_USER"), 
-			UserPassword.valueOf("Test0123OK"), 
+			EncodedUserPassword.fromRawPassword("Test0123OK"), 
 			"test@example.com"
 		);
 		
 		//then
 		assertEquals("TEST_USER", user.id());
-		//パスワードのハッシュ化についてはUserPasswordクラスでテストしている
+		//パスワードのハッシュ化についてはEncodedUserPasswordクラスでテストしている
 		assertEquals("test@example.com", user.mailAddress());
 		assertEquals(UserStatus.ACTIVE.toString(), user.userStatus());
 	}
@@ -27,7 +27,7 @@ class UserTest {
 		//when
 		User user = User.reconstruct(
 			UserId.valueOf("TEST_USER"), 
-			UserPassword.valueOf("Test0123OK"), 
+			EncodedUserPassword.fromRawPassword("Test0123OK"), 
 			"test@example.com",
 			UserStatus.ACTIVE
 		);
@@ -43,7 +43,7 @@ class UserTest {
 		//given 
 		User user = User.create(
 			UserId.valueOf("TEST_USER"), 
-			UserPassword.valueOf("Test0123OK"), 
+			EncodedUserPassword.fromRawPassword("Test0123OK"), 
 			"test@example.com"
 		);
 		

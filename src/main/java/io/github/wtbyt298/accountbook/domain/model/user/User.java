@@ -5,14 +5,14 @@ package io.github.wtbyt298.accountbook.domain.model.user;
  */
 public class User {
 
-	private final UserId userId;             //ユーザID
-	private final UserPassword userPassword; //パスワード
-	private final String mailAddress;        //メールアドレス　※必要があれば値オブジェクトとして設計し直す
-	private UserStatus userStatus;           //ACTIVE：利用中　INACTIVE：退会済み
+	private final UserId userId;                           //ユーザID
+	private final EncodedUserPassword encodedUserPassword; //ハッシュ化したパスワード
+	private final String mailAddress;                      //メールアドレス　※必要があれば値オブジェクトとして設計し直す
+	private UserStatus userStatus;                         //ACTIVE：利用中　INACTIVE：退会済み
 	
-	private User(UserId userId, UserPassword userPassword, String mailAddress, UserStatus userStatus) {
+	private User(UserId userId, EncodedUserPassword encodedUserPassword, String mailAddress, UserStatus userStatus) {
 		this.userId = userId;
-		this.userPassword = userPassword;
+		this.encodedUserPassword = encodedUserPassword;
 		this.mailAddress = mailAddress;
 		this.userStatus = userStatus;
 	}
@@ -20,18 +20,27 @@ public class User {
 	/**
 	 * 新規作成用のファクトリメソッド
 	 */
-	public static User create(UserId userId, UserPassword password, String mailAddress) {
+	public static User create(UserId userId, EncodedUserPassword password, String mailAddress) {
 		return new User(userId, password, mailAddress, UserStatus.ACTIVE); //新規作成時は有効なユーザとして作成する
 	}
 	
 	/**
 	 * 再構築用のファクトリメソッド
 	 */
-	public static User reconstruct(UserId userId, UserPassword password, String mailAddress, UserStatus userStatus) {
+	public static User reconstruct(UserId userId, EncodedUserPassword password, String mailAddress, UserStatus userStatus) {
 		return new User(userId, password, mailAddress, userStatus);
 	}
 	
-	//無効なユーザに変更する
+	/**
+	 * 与えられたパスワードが保持しているパスワードに合致するかどうかを判断する
+	 */
+	public boolean acceptPassword(String rawPassword) {
+		return encodedUserPassword.match(rawPassword);
+	}
+	
+	/**
+	 * 無効なユーザに変更する
+	 */
 	public void disable() {
 		if (userStatus.equals(UserStatus.INACTIVE)) {
 			throw new RuntimeException("ユーザが既に退会しています。");
@@ -50,7 +59,7 @@ public class User {
 	 * @return ハッシュ化したパスワード
 	 */
 	public String encodedPassword() {
-		return userPassword.encode();
+		return encodedUserPassword.value;
 	}
 	
 	/**
