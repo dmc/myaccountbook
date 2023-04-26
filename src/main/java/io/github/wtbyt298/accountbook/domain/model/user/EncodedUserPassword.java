@@ -1,6 +1,5 @@
 package io.github.wtbyt298.accountbook.domain.model.user;
 
-import java.util.regex.Pattern;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -9,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class EncodedUserPassword {
 
 	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	private static final String PASSWORD_REGEX = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{8,16}";
 	final String value;
 	
 	private EncodedUserPassword(String value) {
@@ -52,7 +52,7 @@ public class EncodedUserPassword {
 	 * フォーマットは英大文字と英小文字と数字を少なくとも1文字以上含み、8文字以上16文字以内とする
 	 */
 	private static boolean isValidFormat(String value) {
-		return Pattern.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{8,16}", value);
+		return value.matches(PASSWORD_REGEX);
 	}
 	
 }
