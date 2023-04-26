@@ -65,9 +65,9 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, String> MAIL_ADDRESS = createField(DSL.name("mail_address"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.users.is_active</code>.
+     * The column <code>accountbook_test.users.user_status</code>.
      */
-    public final TableField<UsersRecord, Byte> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.TINYINT.nullable(false), this, "");
+    public final TableField<UsersRecord, String> USER_STATUS = createField(DSL.name("user_status"), SQLDataType.VARCHAR(8).nullable(false), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
@@ -156,14 +156,14 @@ public class Users extends TableImpl<UsersRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<String, String, String, Byte> fieldsRow() {
+    public Row4<String, String, String, String> fieldsRow() {
         return (Row4) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function4<? super String, ? super String, ? super String, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function4<? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -171,7 +171,7 @@ public class Users extends TableImpl<UsersRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super String, ? super String, ? super String, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
