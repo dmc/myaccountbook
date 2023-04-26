@@ -14,26 +14,26 @@ public class JournalEntry {
 	private final EntryId entryId;         //仕訳番号
 	private final DealDate dealDate;       //取引日
 	private final Description description; //摘要
-	private final EntryDetail entryDetail; //仕訳明細
+	private final EntryDetails entryDetails; //仕訳明細のコレクション
 	
-	private JournalEntry(EntryId entryId, DealDate dealDate, Description description, EntryDetail entryDetail) {
+	private JournalEntry(EntryId entryId, DealDate dealDate, Description description, EntryDetails entryDetails) {
 		this.entryId = entryId;
 		this.dealDate = dealDate;
 		this.description = description;
-		this.entryDetail = entryDetail;
+		this.entryDetails = entryDetails;
 	}
 	
 	/**
 	 * 新規作成用のファクトリメソッド
 	 */
-	public static JournalEntry create(DealDate dealDate, Description description, EntryDetail entryDetail) {
-		if (! entryDetail.isSameTotal()) {
+	public static JournalEntry create(DealDate dealDate, Description description, EntryDetails entryDetails) {
+		if (! entryDetails.isSameTotal()) {
 			throw new IllegalArgumentException("明細の貸借合計が一致していません。");
 		}
-		if (! entryDetail.isCollectCombination()) {
+		if (! entryDetails.isCollectCombination()) {
 			throw new IllegalArgumentException("明細の貸借組み合わせが正しくありません。");
 		}
-		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetail);
+		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetails);
 	}
 	
 	//再構築用のメソッドは必要になったら実装する
@@ -43,7 +43,7 @@ public class JournalEntry {
 	 * @return 仕訳合計金額
 	 */
 	public Amount totalAmount() {
-		return entryDetail.debitSum(); //貸借で金額は一致するので借方合計を返している
+		return entryDetails.debitSum(); //貸借で金額は一致するので借方合計を返している
 	}
 	
 	/**
@@ -80,8 +80,8 @@ public class JournalEntry {
 	/**
 	 * @return 明細行のリスト
 	 */
-	public List<DetailRow> entryDetail() {
-		return Collections.unmodifiableList(entryDetail.detailRows);
+	public List<EntryDetail> entryDetails() {
+		return Collections.unmodifiableList(entryDetails.entryDetails);
 	}
 	
 }

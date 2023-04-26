@@ -1,74 +1,69 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
+import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
 
 /**
  * 仕訳明細クラス
- * 明細行のコレクションオブジェクト
  */
 public class EntryDetail {
-
-	final List<DetailRow> detailRows;
 	
-	public EntryDetail(List<DetailRow> detailRows) {
-		if (detailRows.stream().allMatch(each -> each.isDebit()) || detailRows.stream().allMatch(each -> each.isCredit())) {
-			throw new IllegalArgumentException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
-		}
-		this.detailRows = detailRows;
-	}
-
-	/**
-	 * 明細行の会計要素の貸借組み合わせをチェックする
-	 * @return 全ての明細行が貸借の組み合わせ条件を満たしている場合true
-	 */
-	boolean isCollectCombination() {
-		List<DetailRow> debitRows = detailRows.stream()
-											  .filter(each -> each.isDebit())
-											  .collect(Collectors.toList());
-		List<DetailRow> creditRows = detailRows.stream()
-											  .filter(each -> each.isCredit())
-											  .collect(Collectors.toList());
-		//借方明細行に対して、貸方明細行が組み合わせ可能かどうかを全て調べる
-		for (DetailRow debit : debitRows) {
-			for (DetailRow credit : creditRows) {
-				if (! debit.canCombinate(credit)) return false;
-			}
-		}
-		return true;
+	//TODO フィールドが多いので設計を見直したい
+	private final AccountTitle accountTitle;
+	private final SubAccountTitle subAccountTitle;
+	private final LoanType detailLoanType;
+	final Amount amount;
+	
+	public EntryDetail(AccountTitle accountTitle, SubAccountTitle subAccountTitle, LoanType detailLoanType, Amount amount) {
+		this.accountTitle = accountTitle;
+		this.subAccountTitle = subAccountTitle;
+		this.detailLoanType = detailLoanType;
+		this.amount = amount;
 	}
 	
 	/**
-	 * @return 借方合計と貸方合計が一致している場合true
+	 * @return 借方明細である場合true
 	 */
-	boolean isSameTotal() {
-		return debitSum().equals(creditSum());
+	boolean isDebit() {
+		return detailLoanType.equals(LoanType.DEBIT);
 	}
 	
 	/**
-	 * @return 借方合計金額
+	 * @return 貸方明細である場合true
 	 */
-    Amount debitSum() {
-		Amount total = Amount.valueOf(0);
-		for (DetailRow each : detailRows) {
-			if (each.isCredit()) continue;
-			total = total.plus(each.amount);
-		}
-		return total;
+	boolean isCredit() {
+		return detailLoanType.equals(LoanType.CREDIT);
 	}
 	
 	/**
-	 * @return 貸方合計金額
+	 * 
+	 * @param other 組み合わせ相手の明細行
+	 * @return 組み合わせ可能である場合true
 	 */
-	Amount creditSum() {
-		Amount total = Amount.valueOf(0);
-		for (DetailRow each : detailRows) {
-			if (each.isDebit()) continue;
-			total = total.plus(each.amount);
-		}
-		return total;
+	boolean canCombinate(EntryDetail other) {
+		return this.accountTitle.canCombinate(other.accountTitle);
+	}
+	
+	/**
+	 * 以下、永続化用のメソッド定義
+	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
+	 */
+	public String accountTitleId() {
+		return accountTitle.id().toString();
+	}
+	
+	public String subAccountTitleId() {
+		return subAccountTitle.id().toString();
+	}
+	
+	public String detailLoanType() {
+		return detailLoanType.toString();
+	}
+	
+	public int amount() {
+		return amount.value();
 	}
 	
 }

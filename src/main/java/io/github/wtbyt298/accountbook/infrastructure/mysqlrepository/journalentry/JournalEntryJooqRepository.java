@@ -6,7 +6,7 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static generated.tables.EntryDetails.*;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.DetailRow;
+import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
@@ -49,8 +49,8 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳明細テーブルにデータを挿入する
 	 */
 	private void insertIntoEntryDetails(JournalEntry entry) {
-		List<DetailRow> detailRows = entry.entryDetail();
-		for (DetailRow row : detailRows) {
+		List<EntryDetail> detailRows = entry.entryDetails();
+		for (EntryDetail row : detailRows) {
 			jooq.insertInto(ENTRY_DETAILS)
 				.set(ENTRY_DETAILS.ENTRY_ID, entry.id())
 				.set(ENTRY_DETAILS.ACCOUNTTITLE_ID, row.accountTitleId())

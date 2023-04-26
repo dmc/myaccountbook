@@ -33,7 +33,7 @@ public class JournalEntryFactory {
 		//ドメインオブジェクトの生成処理
 		DealDate dealDate = DealDate.valueOf(command.getDealDate());
 		Description description = Description.valueOf(command.getDescription());
-		EntryDetail entryDetail = createEntryDetail(command.getDetailCommands());
+		EntryDetails entryDetail = createEntryDetail(command.getDetailCommands());
 		//仕訳IDはファクトリメソッド内で新規生成している
 		return JournalEntry.create(dealDate, description, entryDetail);
 	}
@@ -41,18 +41,18 @@ public class JournalEntryFactory {
 	/**
 	 * コマンドオブジェクトから仕訳明細を作成する
 	 */
-	private EntryDetail createEntryDetail(List<RegisterEntryDetailCommand> commands) {
-		List<DetailRow> detailRows = new ArrayList<>();
+	private EntryDetails createEntryDetail(List<RegisterEntryDetailCommand> commands) {
+		List<EntryDetail> detailRows = new ArrayList<>();
 		for (RegisterEntryDetailCommand command : commands) {
 			detailRows.add(createDetailRow(command));
 		}
-		return new EntryDetail(detailRows);
+		return new EntryDetails(detailRows);
 	}
 	
 	/**
 	 * 1件の明細コマンドオブジェクトから明細行を作成する
 	 */
-	private DetailRow createDetailRow(RegisterEntryDetailCommand command) {
+	private EntryDetail createDetailRow(RegisterEntryDetailCommand command) {
 		//勘定科目に関する処理
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
 		AccountTitle accountTitle = accountTitleRepository.findById(accountTitleId);
@@ -63,7 +63,7 @@ public class JournalEntryFactory {
 		LoanType detailLoanType = LoanType.valueOf(command.getDetailLoanType());
 		Amount amount = Amount.valueOf(command.getAmount());
 		//エンティティを返す
-		return new DetailRow(accountTitle, subAccountTitle, detailLoanType, amount);
+		return new EntryDetail(accountTitle, subAccountTitle, detailLoanType, amount);
 	}
 	
 }
