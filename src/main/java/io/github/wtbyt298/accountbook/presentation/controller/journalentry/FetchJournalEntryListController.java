@@ -16,7 +16,7 @@ import io.github.wtbyt298.accountbook.application.query.service.journalentry.Fet
 import io.github.wtbyt298.accountbook.presentation.response.JournalEntryView;
 
 /**
- * 仕訳一覧取得処理のコントローラ
+ * 仕訳一覧取得処理のコントローラクラス
  */
 @Controller
 public class FetchJournalEntryListController {

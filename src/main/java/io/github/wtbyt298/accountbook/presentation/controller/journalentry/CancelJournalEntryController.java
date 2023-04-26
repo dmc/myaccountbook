@@ -8,7 +8,7 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.CancelJou
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 
 /**
- * 仕訳取消処理のコントローラ
+ * 仕訳取消処理のコントローラクラス
  */
 @Controller
 public class CancelJournalEntryController {

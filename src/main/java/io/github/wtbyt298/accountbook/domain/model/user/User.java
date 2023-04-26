@@ -78,7 +78,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return userId.toString();
+		return "ユーザID：" + userId.toString();
 	}
 	
 }

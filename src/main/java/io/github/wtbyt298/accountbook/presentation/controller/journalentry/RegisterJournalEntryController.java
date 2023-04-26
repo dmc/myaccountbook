@@ -17,7 +17,7 @@ import io.github.wtbyt298.accountbook.presentation.response.MergedAccountTitleVi
 import jakarta.validation.Valid;
 
 /**
- * 仕訳登録処理のコントローラ
+ * 仕訳登録処理のコントローラクラス
  */
 @Controller
 public class RegisterJournalEntryController {
@@ -32,16 +32,15 @@ public class RegisterJournalEntryController {
 	 * ページ読み込み時の処理
 	 */
 	@GetMapping("/entryregisterform")
-	public String entryRegisterForm(@ModelAttribute("registerParam") RegisterJournalEntryParam param) {
+	public String entryRegisterForm(@ModelAttribute("entryParam") RegisterJournalEntryParam param) {
 		return "entryregisterform";
 	}
 	
 	/**
-	 * フォームに入力した仕訳を登録する
-	 * バリデーションエラーがあればエラーメッセージを表示する
+	 * フォームに入力した内容で仕訳を登録する
 	 */
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute("registerParam") RegisterJournalEntryParam param, BindingResult result) {
+	public String register(@Valid @ModelAttribute("entryParam") RegisterJournalEntryParam param, BindingResult result) {
 		if (result.hasErrors()) {
 			return entryRegisterForm(param);
 		}

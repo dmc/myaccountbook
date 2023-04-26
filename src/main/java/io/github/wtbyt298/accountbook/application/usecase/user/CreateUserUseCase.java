@@ -3,10 +3,9 @@ package io.github.wtbyt298.accountbook.application.usecase.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
-import io.github.wtbyt298.accountbook.domain.model.user.UserPassword;
+import io.github.wtbyt298.accountbook.domain.model.user.EncodedUserPassword;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
 
 /**
@@ -36,11 +35,12 @@ public class CreateUserUseCase {
 	 */
 	private User createFromCommand(CreateUserCommand command) {
 		UserId userId = UserId.valueOf(command.getId());
-		UserPassword userPassword = UserPassword.valueOf(command.getPassword());
+		EncodedUserPassword userPassword = EncodedUserPassword.fromRawPassword(command.getPassword());
+		String mailAddress = command.getMailAddress();
 		return User.create(
 			userId, 
 			userPassword, 
-			command.getMailAddress()
+			mailAddress
 		);		
 	}
 	
