@@ -3,7 +3,7 @@ CREATE TABLE users (
 	user_id varchar(32) PRIMARY KEY,
     hashed_password varchar(128) NOT NULL,
     mail_address varchar(32) NOT NULL,
-    is_active boolean NOT NULL
+    user_status varchar(8) NOT NULL
 );
 
 #勘定科目テーブル

@@ -3,13 +3,13 @@ INSERT INTO users (
 	user_id,
 	hashed_password,
 	mail_address,
-    is_active
+    user_status
 )
 VALUES (
 	'TEST_USER',
     'testpassword',
     'test@example.com',
-    1
+    'ACTIVE'
 );
 
 #勘定科目テーブルにデータを投入
