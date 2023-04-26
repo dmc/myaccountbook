@@ -2,6 +2,7 @@ package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+import io.github.wtbyt298.accountbook.presentation.response.JournalEntryView;
 
 /**
  * 仕訳一覧取得処理のコントローラ
@@ -27,11 +29,23 @@ public class FetchJournalEntryListController {
 	 */
 	@GetMapping("/entries/{selectedYearMonth}")
 	public String entries(@PathVariable String selectedYearMonth, Model model) {
+		//引数のselectedYearMonthには"yyyy-MM-dd"形式の文字列を想定
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		List<JournalEntryDto> journalEntryDtoList = fetchQueryService.findAll(yearMonth);
-		//Viewモデルへの詰め替え処理
-		//modelの属性にViewを追加する
+		List<JournalEntryView> views = mapAllDtoToViews(journalEntryDtoList);
+		model.addAttribute("entries", views);
 		return "entries";
+	}
+	
+	/**
+	 * 仕訳のDTOをViewモデルに詰め替えたリストを返す
+	 */
+	private List<JournalEntryView> mapAllDtoToViews(List<JournalEntryDto> dtoList) {
+		List<JournalEntryView> views = new ArrayList<>();
+		for (JournalEntryDto dto : dtoList) {
+			views.add(new JournalEntryView(dto));
+		}
+		return views;
 	}
 	
 }

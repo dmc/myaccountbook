@@ -21,4 +21,12 @@ public class EntryDetailDto {
 		this.amount = amount;
 	}
 	
+	public boolean isDebit() {
+		return detailLoanType.equals(LoanType.DEBIT);
+	}
+	
+	public boolean isCredit() {
+		return detailLoanType.equals(LoanType.CREDIT);
+	}
+	
 }
