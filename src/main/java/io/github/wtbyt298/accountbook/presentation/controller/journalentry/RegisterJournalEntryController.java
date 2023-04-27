@@ -82,7 +82,8 @@ public class RegisterJournalEntryController {
 	 */
 	@ModelAttribute("selectBoxElements")
 	public List<MergedAccountTitleView> selectBoxElements() {
-		List<AccountTitleAndSubAccountTitleDto> fetchedData = listQueryService.findAll();
+		UserSession userSession = userSessionProvider.getUserSession();
+		List<AccountTitleAndSubAccountTitleDto> fetchedData = listQueryService.findAll(userSession);
 		List<MergedAccountTitleView> views = new ArrayList<>();
 		//DBから取得したデータを表示用のモデルに詰め替える
 		for (AccountTitleAndSubAccountTitleDto dto : fetchedData) {

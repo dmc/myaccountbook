@@ -28,21 +28,21 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	@Override
 	public void save(JournalEntry entry, UserId userId) {
-		insertIntoJournalEntries(entry);
+		insertIntoJournalEntries(entry, userId);
 		insertIntoEntryDetails(entry);
 	}
 	
 	/**
 	 * 仕訳テーブルにデータを挿入する
 	 */
-	private void insertIntoJournalEntries(JournalEntry entry) {
+	private void insertIntoJournalEntries(JournalEntry entry, UserId userId) {
 		jooq.insertInto(JOURNAL_ENTRIES)
 			.set(JOURNAL_ENTRIES.ENTRY_ID, entry.id())
 			.set(JOURNAL_ENTRIES.DEAL_DATE, entry.dealDate())
 			.set(JOURNAL_ENTRIES.ENTRY_DESCRIPTION, entry.description())
 			.set(JOURNAL_ENTRIES.FISCAL_YEARMONTH, entry.fiscalYearMonth())
 			.set(JOURNAL_ENTRIES.TOTAL_AMOUNT, entry.totalAmount().value())
-			.set(JOURNAL_ENTRIES.USER_ID, "TEST_USER") //TODO ユーザ認証機能実装後に修正する
+			.set(JOURNAL_ENTRIES.USER_ID, userId.toString())
 			.execute();
 	}
 	
@@ -66,7 +66,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳を削除する
 	 */
 	@Override
-	public void drop(EntryId entryId, UserId userId) {
+	public void drop(EntryId entryId) {
 		jooq.deleteFrom(ENTRY_DETAILS)
 			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.toString()))
 			.execute();
@@ -79,7 +79,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * IDで指定した仕訳が存在するかどうかを判断する
 	 */
 	@Override
-	public boolean exists(EntryId entryId, UserId userId) {
+	public boolean exists(EntryId entryId) {
 		final int resultCount = jooq.selectFrom(JOURNAL_ENTRIES)
 									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.toString()))
 									.execute();

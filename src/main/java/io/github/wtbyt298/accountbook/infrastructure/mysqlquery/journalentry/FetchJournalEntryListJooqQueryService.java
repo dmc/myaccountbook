@@ -13,10 +13,10 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import static org.jooq.impl.DSL.*;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 
 /**
  * 仕訳の一覧取得処理クラス
@@ -35,14 +35,14 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 	 * 年月を絞り込みの条件とする
 	 */
 	@Override
-	public List<JournalEntryDto> findAll(YearMonth yearMonth) {
+	public List<JournalEntryDto> findAll(YearMonth yearMonth, UserSession userSession) {
 		List<JournalEntryDto> resultList = new ArrayList<>();
 		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
 		String filterKey = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
 		Result<Record> result = jooq.select()
 									.from(JOURNAL_ENTRIES)
 									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(filterKey))
-									.and(JOURNAL_ENTRIES.USER_ID.eq("TEST_USER")) //TODO ログイン機能実装後に修正する
+									.and(JOURNAL_ENTRIES.USER_ID.eq(userSession.userId()))
 									.orderBy(JOURNAL_ENTRIES.DEAL_DATE) //デフォルトでは取引日で昇順にソートされる
 									.fetch();
 		if (result.isEmpty()) {
@@ -68,18 +68,24 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 	private List<EntryDetailDto> findEntryDetailById(String entryId) {
 		List<EntryDetailDto> resultList = new ArrayList<>();
 		Result<Record> result = jooq.select()
-									.from(ENTRY_DETAILS
+									.from(ENTRY_DETAILS)
 									.leftOuterJoin(ACCOUNTTITLES).on(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(ACCOUNTTITLES.ACCOUNTTITLE_ID))
-									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)))
+									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID))
 									.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId))
 									.fetch();
 		if (result.isEmpty()) {
 			throw new RuntimeException("該当する仕訳明細が見つかりませんでした。");
 		}
 		for (Record record : result) {
+			String subAccountTitleName;
+			//補助科目名がnullの場合は空文字列を返す
+			if (record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) == null) {
+				subAccountTitleName = "";
+			}
+			subAccountTitleName = record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME);
 			EntryDetailDto dto = new EntryDetailDto(
 				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
-				record.get(coalesce(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME,"")), //補助科目名がnullの場合は空文字列を返す
+				subAccountTitleName,
 				record.get(ENTRY_DETAILS.LOAN_TYPE),
 				record.get(ENTRY_DETAILS.AMOUNT)
 			);

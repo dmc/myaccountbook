@@ -4,6 +4,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
+import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 
 /**
  * 仕訳一覧取得用のインタフェース
@@ -11,6 +12,6 @@ import io.github.wtbyt298.accountbook.application.query.model.journalentry.Journ
  */
 public interface FetchJournalEntryListQueryService {
 
-	List<JournalEntryDto> findAll(YearMonth yearMonth);
+	List<JournalEntryDto> findAll(YearMonth yearMonth, UserSession userSession);
 	
 }
