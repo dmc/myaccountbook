@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
  * ユーザ作成処理のコントローラクラス
  */
 @Controller
-public class CreateUserController {
+public class SignUpController {
 
 	@Autowired
 	private CreateUserUseCase createUseCase;
