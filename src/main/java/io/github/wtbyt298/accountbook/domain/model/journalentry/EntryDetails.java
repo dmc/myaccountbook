@@ -3,8 +3,6 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
-
 /**
  * 仕訳明細のコレクションオブジェクト
  */

@@ -1,6 +1,6 @@
 package io.github.wtbyt298.accountbook.application.query.model.journalentry;
 
-import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 import lombok.Getter;
 
 /**

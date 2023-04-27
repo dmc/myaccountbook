@@ -3,7 +3,6 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
 
 /**
  * 仕訳伝票クラス

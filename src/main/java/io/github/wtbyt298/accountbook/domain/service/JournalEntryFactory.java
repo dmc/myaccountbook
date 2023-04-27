@@ -11,8 +11,7 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepo
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
-import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 //TODO コードが汚くなっているので設計の見直しを行う
 

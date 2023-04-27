@@ -1,7 +1,8 @@
 package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 
 import java.util.Map;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
+
+import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 
 /**
  * 勘定科目クラス

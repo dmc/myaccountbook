@@ -2,8 +2,7 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
  * 仕訳明細クラス
@@ -63,7 +62,7 @@ public class EntryDetail {
 	}
 	
 	public int amount() {
-		return amount.value();
+		return amount.value;
 	}
 	
 }
