@@ -8,12 +8,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import io.github.wtbyt298.accountbook.application.query.service.accounttitle.AccountTitleAndSubAccountTitleListQueryService;
+import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryUseCase;
 import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterEntryDetailParam;
 import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterJournalEntryParam;
 import io.github.wtbyt298.accountbook.presentation.response.MergedAccountTitleView;
+import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 import jakarta.validation.Valid;
 
 /**
@@ -27,6 +29,9 @@ public class RegisterJournalEntryController {
 	
 	@Autowired
 	private RegisterJournalEntryUseCase registerUseCase;
+	
+	@Autowired
+	private UserSessionProvider userSessionProvider;
 		
 	/**
 	 * ページ読み込み時の処理
@@ -45,7 +50,8 @@ public class RegisterJournalEntryController {
 			return entryRegisterForm(param);
 		}
 		RegisterJournalEntryCommand command = mapRequestToCommand(param);
-		registerUseCase.execute(command);
+		UserSession userSession = userSessionProvider.getUserSession();
+		registerUseCase.execute(command, userSession);
 		return "redirect:/entryregisterform";
 	}
 	

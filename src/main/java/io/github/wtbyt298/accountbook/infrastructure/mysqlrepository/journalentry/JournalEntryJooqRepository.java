@@ -10,6 +10,7 @@ import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
+import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 
 /**
  * 仕訳のリポジトリクラス
@@ -26,7 +27,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳テーブルと仕訳明細テーブルに別々にINSERTする
 	 */
 	@Override
-	public void save(JournalEntry entry) {
+	public void save(JournalEntry entry, UserId userId) {
 		insertIntoJournalEntries(entry);
 		insertIntoEntryDetails(entry);
 	}
@@ -65,7 +66,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳を削除する
 	 */
 	@Override
-	public void drop(EntryId entryId) {
+	public void drop(EntryId entryId, UserId userId) {
 		jooq.deleteFrom(ENTRY_DETAILS)
 			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.toString()))
 			.execute();
@@ -78,7 +79,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * IDで指定した仕訳が存在するかどうかを判断する
 	 */
 	@Override
-	public boolean exists(EntryId entryId) {
+	public boolean exists(EntryId entryId, UserId userId) {
 		final int resultCount = jooq.selectFrom(JOURNAL_ENTRIES)
 									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.toString()))
 									.execute();

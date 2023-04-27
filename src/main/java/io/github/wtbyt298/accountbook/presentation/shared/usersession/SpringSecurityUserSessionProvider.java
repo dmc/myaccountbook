@@ -9,7 +9,7 @@ import lombok.Getter;
 public class SpringSecurityUserSessionProvider implements UserSessionProvider {
 
 	/**
-	 * ログインしているユーザの情報を返す
+	 * 認証済みのユーザ情報を返す
 	 */
 	@Override
 	public UserSession getUserSession() {
@@ -18,6 +18,9 @@ public class SpringSecurityUserSessionProvider implements UserSessionProvider {
 		return userSession;
 	}
 	
+	/**
+	 * 認証済みのユーザIDを保持するクラス
+	 */
 	@Getter
 	private class SpringSecurityUserSession implements UserSession {
 		

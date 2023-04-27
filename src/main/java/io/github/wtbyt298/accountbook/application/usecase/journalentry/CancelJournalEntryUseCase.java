@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
+import io.github.wtbyt298.accountbook.domain.model.user.UserId;
+import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 
 /**
@@ -20,11 +22,12 @@ public class CancelJournalEntryUseCase {
 	 * @param entryId 取消対象の仕訳ID
 	 */
 	@Transactional
-	public void execute(EntryId entryId) {
-		if (! journalEntryRepository.exists(entryId)) {
+	public void execute(EntryId entryId, UserSession userSession) {
+		UserId userId = UserId.valueOf(userSession.userId());
+		if (! journalEntryRepository.exists(entryId, userId)) {
 			throw new IllegalArgumentException("指定した仕訳は存在しません。");
 		}
-		journalEntryRepository.drop(entryId);
+		journalEntryRepository.drop(entryId, userId);
 	}
 	
 }

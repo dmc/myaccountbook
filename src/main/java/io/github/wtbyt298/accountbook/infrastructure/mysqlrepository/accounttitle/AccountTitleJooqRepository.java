@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 import generated.tables.records.AccounttitlesRecord;
 import static generated.tables.Accounttitles.*;
 import static generated.tables.SubAccounttitles.*;
+
+import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleName;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
 
 /**
  * 勘定科目のリポジトリクラス
@@ -32,11 +33,13 @@ public class AccountTitleJooqRepository implements AccountTitleRepository {
 	
 	@Override
 	public AccountTitle findById(AccountTitleId id) {
-		Results<Record> results = jooq.selectFrom(ACCOUNTTITLES
-										 .join(SUB_ACCOUNTTITLES).on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID))
-										 .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.toString()))
+		Result<Record> result = jooq.selectFrom(ACCOUNTTITLES
+									  .join(SUB_ACCOUNTTITLES).on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID))
+									  .and(SUB_ACCOUNTTITLES.USER_ID.eq("TEST_USER")))
+								      .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.toString()))
+								      .fetch();
 										 
-		if (result.size() == 0) {
+		if (result.isEmpty()) {
 			throw new RuntimeException("勘定科目が見つかりませんでした。");
 		}
 		return new AccountTitle(AccountTitleId.valueOf(result.getAccounttitleId()), 

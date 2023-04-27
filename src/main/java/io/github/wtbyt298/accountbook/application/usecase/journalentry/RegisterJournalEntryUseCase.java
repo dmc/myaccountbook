@@ -3,7 +3,10 @@ package io.github.wtbyt298.accountbook.application.usecase.journalentry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
+import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.service.JournalEntryFactory;
 
 /**
@@ -23,9 +26,10 @@ public class RegisterJournalEntryUseCase {
 	 * @param registerCommand 仕訳登録用のDTO
 	 */
 	@Transactional
-	public void execute(RegisterJournalEntryCommand command) {
+	public void execute(RegisterJournalEntryCommand command, UserSession userSession) {
 		JournalEntry entry = journalEntryFactory.create(command);
-		journalEntryRepository.save(entry);
+		UserId userId = UserId.valueOf(userSession.userId());
+		journalEntryRepository.save(entry, userId);
 	}
 	
 }

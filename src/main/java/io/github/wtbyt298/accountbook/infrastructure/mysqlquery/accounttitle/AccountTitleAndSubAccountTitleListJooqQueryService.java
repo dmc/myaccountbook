@@ -7,6 +7,7 @@ import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static generated.Tables.*;
+import static org.jooq.impl.DSL.*;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import io.github.wtbyt298.accountbook.application.query.service.accounttitle.AccountTitleAndSubAccountTitleListQueryService;
 
@@ -45,20 +46,20 @@ public class AccountTitleAndSubAccountTitleListJooqQueryService implements Accou
 	 * 取得したレコードを戻り値のDTOクラスに詰め替える
 	 */
 	private AccountTitleAndSubAccountTitleDto mapRecordToDto(Record record) {
-		if (record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID) == null ||
-			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) == null	) {
-			return new AccountTitleAndSubAccountTitleDto(
-				record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID), 
-				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
-				"0", //補助科目が存在しない場合は
-				""   //補助科目ID："0"　補助科目名：""（空白）とする
-			);
-		}
+//		if (record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID) == null ||
+//			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) == null	) {
+//			return new AccountTitleAndSubAccountTitleDto(
+//				record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID), 
+//				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
+//				"0", //補助科目が存在しない場合は
+//				""   //補助科目ID："0"　補助科目名：""（空白）とする
+//			);
+//		}
  		return new AccountTitleAndSubAccountTitleDto(
 			record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID), 
 			record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME), 
-			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID), 
-			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) 
+			record.get(coalesce(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID, "0")), 
+			record.get(coalesce(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME, "")) 
 		);
 	}
 	

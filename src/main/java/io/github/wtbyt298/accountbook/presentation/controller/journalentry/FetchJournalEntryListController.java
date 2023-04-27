@@ -29,8 +29,8 @@ public class FetchJournalEntryListController {
 	 */
 	@GetMapping("/entries/{selectedYearMonth}")
 	public String entries(@PathVariable String selectedYearMonth, Model model) {
-		//引数のselectedYearMonthには"yyyy-MM-dd"形式の文字列を想定
-		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		//引数のselectedYearMonthには"yyyy-MM"形式の文字列を想定
+		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		List<JournalEntryDto> journalEntryDtoList = fetchQueryService.findAll(yearMonth);
 		List<JournalEntryView> views = mapAllDtoToViews(journalEntryDtoList);
 		model.addAttribute("entries", views);
