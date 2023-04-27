@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
-import io.github.wtbyt298.accountbook.presentation.shared.AmountPresentationFormatter;
+import io.github.wtbyt298.accountbook.presentation.shared.util.AmountPresentationFormatter;
 import lombok.Getter;
 
 /**

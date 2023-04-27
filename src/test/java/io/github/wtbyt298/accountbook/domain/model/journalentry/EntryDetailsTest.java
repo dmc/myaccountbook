@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import io.github.wtbyt298.accountbook.domain.model.shared.Amount;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
+
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 class EntryDetailsTest {
 

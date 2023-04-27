@@ -1,7 +1,7 @@
-package io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype;
+package io.github.wtbyt298.accountbook.domain.model.accountingelement;
 
+import static io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType.*;
 import org.junit.jupiter.api.Test;
 
 class AllowedCombinationRuleTest {

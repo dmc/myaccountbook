@@ -3,7 +3,8 @@ package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.accountingtype.AccountingType;
+
+import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 
 class AccountTitleTest {
 	

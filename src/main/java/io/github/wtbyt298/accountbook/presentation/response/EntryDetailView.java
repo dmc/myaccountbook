@@ -1,7 +1,7 @@
 package io.github.wtbyt298.accountbook.presentation.response;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
-import io.github.wtbyt298.accountbook.presentation.shared.AmountPresentationFormatter;
+import io.github.wtbyt298.accountbook.presentation.shared.util.AmountPresentationFormatter;
 import lombok.Getter;
 
 /**

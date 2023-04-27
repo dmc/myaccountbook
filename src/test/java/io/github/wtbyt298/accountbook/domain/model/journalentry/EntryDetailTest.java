@@ -3,7 +3,8 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import io.github.wtbyt298.accountbook.domain.model.shared.types.LoanType;
+
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 class EntryDetailTest {
 	

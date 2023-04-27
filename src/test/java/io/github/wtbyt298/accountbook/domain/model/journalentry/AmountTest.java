@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.domain.model.shared;
+package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class AmountTest {
 		Amount zero = Amount.valueOf(0);
 		
 		//then
-		assertEquals(0, zero.value());
+		assertEquals(0, zero.value);
 	}
 	
 	@Test
