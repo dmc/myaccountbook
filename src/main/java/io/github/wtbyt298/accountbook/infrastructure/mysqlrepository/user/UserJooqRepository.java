@@ -51,12 +51,12 @@ public class UserJooqRepository implements UserRepository {
 	 * ユーザが存在するかどうかを判断する
 	 */
 	@Override
-	public boolean exists(User user) {
+	public boolean exists(UserId userId) {
 		final int resultCount = jooq.select()
 									.from(USERS)
-									.where(USERS.USER_ID.eq(user.id()))
+									.where(USERS.USER_ID.eq(userId.toString()))
 									.execute();
-		if (resultCount > 1) return true;
+		if (resultCount >= 1) return true;
 		return false;
 	}
 	

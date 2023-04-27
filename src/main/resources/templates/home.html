@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>ホーム画面</title>
+</head>
+<body>
+ログイン成功<br>
+<span th:text="${name}"></span>さん、こんにちは<br>
+<a href="/entryregisterform">仕訳登録画面へ移動する</a><br>
+<a href="entries">月別仕訳一覧</a><br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="ログアウト">
+</form>
+</body>
+</html>

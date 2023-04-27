@@ -25,7 +25,7 @@ public class RegisterEntryDetailParam {
 	 * @return 勘定科目ID
 	 */
 	public String getAccountTitleId() {
-		return mergedId.substring(0, mergedId.indexOf("-") - 1);
+		return mergedId.substring(0, mergedId.indexOf("-"));
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class RegisterEntryDetailParam {
 	 * @return 補助科目ID
 	 */
 	public String getSubAccountTitleId() {
-		return mergedId.substring(mergedId.indexOf("-") + 1, mergedId.length());
+		return mergedId.substring(mergedId.indexOf("-"), mergedId.length());
 	}
 	
 }

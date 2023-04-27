@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserCommand;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserUseCase;
-import io.github.wtbyt298.accountbook.presentation.request.user.RegisterUserParam;
+import io.github.wtbyt298.accountbook.presentation.request.user.CreateUserParam;
 import jakarta.validation.Valid;
 
 /**
@@ -20,18 +20,18 @@ public class CreateUserController {
 	@Autowired
 	private CreateUserUseCase createUseCase;
 	
-	@GetMapping("") //TODO ユーザ登録画面の作成後に修正
-	public String ユーザ登録画面() {
-		return "ユーザ登録画面";
+	@GetMapping("/signup")
+	public String signUp() {
+		return "/signup";
 	}
 	
 	/**
 	 * フォームに入力した内容でユーザを登録する
 	 */
-	@PostMapping("") //TODO ユーザ登録画面の作成後に修正
-	public String register(@Valid @ModelAttribute("userParam") RegisterUserParam param, BindingResult result) {
+	@PostMapping("/signup")
+	public String register(@Valid @ModelAttribute("userParam") CreateUserParam param, BindingResult result) {
 		if (result.hasErrors()) {
-			return "ユーザ登録画面";
+			return "/signup";
 		}
 		CreateUserCommand command = new CreateUserCommand(param.getId(), param.getPassword(), param.getMailAddress());
 		createUseCase.execute(command);

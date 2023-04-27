@@ -10,6 +10,6 @@ public interface UserRepository {
 	
 	User findById(UserId userId);
 	
-	boolean exists(User user);
+	boolean exists(UserId userId);
 	
 }

@@ -23,10 +23,11 @@ public class CreateUserUseCase {
 	 */
 	@Transactional
 	public void execute(CreateUserCommand command) {
-		User user = createFromCommand(command);
-		if (userRepository.exists(user)) {
+		UserId userId = UserId.valueOf(command.getId());
+		if (userRepository.exists(userId)) {
 			throw new IllegalArgumentException("既にユーザが存在しています。");
 		}
+		User user = createFromCommand(command);
 		userRepository.save(user);
 	}
 	

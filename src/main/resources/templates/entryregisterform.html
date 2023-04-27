@@ -5,7 +5,7 @@
 <title>仕訳入力画面</title>
 </head>
 <body>
-<form action="/completed" method="post" th:object="${journalEntryRegisterParam}"> <!-- TODO action属性について考える -->
+<form th:action="@{/register}" method="post" th:object="${entryParam}">
 	<div>
 		取引日<br>
 		<input type="date" th:field="*{dealDate}"> <!-- TODO 初期値として今日の日付を表示できるようにしたい -->
@@ -18,11 +18,10 @@
 	</div>
 	<div>
 		借方勘定科目<br>
-		<select name="detailParams[0].accountTitleId">
-			<option></option>
-			<option th:each="accountTitle:${accountTitleList}" th:value="${accountTitle.id}" th:text="${accountTitle.name}"></option>
+		<select th:field="*{detailParams[0].mergedId}">
+			<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 		</select>
-		<span th:if="${#fields.hasErrors('detailParams[0].accountTitleId')}" th:errors="*{detailParams[0].accountTitleId}"></span>
+		<span th:if="${#fields.hasErrors('detailParams[0].mergedId')}" th:errors="*{detailParams[0].mergedId}"></span>
 	</div>
 	<div>
 		<input type="hidden" value="DEBIT" name="detailParams[0].detailLoanType">
@@ -34,11 +33,10 @@
 	</div>
 	<div>
 		貸方勘定科目<br>
-		<select name="detailParams[1].accountTitleId">
-			<option></option>
-			<option th:each="accountTitle:${accountTitleList}" th:value="${accountTitle.id}" th:text="${accountTitle.name}"></option>
+		<select th:field="*{detailParams[1].mergedId}">
+			<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 		</select>
-		<span th:if="${#fields.hasErrors('detailParams[1].accountTitleId')}" th:errors="*{detailParams[1].accountTitleId}"></span>
+		<span th:if="${#fields.hasErrors('detailParams[1].mergedId')}" th:errors="*{detailParams[1].mergedId}"></span>
 	</div>
 	<div>
 		<input type="hidden" value="CREDIT" name="detailParams[1].detailLoanType">
