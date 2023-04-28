@@ -12,6 +12,6 @@ import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession
  */
 public interface FetchJournalEntryListQueryService {
 
-	List<JournalEntryDto> findAll(YearMonth yearMonth, UserSession userSession);
+	List<JournalEntryDto> findAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserSession userSession);
 	
 }

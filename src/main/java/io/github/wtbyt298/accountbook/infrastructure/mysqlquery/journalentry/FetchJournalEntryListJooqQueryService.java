@@ -11,11 +11,13 @@ import static generated.tables.SubAccounttitles.*;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 
 /**
@@ -35,15 +37,17 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 	 * 年月を絞り込みの条件とする
 	 */
 	@Override
-	public List<JournalEntryDto> findAll(YearMonth yearMonth, UserSession userSession) {
+	public List<JournalEntryDto> findAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserSession userSession) {
 		List<JournalEntryDto> resultList = new ArrayList<>();
 		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
-		String filterKey = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
+		String yyyyMm = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
+		//ORDER BY句で並べ替えるフィールドを取得
+		SortField<?> orderColumn = buildOrderColumn(orderKey);
 		Result<Record> result = jooq.select()
 									.from(JOURNAL_ENTRIES)
-									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(filterKey))
+									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yyyyMm))
 									.and(JOURNAL_ENTRIES.USER_ID.eq(userSession.userId()))
-									.orderBy(JOURNAL_ENTRIES.DEAL_DATE) //デフォルトでは取引日で昇順にソートされる
+									.orderBy(orderColumn)
 									.fetch();
 		if (result.isEmpty()) {
 			throw new RuntimeException("該当する仕訳が見つかりませんでした。");
@@ -59,7 +63,6 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 			resultList.add(dto);
 		}
 		return resultList;
-	
 	}
 	
 	/**
@@ -92,6 +95,20 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 			resultList.add(dto);
 		}
 		return resultList;
+	}
+	
+	/**
+	 * ORDER BY句で並べ替えるためのフィールドを生成する
+	 */
+	private SortField<?> buildOrderColumn(JournalEntryOrderKey orderKey) {
+		switch (orderKey) {
+			case DEAL_DATE:
+				return JOURNAL_ENTRIES.DEAL_DATE.asc();
+			case TOTAL_AMOUNT:
+				return JOURNAL_ENTRIES.TOTAL_AMOUNT.asc();
+			//ソート条件が追加された場合はここに書く
+		}
+		return JOURNAL_ENTRIES.DEAL_DATE.asc();
 	}
 	
 }
