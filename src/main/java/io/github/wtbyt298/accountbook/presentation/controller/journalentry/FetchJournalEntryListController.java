@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.presentation.response.JournalEntryView;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
@@ -37,7 +38,7 @@ public class FetchJournalEntryListController {
 		//引数のselectedYearMonthには"yyyy-MM"形式の文字列を想定
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		UserSession userSession = userSessionProvider.getUserSession();
-		List<JournalEntryDto> journalEntryDtoList = fetchQueryService.findAll(yearMonth, userSession);
+		List<JournalEntryDto> journalEntryDtoList = fetchQueryService.findAll(yearMonth, JournalEntryOrderKey.DEAL_DATE ,userSession);
 		List<JournalEntryView> views = mapAllDtoToViews(journalEntryDtoList);
 		model.addAttribute("entries", views);
 		return "entries";
