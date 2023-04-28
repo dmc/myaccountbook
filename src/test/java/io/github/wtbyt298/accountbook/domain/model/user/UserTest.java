@@ -53,5 +53,22 @@ class UserTest {
 		//then
 		assertEquals(UserStatus.INACTIVE.toString(), user.userStatus());
 	}
+	
+	@Test
+	void 既に無効化している場合にdisableメソッドを呼ぶと例外発生() {
+		//given ユーザステータスが既に無効になっている
+		User user = User.create(
+			UserId.valueOf("TEST_USER"), 
+			EncodedUserPassword.fromRawPassword("Test0123OK"), 
+			"test@example.com"
+		);
+		user.disable();
+		
+		//when
+		Exception exception = assertThrows(RuntimeException.class, () -> user.disable());
+		
+		//then
+		assertEquals("ユーザが既に退会しています。", exception.getMessage());
+	}
 
 }
