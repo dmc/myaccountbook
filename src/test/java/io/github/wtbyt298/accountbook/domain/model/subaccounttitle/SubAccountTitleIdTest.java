@@ -1,8 +1,10 @@
-package io.github.wtbyt298.accountbook.domain.model.accounttitle;
+package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 
 class SubAccountTitleIdTest {
 
