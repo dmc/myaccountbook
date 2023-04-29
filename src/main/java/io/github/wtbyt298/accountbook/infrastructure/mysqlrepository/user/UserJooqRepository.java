@@ -35,6 +35,19 @@ public class UserJooqRepository implements UserRepository {
 	}
 	
 	/**
+	 * ユーザ情報を更新する
+	 */
+	@Override
+	public void update(User user) {
+		jooq.update(USERS)
+			.set(USERS.USER_ID, user.id())
+			.set(USERS.HASHED_PASSWORD, user.encodedPassword())
+			.set(USERS.MAIL_ADDRESS, user.mailAddress())
+			.set(USERS.USER_STATUS, user.userStatus())
+			.execute();
+	}
+	
+	/**
 	 * IDに一致するユーザを取得する
 	 */
 	@Override

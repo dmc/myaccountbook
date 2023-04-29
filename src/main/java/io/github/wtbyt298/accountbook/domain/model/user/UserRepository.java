@@ -8,6 +8,8 @@ public interface UserRepository {
 	
 	void save(User user);
 	
+	void update(User user);
+	
 	User findById(UserId userId);
 	
 	boolean exists(UserId userId);
