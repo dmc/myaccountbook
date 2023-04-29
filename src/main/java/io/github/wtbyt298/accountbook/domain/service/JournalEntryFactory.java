@@ -8,9 +8,9 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJ
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
-import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 //TODO コードが汚くなっているので設計の見直しを行う

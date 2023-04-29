@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.domain.model.accounttitle;
+package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 /**
  * 補助科目名クラス

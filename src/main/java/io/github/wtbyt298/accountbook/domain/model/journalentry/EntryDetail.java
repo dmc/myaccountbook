@@ -1,7 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.accounttitle.SubAccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
