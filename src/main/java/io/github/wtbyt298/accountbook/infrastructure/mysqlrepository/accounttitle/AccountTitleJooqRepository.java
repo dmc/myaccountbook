@@ -2,14 +2,9 @@ package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.accounttit
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import generated.tables.records.AccounttitlesRecord;
 import static generated.tables.Accounttitles.*;
-import static generated.tables.SubAccounttitles.*;
-
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
@@ -27,24 +22,15 @@ public class AccountTitleJooqRepository implements AccountTitleRepository {
 	private DSLContext jooq;
 	
 	@Override
-	public void save(AccountTitle accountTitle) {
-		
-	}
-	
-	@Override
 	public AccountTitle findById(AccountTitleId id) {
-		Result<Record> result = jooq.selectFrom(ACCOUNTTITLES
-									  .join(SUB_ACCOUNTTITLES).on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID))
-									  .and(SUB_ACCOUNTTITLES.USER_ID.eq("TEST_USER")))
-								      .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.toString()))
-								      .fetch();
-										 
-		if (result.isEmpty()) {
-			throw new RuntimeException("勘定科目が見つかりませんでした。");
-		}
-		return new AccountTitle(AccountTitleId.valueOf(result.getAccounttitleId()), 
-			AccountTitleName.valueOf(result.getAccounttitleName()), 
-			AccountingType.valueOf(result.getAccountingType())
+		Record result = jooq.select()
+							.from(ACCOUNTTITLES)
+						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.toString()))
+						    .fetchOne();	 
+		return new AccountTitle(
+			AccountTitleId.valueOf(result.get(ACCOUNTTITLES.ACCOUNTTITLE_ID)), 
+			AccountTitleName.valueOf(result.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME)), 
+			AccountingType.valueOf(result.get(ACCOUNTTITLES.ACCOUNTING_TYPE))
 		);
 	}
 	
