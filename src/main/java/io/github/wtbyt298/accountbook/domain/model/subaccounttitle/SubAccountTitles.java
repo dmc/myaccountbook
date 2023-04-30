@@ -1,7 +1,6 @@
 package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Map;
 public class SubAccountTitles {
 
 	private static final int MAX_MEMBERS_COUNT = 10;
-	private Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new HashMap<>();
+	private final Map<SubAccountTitleId, SubAccountTitle> subAccountTitles;
 	
 	public SubAccountTitles(Map<SubAccountTitleId, SubAccountTitle> subaccountTitles) {
 		this.subAccountTitles = subaccountTitles;
@@ -24,7 +23,7 @@ public class SubAccountTitles {
 		if (subAccountTitles.size() >= MAX_MEMBERS_COUNT) {
 			throw new RuntimeException("これ以上補助科目を追加できません。");
 		}
-		if (subAccountTitles.containsKey(newMember.id())) {
+		if (subAccountTitles.containsValue(newMember)) {
 			throw new IllegalArgumentException("指定した補助科目は既に存在しています。");
 		}
 		//補助科目を持っていない場合は、はじめに「その他」という補助科目を追加する
@@ -63,7 +62,7 @@ public class SubAccountTitles {
 		target.rename(newName);
 	}
 	
-	public Map<SubAccountTitleId, SubAccountTitle> subAccountTitles() {
+	public Map<SubAccountTitleId, SubAccountTitle> elements() {
 		return Collections.unmodifiableMap(subAccountTitles);
 	}
 	

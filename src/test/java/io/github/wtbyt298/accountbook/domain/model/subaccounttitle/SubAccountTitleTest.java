@@ -1,12 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
 
 class SubAccountTitleTest {
 
@@ -35,6 +30,48 @@ class SubAccountTitleTest {
 		
 		//then
 		assertEquals("1：外食", subAccountTitle.toString());
+	}
+	
+	@Test
+	void 保持している補助科目IDと補助科目名が等価なら等価判定() {
+		//when
+		SubAccountTitle subAccountTitle1 = new SubAccountTitle(
+			SubAccountTitleId.valueOf("0"), 
+			SubAccountTitleName.valueOf("その他")
+		);
+		SubAccountTitle subAccountTitle2 = new SubAccountTitle(
+			SubAccountTitleId.valueOf("0"), 
+			SubAccountTitleName.valueOf("その他")
+		);
+		SubAccountTitle subAccountTitle3 = new SubAccountTitle(
+			SubAccountTitleId.valueOf("1"), 
+			SubAccountTitleName.valueOf("食料品")
+		);
+		
+		//then
+		assertEquals(subAccountTitle1, subAccountTitle2);
+		assertNotEquals(subAccountTitle1, subAccountTitle3);
+	}
+	
+	@Test
+	void 等価と判定されるならハッシュ値も等しくなる() {
+		//when
+		SubAccountTitle subAccountTitle1 = new SubAccountTitle(
+			SubAccountTitleId.valueOf("0"), 
+			SubAccountTitleName.valueOf("その他")
+		);
+		SubAccountTitle subAccountTitle2 = new SubAccountTitle(
+			SubAccountTitleId.valueOf("0"), 
+			SubAccountTitleName.valueOf("その他")
+		);
+		SubAccountTitle subAccountTitle3 = new SubAccountTitle(
+			SubAccountTitleId.valueOf("1"), 
+			SubAccountTitleName.valueOf("食料品")
+		);
+		
+		//then
+		assertEquals(subAccountTitle1.hashCode(), subAccountTitle2.hashCode());
+		assertNotEquals(subAccountTitle1.hashCode(), subAccountTitle3.hashCode());
 	}
 
 }

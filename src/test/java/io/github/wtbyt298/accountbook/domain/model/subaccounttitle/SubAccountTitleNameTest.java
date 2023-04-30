@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.StringWriter;
 import org.junit.jupiter.api.Test;
 
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
-
 class SubAccountTitleNameTest {
 
 	@Test
@@ -39,6 +37,30 @@ class SubAccountTitleNameTest {
 		
 		//then
 		assertEquals("補助科目名は32文字以内で指定してください。", exception.getMessage());
+	}
+	
+	@Test
+	void 保持している文字列が同一なら等価判定() {
+		//when
+		SubAccountTitleName name1 = SubAccountTitleName.valueOf("食料品");
+		SubAccountTitleName name2 = SubAccountTitleName.valueOf("食料品");
+		SubAccountTitleName name3 = SubAccountTitleName.valueOf("外食");
+		
+		//then
+		assertEquals(name1, name2);
+		assertNotEquals(name2, name3);
+	}
+	
+	@Test
+	void 等価と判定されるならハッシュ値も等しくなる() {
+		//when
+		SubAccountTitleName name1 = SubAccountTitleName.valueOf("食料品");
+		SubAccountTitleName name2 = SubAccountTitleName.valueOf("食料品");
+		SubAccountTitleName name3 = SubAccountTitleName.valueOf("外食");
+		
+		//then
+		assertEquals(name1.hashCode(), name2.hashCode());
+		assertNotEquals(name2.hashCode(), name3.hashCode());
 	}
 
 }
