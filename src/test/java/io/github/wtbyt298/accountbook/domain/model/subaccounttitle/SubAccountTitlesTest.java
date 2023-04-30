@@ -16,9 +16,9 @@ class SubAccountTitlesTest {
 		SubAccountTitles two = hasTwoElements();
 		
 		//when
-		SubAccountTitle subAccountTitle = createSubAccountTitle("9", "TEST");
-		empty.add(subAccountTitle);
-		two.add(subAccountTitle);
+		SubAccountTitleName newName = SubAccountTitleName.valueOf("新規追加");
+		empty.add(newName);
+		two.add(newName);
 		
 		//then
 		assertEquals(2, empty.elements().size()); //元々0の場合は、引数で与えた補助科目に加えて「0：その他」が追加される
@@ -31,21 +31,23 @@ class SubAccountTitlesTest {
 		SubAccountTitles full = hasMaxElements();
 		
 		//when
-		SubAccountTitle subAccountTitle = createSubAccountTitle("A", "OVER");
-		Exception exception = assertThrows(RuntimeException.class, () -> full.add(subAccountTitle));
+		SubAccountTitleName newName = SubAccountTitleName.valueOf("新規追加");
+		Exception exception = assertThrows(RuntimeException.class, () -> full.add(newName));
 		
 		//then
 		assertEquals("これ以上補助科目を追加できません。", exception.getMessage());
 	}
 	
 	@Test
-	void 既に同一の補助科目が存在する場合は追加できない() {
-		//given
+	void 既に同名の補助科目が存在する場合は追加できない() {
+		//given 既に補助科目が存在する　※この例の場合、「0：その他」「1：新規追加」が存在する
 		SubAccountTitles empty = hasNoElement();
+		SubAccountTitleName newName = SubAccountTitleName.valueOf("新規追加");
+		empty.add(newName);
 		
 		//when
-		empty.add(createSubAccountTitle("2", "外食"));
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> empty.add(createSubAccountTitle("2", "外食"))); //同じ補助科目をもう一度追加
+		SubAccountTitleName same = SubAccountTitleName.valueOf("新規追加");
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> empty.add(same)); //同じ補助科目をもう一度追加
 	
 		//then
 		assertEquals("指定した補助科目は既に存在しています。", exception.getMessage());

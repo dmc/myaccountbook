@@ -31,7 +31,7 @@ class SubAccountTitleTest {
 		//then
 		assertEquals("1：外食", subAccountTitle.toString());
 	}
-	
+
 	@Test
 	void 保持している補助科目IDと補助科目名が等価なら等価判定() {
 		//when
@@ -73,5 +73,5 @@ class SubAccountTitleTest {
 		assertEquals(subAccountTitle1.hashCode(), subAccountTitle2.hashCode());
 		assertNotEquals(subAccountTitle1.hashCode(), subAccountTitle3.hashCode());
 	}
-
+	
 }

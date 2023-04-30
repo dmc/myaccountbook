@@ -2,6 +2,7 @@ package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 
@@ -23,11 +24,11 @@ public class SubAccountTitles {
 	/**
 	 * 補助科目を追加する
 	 */
-	public void add(SubAccountTitle newMember) {
+	public void add(SubAccountTitleName newName) {
 		if (subAccountTitles.size() >= MAX_MEMBERS_COUNT) {
 			throw new RuntimeException("これ以上補助科目を追加できません。");
 		}
-		if (subAccountTitles.containsValue(newMember)) {
+		if (exists(newName)) {
 			throw new IllegalArgumentException("指定した補助科目は既に存在しています。");
 		}
 		//補助科目を持っていない場合は、はじめに「その他」という補助科目を追加する
@@ -38,7 +39,28 @@ public class SubAccountTitles {
 			);
 			subAccountTitles.put(other.id(), other);
 		}
-		subAccountTitles.put(newMember.id(), newMember);
+		SubAccountTitleId newId = nextIdentity();
+		SubAccountTitle adding = new SubAccountTitle(newId, newName);
+		subAccountTitles.put(newId, adding);
+	}
+	
+	/**
+	 * 補助科目名の重複があるかどうかを判断する
+	 */
+	private boolean exists(SubAccountTitleName newName) {
+		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.entrySet()) {
+			if (each.getValue().name().equals(newName)) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 新規追加する補助科目のIDを生成する
+	 */
+	private SubAccountTitleId nextIdentity() {
+		final int count = subAccountTitles.size();
+		String nextIndex = String.valueOf(count + 1);
+		return SubAccountTitleId.valueOf(nextIndex);
 	}
 	
 	/**
