@@ -59,7 +59,7 @@ public class SubAccountTitles {
 	 */
 	private SubAccountTitleId nextIdentity() {
 		final int count = subAccountTitles.size();
-		String nextIndex = String.valueOf(count + 1);
+		String nextIndex = String.valueOf(count);
 		return SubAccountTitleId.valueOf(nextIndex);
 	}
 	
