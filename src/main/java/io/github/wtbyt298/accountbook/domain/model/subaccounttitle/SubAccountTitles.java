@@ -3,6 +3,8 @@ package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 import java.util.Collections;
 import java.util.Map;
 
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
+
 /**
  * 補助科目のコレクションオブジェクト
  * このクラスは補助科目集約の集約ルートとして機能する
@@ -11,9 +13,11 @@ public class SubAccountTitles {
 
 	private static final int MAX_MEMBERS_COUNT = 10;
 	private final Map<SubAccountTitleId, SubAccountTitle> subAccountTitles;
+	private AccountTitleId parentId; //親要素である勘定科目のID
 	
-	public SubAccountTitles(Map<SubAccountTitleId, SubAccountTitle> subaccountTitles) {
+	public SubAccountTitles(Map<SubAccountTitleId, SubAccountTitle> subaccountTitles, AccountTitleId parentId) {
 		this.subAccountTitles = subaccountTitles;
+		this.parentId = parentId;
 	}
 	
 	/**
@@ -62,8 +66,18 @@ public class SubAccountTitles {
 		target.rename(newName);
 	}
 	
+	/**
+	 * @return 保持している補助科目のMAP（変更不可）
+	 */
 	public Map<SubAccountTitleId, SubAccountTitle> elements() {
 		return Collections.unmodifiableMap(subAccountTitles);
+	}
+	
+	/**
+	 * @return 勘定科目ID
+	 */
+	public AccountTitleId parentId() {
+		return parentId;
 	}
 	
 }

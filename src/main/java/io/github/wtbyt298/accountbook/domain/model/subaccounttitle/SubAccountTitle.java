@@ -17,6 +17,13 @@ public class SubAccountTitle {
 	}
 	
 	/**
+	 * 補助科目名を変更する
+	 */
+	void rename(SubAccountTitleName newName) {
+		name = newName;
+	}
+	
+	/**
 	 * @return 補助科目ID
 	 */
 	public SubAccountTitleId id() {
@@ -24,10 +31,10 @@ public class SubAccountTitle {
 	}
 	
 	/**
-	 * 補助科目名を変更する
+	 * @return 補助科目名
 	 */
-	void rename(SubAccountTitleName newName) {
-		name = newName;
+	public SubAccountTitleName name() {
+		return name;
 	}
 	
 	@Override

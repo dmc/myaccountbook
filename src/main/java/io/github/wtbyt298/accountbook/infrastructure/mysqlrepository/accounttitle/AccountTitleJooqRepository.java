@@ -21,16 +21,29 @@ public class AccountTitleJooqRepository implements AccountTitleRepository {
 	@Autowired
 	private DSLContext jooq;
 	
+	/**
+	 * IDに一致する勘定科目を取得する
+	 */
 	@Override
 	public AccountTitle findById(AccountTitleId id) {
 		Record result = jooq.select()
 							.from(ACCOUNTTITLES)
 						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.toString()))
-						    .fetchOne();	 
+						    .fetchOne();
+		if (result == null) {
+			throw new RuntimeException("指定した勘定科目は存在しません。");
+		}
+		return mapRecordToEntity(result);
+	}
+	
+	/**
+	 * 勘定科目のインスタンスを組み立てる
+	 */
+	private AccountTitle mapRecordToEntity(Record record) {
 		return new AccountTitle(
-			AccountTitleId.valueOf(result.get(ACCOUNTTITLES.ACCOUNTTITLE_ID)), 
-			AccountTitleName.valueOf(result.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME)), 
-			AccountingType.valueOf(result.get(ACCOUNTTITLES.ACCOUNTING_TYPE))
+			AccountTitleId.valueOf(record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID)), 
+			AccountTitleName.valueOf(record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME)), 
+			AccountingType.valueOf(record.get(ACCOUNTTITLES.ACCOUNTING_TYPE))
 		);
 	}
 	

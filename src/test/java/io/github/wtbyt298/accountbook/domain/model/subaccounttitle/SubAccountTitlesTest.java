@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
+
 class SubAccountTitlesTest {
 	
 	@Test
@@ -110,7 +112,8 @@ class SubAccountTitlesTest {
 	 */
 	private SubAccountTitles hasNoElement() {
 		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();
-		return new SubAccountTitles(map);
+		AccountTitleId parentId = AccountTitleId.valueOf("401");
+		return new SubAccountTitles(map, parentId);
 	}
 	
 	/**
@@ -118,11 +121,15 @@ class SubAccountTitlesTest {
 	 */
 	private SubAccountTitles hasTwoElements() {
 		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();
+		AccountTitleId parentId = AccountTitleId.valueOf("401");
+		
 		SubAccountTitleId id1 = SubAccountTitleId.valueOf("0");
 		map.put(id1, createSubAccountTitle("0", "その他"));
+		
 		SubAccountTitleId id2= SubAccountTitleId.valueOf("1");
 		map.put(id2, createSubAccountTitle("1", "食料品"));
-		return new SubAccountTitles(map);
+		
+		return new SubAccountTitles(map, parentId);
 	}
 	
 	/**
@@ -131,12 +138,13 @@ class SubAccountTitlesTest {
 	private SubAccountTitles hasMaxElements() {
 		String [] names = {"その他" ,"食料品", "外食", "軽食", "科目5", "科目6", "科目7", "科目8", "科目9", "科目10"};
 		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();
+		AccountTitleId parentId = AccountTitleId.valueOf("401");
 		for (int i = 0; i < names.length; i++) {
 			String index = String.valueOf(i);
 			SubAccountTitleId id = SubAccountTitleId.valueOf(index);
 			map.put(id, createSubAccountTitle(index, names[i]));
 		}
-		return new SubAccountTitles(map);
+		return new SubAccountTitles(map, parentId);
 	}
 	
 }
