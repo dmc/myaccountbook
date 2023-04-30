@@ -29,8 +29,8 @@ public class AuthenticateUserController {
 	 */
 	@GetMapping("/home")
 	public String home(Model model) {
-		UserSession session = userSessionProvider.getUserSession();
-		String currentUser = session.userId();
+		UserSession userSession = userSessionProvider.getUserSession();
+		String currentUser = userSession.userId().toString();
 		model.addAttribute("name", currentUser);
 		return "home";
 	}

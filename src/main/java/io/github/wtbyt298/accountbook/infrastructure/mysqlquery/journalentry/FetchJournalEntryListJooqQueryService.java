@@ -18,7 +18,7 @@ import io.github.wtbyt298.accountbook.application.query.model.journalentry.Entry
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
-import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
+import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 
 /**
  * 仕訳の一覧取得処理クラス
@@ -37,7 +37,7 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 	 * 年月を絞り込みの条件とする
 	 */
 	@Override
-	public List<JournalEntryDto> findAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserSession userSession) {
+	public List<JournalEntryDto> findAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
 		List<JournalEntryDto> resultList = new ArrayList<>();
 		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
 		String yyyyMm = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
@@ -46,7 +46,7 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 		Result<Record> result = jooq.select()
 									.from(JOURNAL_ENTRIES)
 									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yyyyMm))
-									.and(JOURNAL_ENTRIES.USER_ID.eq(userSession.userId()))
+									.and(JOURNAL_ENTRIES.USER_ID.eq(userId.toString()))
 									.orderBy(orderColumn)
 									.fetch();
 		if (result.isEmpty()) {

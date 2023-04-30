@@ -38,7 +38,8 @@ public class FetchJournalEntryListController {
 		//引数のselectedYearMonthには"yyyy-MM"形式の文字列を想定
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		UserSession userSession = userSessionProvider.getUserSession();
-		List<JournalEntryDto> journalEntryDtoList = fetchQueryService.findAll(yearMonth, JournalEntryOrderKey.DEAL_DATE ,userSession);
+		//デフォルトでは取引日の昇順で取得する
+		List<JournalEntryDto> journalEntryDtoList = fetchQueryService.findAll(yearMonth, JournalEntryOrderKey.DEAL_DATE ,userSession.userId());
 		List<JournalEntryView> views = mapAllDtoToViews(journalEntryDtoList);
 		model.addAttribute("entries", views);
 		return "entries";
