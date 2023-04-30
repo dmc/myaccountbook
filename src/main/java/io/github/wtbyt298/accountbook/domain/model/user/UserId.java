@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.user;
 
+import java.util.Objects;
+
 /**
  * ユーザIDクラス
  */
@@ -25,6 +27,19 @@ public class UserId {
 	@Override
 	public String toString() {
 		return value;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (! (obj instanceof UserId)) return false;
+		UserId other = (UserId) obj;
+		return this.value.equals(other.value);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
 	}
 	
 }

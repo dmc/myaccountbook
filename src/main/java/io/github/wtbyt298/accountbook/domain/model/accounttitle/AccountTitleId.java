@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 
+import java.util.Objects;
+
 /**
  * 勘定科目IDクラス
  */
@@ -25,6 +27,19 @@ public class AccountTitleId {
 	@Override
 	public String toString() {
 		return value;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (! (obj instanceof AccountTitleId)) return false;
+		AccountTitleId other = (AccountTitleId) obj;
+		return this.value.equals(other.value);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
 	}
 	
 }
