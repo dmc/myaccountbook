@@ -11,6 +11,9 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepo
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleRepository;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
+import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 //TODO コードが汚くなっているので設計の見直しを行う
@@ -25,14 +28,17 @@ public class JournalEntryFactory {
 	@Autowired
 	private AccountTitleRepository accountTitleRepository;
 	
+	@Autowired
+	private SubAccountTitleRepository subAccountTitleRepository;
+	
 	/**
 	 * 仕訳登録用のコマンドオブジェクトから仕訳を作成する
 	 */
-	public JournalEntry create(RegisterJournalEntryCommand command) {
+	public JournalEntry create(RegisterJournalEntryCommand command, UserId userId) {
 		//ドメインオブジェクトの生成処理
 		DealDate dealDate = DealDate.valueOf(command.getDealDate());
 		Description description = Description.valueOf(command.getDescription());
-		EntryDetails entryDetail = createEntryDetail(command.getDetailCommands());
+		EntryDetails entryDetail = createEntryDetail(command.getDetailCommands(), userId);
 		//仕訳IDはファクトリメソッド内で新規生成している
 		return JournalEntry.create(dealDate, description, entryDetail);
 	}
@@ -40,10 +46,10 @@ public class JournalEntryFactory {
 	/**
 	 * コマンドオブジェクトから仕訳明細を作成する
 	 */
-	private EntryDetails createEntryDetail(List<RegisterEntryDetailCommand> commands) {
+	private EntryDetails createEntryDetail(List<RegisterEntryDetailCommand> commands, UserId userId) {
 		List<EntryDetail> detailRows = new ArrayList<>();
 		for (RegisterEntryDetailCommand command : commands) {
-			detailRows.add(createDetailRow(command));
+			detailRows.add(createDetailRow(command, userId));
 		}
 		return new EntryDetails(detailRows);
 	}
@@ -51,13 +57,14 @@ public class JournalEntryFactory {
 	/**
 	 * 1件の明細コマンドオブジェクトから明細行を作成する
 	 */
-	private EntryDetail createDetailRow(RegisterEntryDetailCommand command) {
+	private EntryDetail createDetailRow(RegisterEntryDetailCommand command, UserId userId) {
 		//勘定科目に関する処理
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
 		AccountTitle accountTitle = accountTitleRepository.findById(accountTitleId);
 		//補助科目に関する処理
 		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
-		SubAccountTitle subAccountTitle = accountTitle.findChild(subAccountTitleId);
+		SubAccountTitles subAccountTitles = subAccountTitleRepository.findCollectionByParentId(accountTitleId, userId);
+		SubAccountTitle subAccountTitle = subAccountTitles.find(subAccountTitleId);
 		//その他の処理
 		LoanType detailLoanType = LoanType.valueOf(command.getDetailLoanType());
 		Amount amount = Amount.valueOf(command.getAmount());

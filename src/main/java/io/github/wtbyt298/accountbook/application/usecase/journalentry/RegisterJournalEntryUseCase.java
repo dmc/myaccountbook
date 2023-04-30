@@ -27,8 +27,8 @@ public class RegisterJournalEntryUseCase {
 	 */
 	@Transactional
 	public void execute(RegisterJournalEntryCommand command, UserSession userSession) {
-		JournalEntry entry = journalEntryFactory.create(command);
 		UserId userId = UserId.valueOf(userSession.userId());
+		JournalEntry entry = journalEntryFactory.create(command, userId);
 		journalEntryRepository.save(entry, userId);
 	}
 	
