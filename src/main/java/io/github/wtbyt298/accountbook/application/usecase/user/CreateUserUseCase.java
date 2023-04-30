@@ -27,14 +27,14 @@ public class CreateUserUseCase {
 		if (userRepository.exists(userId)) {
 			throw new IllegalArgumentException("既にユーザが存在しています。");
 		}
-		User user = createFromCommand(command);
+		User user = mapCommandToEntity(command);
 		userRepository.save(user);
 	}
 	
 	/**
 	 * ユーザのインスタンスを組み立てる
 	 */
-	private User createFromCommand(CreateUserCommand command) {
+	private User mapCommandToEntity(CreateUserCommand command) {
 		UserId userId = UserId.valueOf(command.getId());
 		EncodedUserPassword userPassword = EncodedUserPassword.fromRawPassword(command.getPassword());
 		String mailAddress = command.getMailAddress();
