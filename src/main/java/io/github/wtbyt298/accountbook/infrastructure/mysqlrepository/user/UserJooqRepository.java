@@ -74,7 +74,7 @@ public class UserJooqRepository implements UserRepository {
 	}
 	
 	/**
-	 * DBから取得した値からエンティティを組み立てて返す
+	 * ユーザのインスタンスを組み立てる
 	 */
 	private User mapRecordToEntity(Record record) {
 		UserId userId = UserId.valueOf(record.get(USERS.USER_ID));
