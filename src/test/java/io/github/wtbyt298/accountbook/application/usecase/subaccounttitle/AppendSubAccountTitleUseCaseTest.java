@@ -37,7 +37,7 @@ class AppendSubAccountTitleUseCaseTest {
 		ArgumentCaptor<SubAccountTitles> captor = ArgumentCaptor.forClass(SubAccountTitles.class);
 		//依存オブジェクトの設定
 		//既に「0：その他」「1：三菱UFJ銀行」という2つの補助科目が存在している
-		when(subAccountTitleRepository.findCollectionByParentId(any(), any())).thenReturn(TestObjectCreator.prepareTestObject());
+		when(subAccountTitleRepository.findCollectionByParentId(any(), any())).thenReturn(SubAccountTitlesTestDataCreator.prepareTestObject());
 		
 		//when
 		AppendSubAccountTitleCommand command = new AppendSubAccountTitleCommand("102", "三井住友銀行");

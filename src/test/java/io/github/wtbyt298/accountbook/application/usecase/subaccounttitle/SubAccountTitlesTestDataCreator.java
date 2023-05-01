@@ -9,7 +9,7 @@ import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTit
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
 
-class TestObjectCreator {
+class SubAccountTitlesTestDataCreator {
 	
 	/**
 	 * テスト用の補助科目のコレクションオブジェクトを生成する
