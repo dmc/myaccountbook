@@ -23,4 +23,18 @@ public class UserTestFactory {
 		);
 	}
 	
+	/**
+	 * ユーザID：引数で指定する
+	 * パスワード（ハッシュ化前）：Test0123OK
+	 * メールアドレス：test@example.com
+	 * @return 新規ユーザ
+	 */
+	public static User create(String userId) {
+		return User.create(
+			UserId.valueOf(userId), 
+			EncodedUserPassword.fromRawPassword("Test0123OK"), 
+			"test@example.com"
+		);
+	}
+	
 }
