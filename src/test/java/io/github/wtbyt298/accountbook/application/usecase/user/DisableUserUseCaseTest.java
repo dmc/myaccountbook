@@ -67,7 +67,7 @@ class DisableUserUseCaseTest {
 		return User.reconstruct(
 			UserId.valueOf("TEST_USER"), 
 			EncodedUserPassword.valueOf("TEST"), 
-			"test:example.com", 
+			"test@example.com", 
 			UserStatus.ACTIVE
 		);
 	}
