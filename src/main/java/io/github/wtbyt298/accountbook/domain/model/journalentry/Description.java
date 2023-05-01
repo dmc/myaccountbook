@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
+import java.util.Objects;
+
 /**
  * 摘要クラス
  */
@@ -26,9 +28,26 @@ public class Description {
 		return new Description(value);
 	}
  
+	public String value() {
+		return value;
+	}
+	
 	@Override
 	public String toString() {
-		return value;
+		return "摘要：" + value;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (! (obj instanceof Description)) return false;
+		Description other = (Description) obj;
+		return Objects.equals(this.value, other.value);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
 	}
 	
 }

@@ -44,7 +44,7 @@ class DisableUserUseCaseTest {
 		
 		//then
 		User capturedUser = captor.getValue();
-		assertEquals(UserStatus.INACTIVE.toString(), capturedUser.userStatus());
+		assertEquals(UserStatus.INACTIVE, capturedUser.userStatus());
 	}
 	
 	@Test

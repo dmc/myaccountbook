@@ -1,8 +1,8 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 仕訳伝票クラス
@@ -58,29 +58,47 @@ public class JournalEntry {
 	/**
 	 * @return 仕訳ID
 	 */
-	public String id() {
-		return entryId.value;
+	public EntryId id() {
+		return entryId;
 	}
 	
 	/**
 	 * @return 取引日
 	 */
-	public LocalDate dealDate() {
-		return dealDate.value;
+	public DealDate dealDate() {
+		return dealDate;
 	}
 	
 	/**
 	 * @return 摘要
 	 */
-	public String description() {
-		return description.value;
+	public Description description() {
+		return description;
 	}
 	
 	/**
 	 * @return 明細行のリスト
 	 */
 	public List<EntryDetail> entryDetails() {
-		return Collections.unmodifiableList(entryDetails.entryDetails);
+		return Collections.unmodifiableList(entryDetails.entryDetails); //外部から変更できないように不変にする
+	}
+	
+	@Override
+	public String toString() {
+		return entryId.toString() + " " +  dealDate.toString() + " " + description.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (! (obj instanceof JournalEntry)) return false;
+		JournalEntry other = (JournalEntry) obj;
+		return Objects.equals(this.entryId, other.entryId); //仕訳IDの等価性をもって等価と判定する
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(entryId, dealDate, description, entryDetails);
 	}
 	
 }

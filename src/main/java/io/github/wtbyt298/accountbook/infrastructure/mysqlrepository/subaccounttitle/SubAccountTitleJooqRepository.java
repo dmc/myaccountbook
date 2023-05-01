@@ -35,7 +35,7 @@ public class SubAccountTitleJooqRepository implements SubAccountTitleRepository 
 		//補助科目IDは外部キー参照されていない
 		//一旦DELETEして再度INSERTする実装とする
 		jooq.deleteFrom(SUB_ACCOUNTTITLES)
-			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(subAccountTitles.parentId().toString()))
+			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(subAccountTitles.parentId().value()))
 			.and(SUB_ACCOUNTTITLES.USER_ID.eq(""))
 			.execute();
 		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.elements().entrySet()) {
@@ -48,10 +48,10 @@ public class SubAccountTitleJooqRepository implements SubAccountTitleRepository 
 	 */
 	private void insertIntoTable(SubAccountTitle subAccountTitle, AccountTitleId parentId, UserId userId) {
 		jooq.insertInto(SUB_ACCOUNTTITLES)
-			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID, subAccountTitle.id().toString())
-			.set(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID, parentId.toString())
-			.set(SUB_ACCOUNTTITLES.USER_ID, userId.toString())
-			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME, subAccountTitle.name().toString())
+			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID, subAccountTitle.id().value())
+			.set(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID, parentId.value())
+			.set(SUB_ACCOUNTTITLES.USER_ID, userId.value())
+			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME, subAccountTitle.name().value())
 			.execute();
 	}
 
@@ -63,8 +63,8 @@ public class SubAccountTitleJooqRepository implements SubAccountTitleRepository 
 		Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new HashMap<>();
 		Result<Record> result = jooq.select()
 									.from(SUB_ACCOUNTTITLES)
-									.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.toString()))
-									.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.toString()))
+									.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
+									.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 									.fetch();
 		if (result.isEmpty()) {
 			return new SubAccountTitles(subAccountTitles, parentId); //補助科目が存在しない場合は、要素数0のコレクションを返す

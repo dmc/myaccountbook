@@ -48,7 +48,7 @@ class AppendSubAccountTitleUseCaseTest {
 		SubAccountTitleId added = SubAccountTitleId.valueOf("2");
 		SubAccountTitles captured = captor.getValue();
 		assertEquals(3, captured.elements().size()); //要素数2 → 3
-		assertEquals("2：三井住友銀行", captured.find(added).toString());
+		assertEquals("補助科目ID：2 補助科目名：三井住友銀行", captured.find(added).toString());
 	}
 
 }

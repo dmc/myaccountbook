@@ -14,7 +14,7 @@ class SubAccountTitleTest {
 		);
 		
 		//then
-		assertEquals("1：食料品", subAccountTitle.toString());
+		assertEquals("補助科目ID：1 補助科目名：食料品", subAccountTitle.toString());
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ class SubAccountTitleTest {
 		subAccountTitle.rename(SubAccountTitleName.valueOf("外食"));
 		
 		//then
-		assertEquals("1：外食", subAccountTitle.toString());
+		assertEquals("補助科目ID：1 補助科目名：外食", subAccountTitle.toString());
 	}
 
 	@Test

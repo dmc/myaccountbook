@@ -40,10 +40,10 @@ class CreateUserUseCaseTest {
 		
 		//then
 		User capturedUser = captor.getValue();
-		assertEquals(id, capturedUser.id());
+		assertEquals(id, capturedUser.id().value());
 		assertTrue(capturedUser.acceptPassword(password));
 		assertEquals(mailAddress, capturedUser.mailAddress());
-		assertEquals(UserStatus.ACTIVE.toString(), capturedUser.userStatus());
+		assertEquals(UserStatus.ACTIVE, capturedUser.userStatus());
 	}
 
 }

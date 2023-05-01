@@ -71,13 +71,27 @@ class AmountTest {
 	}
 	
 	@Test
+	void 金額が等しければ等価判定() {
+		//when
+		Amount a = Amount.valueOf(10);
+		Amount b = Amount.valueOf(10);
+		Amount c = Amount.valueOf(20);
+		
+		//then
+		assertEquals(a, b);
+		assertNotEquals(a, c);
+	}
+	
+	@Test
 	void 金額が等しければハッシュ値も等しくなる() {
 		//when
 		Amount a = Amount.valueOf(10);
 		Amount b = Amount.valueOf(10);
+		Amount c = Amount.valueOf(20);
 		
 		//then
 		assertEquals(a.hashCode(), b.hashCode());
+		assertNotEquals(a.hashCode(), c.hashCode());
 	}
 	
 }

@@ -27,10 +27,10 @@ public class UserJooqRepository implements UserRepository {
 	@Override
 	public void save(User user) {
 		jooq.insertInto(USERS)
-			.set(USERS.USER_ID, user.id())
-			.set(USERS.HASHED_PASSWORD, user.encodedPassword())
+			.set(USERS.USER_ID, user.id().value())
+			.set(USERS.HASHED_PASSWORD, user.password().value())
 			.set(USERS.MAIL_ADDRESS, user.mailAddress())
-			.set(USERS.USER_STATUS, user.userStatus())
+			.set(USERS.USER_STATUS, user.userStatus().toString())
 			.execute();
 	}
 	
@@ -40,10 +40,10 @@ public class UserJooqRepository implements UserRepository {
 	@Override
 	public void update(User user) {
 		jooq.update(USERS)
-			.set(USERS.USER_ID, user.id())
-			.set(USERS.HASHED_PASSWORD, user.encodedPassword())
+			.set(USERS.USER_ID, user.id().value())
+			.set(USERS.HASHED_PASSWORD, user.password().value())
 			.set(USERS.MAIL_ADDRESS, user.mailAddress())
-			.set(USERS.USER_STATUS, user.userStatus())
+			.set(USERS.USER_STATUS, user.userStatus().toString())
 			.execute();
 	}
 	
@@ -54,7 +54,7 @@ public class UserJooqRepository implements UserRepository {
 	public User findById(UserId userId) {
 		Record result = jooq.select()
 							.from(USERS)
-							.where(USERS.USER_ID.eq(userId.toString()))
+							.where(USERS.USER_ID.eq(userId.value()))
 							.fetchOne();
 		User user = mapRecordToEntity(result);
 		return user;
@@ -67,7 +67,7 @@ public class UserJooqRepository implements UserRepository {
 	public boolean exists(UserId userId) {
 		final int resultCount = jooq.select()
 									.from(USERS)
-									.where(USERS.USER_ID.eq(userId.toString()))
+									.where(USERS.USER_ID.eq(userId.value()))
 									.execute();
 		if (resultCount >= 1) return true;
 		return false;

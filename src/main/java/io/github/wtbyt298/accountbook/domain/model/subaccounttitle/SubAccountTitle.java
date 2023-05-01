@@ -39,7 +39,7 @@ public class SubAccountTitle {
 	
 	@Override
 	public String toString() {
-		return id.toString() + "：" + name.toString();
+		return id.toString() + " " + name.toString();
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public class SubAccountTitle {
 		if (this == obj) return true;
 		if (! (obj instanceof SubAccountTitle)) return false;
 		SubAccountTitle other = (SubAccountTitle) obj;
-		return this.id.equals(other.id) && this.name.equals(other.name);
+		return Objects.equals(this.id, other.id) && Objects.equals(this.name, other.name);
 	}
 	
 	@Override

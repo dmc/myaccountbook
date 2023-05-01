@@ -24,9 +24,13 @@ public class SubAccountTitleId {
 		return new SubAccountTitleId(value);
 	}
 	
+	public String value() {
+		return value;
+	}
+	
 	@Override
 	public String toString() {
-		return value;
+		return "補助科目ID：" + value;
 	}
 
 	@Override
@@ -34,7 +38,7 @@ public class SubAccountTitleId {
 		if (this == obj) return true;
 		if (! (obj instanceof SubAccountTitleId)) return false;
 		SubAccountTitleId other = (SubAccountTitleId) obj;
-		return this.value.equals(other.value);
+		return Objects.equals(this.value, other.value);
 	}
 	
 	@Override

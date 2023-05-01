@@ -24,9 +24,13 @@ public class AccountTitleId {
 		return new AccountTitleId(value);
 	}
 	
+	public String value() {
+		return value;
+	}
+	
 	@Override
 	public String toString() {
-		return value;
+		return "勘定科目ID：" + value;
 	}
 	
 	@Override
@@ -34,7 +38,7 @@ public class AccountTitleId {
 		if (this == obj) return true;
 		if (! (obj instanceof AccountTitleId)) return false;
 		AccountTitleId other = (AccountTitleId) obj;
-		return this.value.equals(other.value);
+		return Objects.equals(this.value, other.value);
 	}
 	
 	@Override

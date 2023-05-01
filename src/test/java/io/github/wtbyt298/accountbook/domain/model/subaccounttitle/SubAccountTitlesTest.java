@@ -83,7 +83,7 @@ class SubAccountTitlesTest {
 		two.changeSubAccountTitleName(id, newName);
 		
 		//then
-		assertEquals("1：変更後の補助科目名", two.find(id).toString());
+		assertEquals("補助科目ID：1 補助科目名：変更後の補助科目名", two.find(id).toString());
 	}
 	
 	@Test

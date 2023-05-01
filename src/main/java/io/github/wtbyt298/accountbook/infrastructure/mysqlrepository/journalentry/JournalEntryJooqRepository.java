@@ -37,12 +37,12 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	private void insertIntoJournalEntries(JournalEntry entry, UserId userId) {
 		jooq.insertInto(JOURNAL_ENTRIES)
-			.set(JOURNAL_ENTRIES.ENTRY_ID, entry.id())
-			.set(JOURNAL_ENTRIES.DEAL_DATE, entry.dealDate())
-			.set(JOURNAL_ENTRIES.ENTRY_DESCRIPTION, entry.description())
+			.set(JOURNAL_ENTRIES.ENTRY_ID, entry.id().value())
+			.set(JOURNAL_ENTRIES.DEAL_DATE, entry.dealDate().value())
+			.set(JOURNAL_ENTRIES.ENTRY_DESCRIPTION, entry.description().value())
 			.set(JOURNAL_ENTRIES.FISCAL_YEARMONTH, entry.fiscalYearMonth())
 			.set(JOURNAL_ENTRIES.TOTAL_AMOUNT, entry.totalAmount().value())
-			.set(JOURNAL_ENTRIES.USER_ID, userId.toString())
+			.set(JOURNAL_ENTRIES.USER_ID, userId.value())
 			.execute();
 	}
 	
@@ -50,14 +50,14 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳明細テーブルにデータを挿入する
 	 */
 	private void insertIntoEntryDetails(JournalEntry entry) {
-		List<EntryDetail> detailRows = entry.entryDetails();
-		for (EntryDetail row : detailRows) {
+		List<EntryDetail> entryDetails = entry.entryDetails();
+		for (EntryDetail detail : entryDetails) {
 			jooq.insertInto(ENTRY_DETAILS)
-				.set(ENTRY_DETAILS.ENTRY_ID, entry.id())
-				.set(ENTRY_DETAILS.ACCOUNTTITLE_ID, row.accountTitleId())
-				.set(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID, row.subAccountTitleId())
-				.set(ENTRY_DETAILS.LOAN_TYPE, row.detailLoanType())
-				.set(ENTRY_DETAILS.AMOUNT, row.amount())
+				.set(ENTRY_DETAILS.ENTRY_ID, entry.id().value())
+				.set(ENTRY_DETAILS.ACCOUNTTITLE_ID, detail.accountTitleId().value())
+				.set(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID, detail.subAccountTitleId().value())
+				.set(ENTRY_DETAILS.LOAN_TYPE, detail.detailLoanType().toString())
+				.set(ENTRY_DETAILS.AMOUNT, detail.amount().value())
 				.execute();
 		}
 	}
@@ -68,10 +68,10 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	@Override
 	public void drop(EntryId entryId) {
 		jooq.deleteFrom(ENTRY_DETAILS)
-			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.toString()))
+			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
 			.execute();
 		jooq.deleteFrom(JOURNAL_ENTRIES)
-			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.toString()))
+			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 			.execute();
 	}
 	
@@ -81,7 +81,7 @@ public class JournalEntryJooqRepository implements JournalEntryRepository {
 	@Override
 	public boolean exists(EntryId entryId) {
 		final int resultCount = jooq.selectFrom(JOURNAL_ENTRIES)
-									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.toString()))
+									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 									.execute();
 		if (resultCount == 0) return false;
 		return true;

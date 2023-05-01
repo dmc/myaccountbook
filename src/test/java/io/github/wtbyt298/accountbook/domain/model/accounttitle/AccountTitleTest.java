@@ -16,7 +16,7 @@ class AccountTitleTest {
 		);
 		
 		//then
-		assertEquals("101：現金", accountTitle.toString());		
+		assertEquals("勘定科目ID：101 勘定科目名：現金", accountTitle.toString());		
 	}
 	
 }

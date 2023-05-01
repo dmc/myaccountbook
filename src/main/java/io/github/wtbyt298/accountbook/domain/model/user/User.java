@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.user;
 
+import java.util.Objects;
+
 /**
  * ユーザクラス
  */
@@ -51,15 +53,15 @@ public class User {
 	/**
 	 * @return ユーザID
 	 */
-	public String id() {
-		return userId.value;
+	public UserId id() {
+		return userId;
 	}
 	
 	/**
 	 * @return ハッシュ化したパスワード
 	 */
-	public String encodedPassword() {
-		return encodedUserPassword.value;
+	public EncodedUserPassword password() {
+		return encodedUserPassword;
 	}
 	
 	/**
@@ -72,13 +74,29 @@ public class User {
 	/**
 	 * @return ユーザステータス
 	 */
-	public String userStatus() {
-		return userStatus.toString();
+	public UserStatus userStatus() {
+		return userStatus;
 	}
 	
 	@Override
 	public String toString() {
-		return "ユーザID：" + userId.toString();
+		return "ユーザID：" + userId.toString() + " ステータス：" + userStatus.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (! (obj instanceof User)) return false;
+		User other = (User) obj;
+		return Objects.equals(this.userId, other.userId)
+			&& Objects.equals(this.encodedUserPassword, other.encodedUserPassword)
+			&& Objects.equals(this.mailAddress, other.mailAddress)
+			&& Objects.equals(this.userStatus, other.userStatus);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(userId);
 	}
 	
 }

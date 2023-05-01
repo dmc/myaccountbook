@@ -30,8 +30,8 @@ public class AuthenticateUserUseCase implements UserDetailsService {
 		}
 		User user = userRepository.findById(userId);
 		return new org.springframework.security.core.userdetails.User(
-			user.id(), 
-			user.encodedPassword(), 
+			user.id().value(), 
+			user.password().value(), 
 			new ArrayList<>() //ROLEの設定は行わない
 		);
 	}

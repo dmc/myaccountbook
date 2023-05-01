@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.user;
 
+import java.util.Objects;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -53,6 +55,28 @@ public class EncodedUserPassword {
 	 */
 	private static boolean isValidFormat(String value) {
 		return value.matches(PASSWORD_REGEX);
+	}
+	
+	public String value() {
+		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return value;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return false;
+		if (! (obj instanceof EncodedUserPassword)) return false;
+		EncodedUserPassword other = (EncodedUserPassword) obj;
+		return Objects.equals(this.value, other.value);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
 	}
 	
 }

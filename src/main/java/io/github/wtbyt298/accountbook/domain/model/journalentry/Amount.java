@@ -69,7 +69,7 @@ public class Amount {
 		if (this == obj) return true;
 		if (! (obj instanceof Amount)) return false;
 		Amount other = (Amount) obj;
-		return this.value == other.value;
+		return Objects.equals(this.value, other.value);
 	}
 
 	@Override

@@ -23,6 +23,10 @@ public class UserId {
 		}
 		return new UserId(value);
 	}
+	
+	public String value() {
+		return value;
+	}
 
 	@Override
 	public String toString() {
@@ -34,7 +38,7 @@ public class UserId {
 		if (this == obj) return true;
 		if (! (obj instanceof UserId)) return false;
 		UserId other = (UserId) obj;
-		return this.value.equals(other.value);
+		return Objects.equals(this.value, other.value);
 	}
 	
 	@Override

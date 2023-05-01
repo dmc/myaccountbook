@@ -16,10 +16,10 @@ class UserTest {
 		);
 		
 		//then
-		assertEquals("TEST_USER", user.id());
+		assertEquals("TEST_USER", user.id().value);
 		//パスワードのハッシュ化についてはEncodedUserPasswordクラスでテストしている
 		assertEquals("test@example.com", user.mailAddress());
-		assertEquals(UserStatus.ACTIVE.toString(), user.userStatus());
+		assertEquals(UserStatus.ACTIVE, user.userStatus());
 	}
 	
 	@Test
@@ -33,9 +33,9 @@ class UserTest {
 		);
 		
 		//then
-		assertEquals("TEST_USER", user.id());
+		assertEquals("TEST_USER", user.id().value());
 		assertEquals("test@example.com", user.mailAddress());
-		assertEquals(UserStatus.ACTIVE.toString(), user.userStatus());
+		assertEquals(UserStatus.ACTIVE, user.userStatus());
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ class UserTest {
 		user.disable();
 		
 		//then
-		assertEquals(UserStatus.INACTIVE.toString(), user.userStatus());
+		assertEquals(UserStatus.INACTIVE, user.userStatus());
 	}
 	
 	@Test

@@ -1,7 +1,9 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
@@ -46,23 +48,33 @@ public class EntryDetail {
 	}
 	
 	/**
-	 * 以下、永続化用のメソッド定義
-	 * ※リポジトリクラスで内部データの取得のために呼び出す以外には使用しない
+	 * @return 勘定科目ID
 	 */
-	public String accountTitleId() {
-		return accountTitle.id().toString();
+	public AccountTitleId accountTitleId() {
+		return accountTitle.id();
 	}
 	
-	public String subAccountTitleId() {
-		return subAccountTitle.id().toString();
+	/**
+	 * @return 補助科目ID
+	 */
+	public SubAccountTitleId subAccountTitleId() {
+		return subAccountTitle.id();
 	}
 	
-	public String detailLoanType() {
-		return detailLoanType.toString();
+	/**
+	 * @return 明細の貸借区分
+	 */
+	public LoanType detailLoanType() {
+		return detailLoanType;
 	}
 	
-	public int amount() {
-		return amount.value;
+	/**
+	 * @return 仕訳金額
+	 */
+	public Amount amount() {
+		return amount;
 	}
+	
+	//toString()などは必要になったら実装する
 	
 }

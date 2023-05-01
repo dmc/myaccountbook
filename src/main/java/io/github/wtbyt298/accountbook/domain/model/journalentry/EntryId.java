@@ -35,9 +35,26 @@ public class EntryId {
 		return UUID.randomUUID();
 	}
 	
+	public String value() {
+		return this.value;
+	}
+	
 	@Override
 	public String toString() {
-		return value;
+		return "仕訳ID" + value;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (! (obj instanceof EntryId)) return false;
+		EntryId other = (EntryId) obj;
+		return Objects.equals(this.value, other.value);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
 	}
 	
 }
