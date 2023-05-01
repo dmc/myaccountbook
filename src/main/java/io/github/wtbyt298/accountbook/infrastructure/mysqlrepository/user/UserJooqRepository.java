@@ -44,6 +44,7 @@ public class UserJooqRepository implements UserRepository {
 			.set(USERS.HASHED_PASSWORD, user.password().value())
 			.set(USERS.MAIL_ADDRESS, user.mailAddress())
 			.set(USERS.USER_STATUS, user.userStatus().toString())
+			.where(USERS.USER_ID.eq(user.id().value()))
 			.execute();
 	}
 	
