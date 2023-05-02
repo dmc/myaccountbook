@@ -13,11 +13,11 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 public class SubAccountTitles {
 
 	private static final int MAX_MEMBERS_COUNT = 10;
-	private final Map<SubAccountTitleId, SubAccountTitle> subAccountTitles;
+	private final Map<SubAccountTitleId, SubAccountTitle> elements;
 	private AccountTitleId parentId; //親要素である勘定科目のID
 	
-	public SubAccountTitles(Map<SubAccountTitleId, SubAccountTitle> subaccountTitles, AccountTitleId parentId) {
-		this.subAccountTitles = subaccountTitles;
+	public SubAccountTitles(Map<SubAccountTitleId, SubAccountTitle> elements, AccountTitleId parentId) {
+		this.elements = elements;
 		this.parentId = parentId;
 	}
 	
@@ -25,30 +25,30 @@ public class SubAccountTitles {
 	 * 補助科目を追加する
 	 */
 	public void add(SubAccountTitleName newName) {
-		if (subAccountTitles.size() >= MAX_MEMBERS_COUNT) {
+		if (elements.size() >= MAX_MEMBERS_COUNT) {
 			throw new RuntimeException("これ以上補助科目を追加できません。");
 		}
 		if (exists(newName)) {
 			throw new IllegalArgumentException("指定した補助科目は既に存在しています。");
 		}
 		//補助科目を持っていない場合は、はじめに「その他」という補助科目を追加する
-		if (subAccountTitles.isEmpty()) {
+		if (elements.isEmpty()) {
 			SubAccountTitle other = new SubAccountTitle(
 				SubAccountTitleId.valueOf("0"), 
 				SubAccountTitleName.valueOf("その他")
 			);
-			subAccountTitles.put(other.id(), other);
+			elements.put(other.id(), other);
 		}
 		SubAccountTitleId newId = nextIdentity();
 		SubAccountTitle adding = new SubAccountTitle(newId, newName);
-		subAccountTitles.put(newId, adding);
+		elements.put(newId, adding);
 	}
 	
 	/**
 	 * 補助科目名の重複があるかどうかを判断する
 	 */
 	private boolean exists(SubAccountTitleName newName) {
-		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.entrySet()) {
+		for (Entry<SubAccountTitleId, SubAccountTitle> each : elements.entrySet()) {
 			if (each.getValue().name().equals(newName)) return true;
 		}
 		return false;
@@ -58,7 +58,7 @@ public class SubAccountTitles {
 	 * 新規追加する補助科目のIDを生成する
 	 */
 	private SubAccountTitleId nextIdentity() {
-		final int count = subAccountTitles.size();
+		final int count = elements.size();
 		String nextIndex = String.valueOf(count);
 		return SubAccountTitleId.valueOf(nextIndex);
 	}
@@ -68,23 +68,23 @@ public class SubAccountTitles {
 	 * 補助科目を持っていない場合はEMPTYを返す
 	 */
 	public SubAccountTitle find(SubAccountTitleId id) {
-		if (subAccountTitles.isEmpty()) {
+		if (elements.isEmpty()) {
 			return SubAccountTitle.EMPTY;
 		}
-		if (! subAccountTitles.containsKey(id)) {
+		if (! elements.containsKey(id)) {
 			throw new IllegalArgumentException("指定した補助科目は存在しません。");
 		}
-		return subAccountTitles.get(id);
+		return elements.get(id);
 	}
 	
 	/**
 	 * 補助科目名を変更する
 	 */
 	public void changeSubAccountTitleName(SubAccountTitleId id, SubAccountTitleName newName) {
-		if (! subAccountTitles.containsKey(id)) {
+		if (! elements.containsKey(id)) {
 			throw new IllegalArgumentException("指定した補助科目は存在しません。");
 		}
-		SubAccountTitle target = subAccountTitles.get(id);
+		SubAccountTitle target = elements.get(id);
 		target.rename(newName);
 	}
 	
@@ -92,7 +92,7 @@ public class SubAccountTitles {
 	 * @return 保持している補助科目のMAP（変更不可）
 	 */
 	public Map<SubAccountTitleId, SubAccountTitle> elements() {
-		return Collections.unmodifiableMap(subAccountTitles);
+		return Collections.unmodifiableMap(elements);
 	}
 	
 	/**

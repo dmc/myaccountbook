@@ -8,14 +8,14 @@ class AccountTitleTest {
 	
 	@Test
 	void 勘定科目IDと勘定科目名と会計要素で初期化できる() {
-		//when
+		//when:
 		AccountTitle accountTitle = new AccountTitle(
 			AccountTitleId.valueOf("101"), 
 			AccountTitleName.valueOf("現金"), 
 			AccountingType.ASSETS
 		);
 		
-		//then
+		//then:
 		assertEquals("勘定科目ID：101 勘定科目名：現金", accountTitle.toString());		
 	}
 	

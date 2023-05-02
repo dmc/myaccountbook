@@ -3,64 +3,108 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
+import io.github.wtbyt298.accountbook.helper.testfactory.EntryDetailTestFactory;
 
 class EntryDetailsTest {
-
-	//TODO テストコードを改良する
-	private static List<EntryDetail> details = new ArrayList<>();
 	
-	@BeforeAll
-	static void prepare() {
-		//会計区分と貸借区分と金額以外はここでは重要でないのでnullを渡している
-		EntryDetail debit1 = new EntryDetail(null, null, LoanType.DEBIT, Amount.valueOf(100));
-		EntryDetail debit2 = new EntryDetail(null, null, LoanType.DEBIT, Amount.valueOf(200));
-		EntryDetail debit3 = new EntryDetail(null, null, LoanType.DEBIT, Amount.valueOf(300));
-		EntryDetail credit1 = new EntryDetail(null, null, LoanType.CREDIT, Amount.valueOf(100));
-		EntryDetail credit2 = new EntryDetail(null, null, LoanType.CREDIT, Amount.valueOf(500));
-		details.add(debit1);
-		details.add(debit2);
-		details.add(debit3);
-		details.add(credit1);
-		details.add(credit2);
+	@Test
+	void 借方仕訳明細のみのリストで初期化すると例外発生() {
+		//given:
+		List<EntryDetail> list = new ArrayList<>();
+		list.add(EntryDetailTestFactory.create(LoanType.DEBIT));
+		
+		//when:
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> new EntryDetails(list));
+	
+		//then:
+		assertEquals("貸借それぞれに少なくとも1件ずつの明細が必要です。", exception.getMessage());
 	}
 	
 	@Test
-	void 借方明細のみのリストで初期化すると例外発生() {
-		List<EntryDetail> onlyDebit = details.stream().filter(each -> each.isDebit()).collect(Collectors.toList());
-		assertThrows(IllegalArgumentException.class, () -> new EntryDetails(onlyDebit));
+	void 貸方仕訳明細のみのリストで初期化すると例外発生() {
+		//given:
+		List<EntryDetail> list = new ArrayList<>();
+		list.add(EntryDetailTestFactory.create(LoanType.DEBIT));
+		
+		//when:
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> new EntryDetails(list));
+		
+		//then:
+		assertEquals("貸借それぞれに少なくとも1件ずつの明細が必要です。", exception.getMessage());
 	}
 	
 	@Test
-	void 貸方明細のみのリストで初期化すると例外発生() {
-		List<EntryDetail> onlyCredit = details.stream().filter(each -> each.isCredit()).collect(Collectors.toList());
-		assertThrows(IllegalArgumentException.class, () -> new EntryDetails(onlyCredit));
+	void 貸借それぞれに少なくとも1件ずつの仕訳明細が存在していれば初期化できる() {
+		//given:
+		List<EntryDetail> list = new ArrayList<>();
+		list.add(EntryDetailTestFactory.create(LoanType.DEBIT));
+		list.add(EntryDetailTestFactory.create(LoanType.CREDIT));
+		
+		//when:
+		EntryDetails entryDetails = new EntryDetails(list);
+		
+		//then:
+		assertEquals(2, entryDetails.elements.size());
 	}
 	
 	@Test
-	void 貸借それぞれに少なくとも1件ずつの明細行が存在していれば初期化できる() {
-		assertDoesNotThrow(() -> new EntryDetails(details));
+	void 保持している仕訳明細の合計金額を計算できる() {
+		//given:貸借それぞれに2件ずつの仕訳明細が存在している
+		List<EntryDetail> list = new ArrayList<>();
+		list.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
+		list.add(EntryDetailTestFactory.create(LoanType.DEBIT, 200));
+		list.add(EntryDetailTestFactory.create(LoanType.CREDIT, 100));
+		list.add(EntryDetailTestFactory.create(LoanType.CREDIT, 200));
+		
+		//when:
+		EntryDetails entryDetails = new EntryDetails(list);
+		
+		//then:借方合計、貸方合計が正しく計算できる
+		assertEquals(Amount.valueOf(300), entryDetails.debitSum());
+		assertEquals(Amount.valueOf(300), entryDetails.creditSum());
 	}
 	
 	@Test
-	void 合計金額の計算() {
-		EntryDetails detail = new EntryDetails(details);
-		assertEquals(Amount.valueOf(600), detail.debitSum());
-		assertEquals(Amount.valueOf(600), detail.creditSum());
-		assertTrue(detail.isSameTotal());
+	void 貸借合計が一致しているかどうかを判断できる() {
+		//given:貸借合計が一致しているものと一致していないものを用意
+		List<EntryDetail> list1 = new ArrayList<>();
+		list1.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
+		list1.add(EntryDetailTestFactory.create(LoanType.CREDIT, 100));
+		
+		List<EntryDetail> list2 = new ArrayList<>();
+		list2.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
+		list2.add(EntryDetailTestFactory.create(LoanType.CREDIT, 200));
+		
+		//when
+		EntryDetails correct = new EntryDetails(list1);
+		EntryDetails incorrect = new EntryDetails(list2);
+		
+		//then
+		assertTrue(correct.isSameTotal());
+		assertFalse(incorrect.isSameTotal());
 	}
 	
-//	@Test
-//	void 明細行の貸借可能組み合わせの確認() {
-//		//借方：資産　貸方：負債、収益
-//		//借方：費用　貸方：負債、収益
-//		//今回の例だと全てtrueになるはずである
-//		EntryDetail detail = new EntryDetail(details);
-//		assertTrue(detail.isCollectCombination());
-//	}
+	@Test
+	void 明細行の貸借組み合わせの可否を判断できる() {
+		//given:
+		//借方：資産　貸方：負債、収益
+		//借方：費用　貸方：負債、収益
+		//今回の例だと全てtrueになるはずである
+		List<EntryDetail> list = new ArrayList<>();
+		list.add(EntryDetailTestFactory.create(AccountingType.ASSETS, LoanType.DEBIT, 100));
+		list.add(EntryDetailTestFactory.create(AccountingType.EXPENSES, LoanType.DEBIT, 100));
+		list.add(EntryDetailTestFactory.create(AccountingType.LIABILITIES, LoanType.CREDIT, 100));
+		list.add(EntryDetailTestFactory.create(AccountingType.REVENUE, LoanType.CREDIT, 100));
+		
+		//when:
+		EntryDetails entryDetails = new EntryDetails(list);
+		
+		//then:
+		assertTrue(entryDetails.isCorrectCombination());
+	}
 
 }

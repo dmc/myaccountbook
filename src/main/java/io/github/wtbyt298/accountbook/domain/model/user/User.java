@@ -1,7 +1,5 @@
 package io.github.wtbyt298.accountbook.domain.model.user;
 
-import java.util.Objects;
-
 /**
  * ユーザクラス
  */
@@ -81,22 +79,6 @@ public class User {
 	@Override
 	public String toString() {
 		return "ユーザID：" + userId.toString() + " ステータス：" + userStatus.toString();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (! (obj instanceof User)) return false;
-		User other = (User) obj;
-		return Objects.equals(this.userId, other.userId)
-			&& Objects.equals(this.encodedUserPassword, other.encodedUserPassword)
-			&& Objects.equals(this.mailAddress, other.mailAddress)
-			&& Objects.equals(this.userStatus, other.userStatus);
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(userId);
 	}
 	
 }

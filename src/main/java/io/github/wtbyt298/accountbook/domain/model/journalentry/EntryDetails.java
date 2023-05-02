@@ -8,24 +8,24 @@ import java.util.stream.Collectors;
  */
 public class EntryDetails {
 
-	final List<EntryDetail> entryDetails;
+	final List<EntryDetail> elements;
 	
-	public EntryDetails(List<EntryDetail> entryDetails) {
-		if (entryDetails.stream().allMatch(each -> each.isDebit()) || entryDetails.stream().allMatch(each -> each.isCredit())) {
+	public EntryDetails(List<EntryDetail> elements) {
+		if (elements.stream().allMatch(each -> each.isDebit()) || elements.stream().allMatch(each -> each.isCredit())) {
 			throw new IllegalArgumentException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
 		}
-		this.entryDetails = entryDetails;
+		this.elements = elements;
 	}
 
 	/**
 	 * 仕訳明細の会計要素の貸借組み合わせをチェックする
 	 * @return 全ての仕訳明細が貸借の組み合わせ条件を満たしている場合true
 	 */
-	boolean isCollectCombination() {
-		List<EntryDetail> debitDetails = entryDetails.stream()
+	boolean isCorrectCombination() {
+		List<EntryDetail> debitDetails = elements.stream()
 													 .filter(each -> each.isDebit())
 													 .collect(Collectors.toList());
-		List<EntryDetail> creditDetails = entryDetails.stream()
+		List<EntryDetail> creditDetails = elements.stream()
 													  .filter(each -> each.isCredit())
 													  .collect(Collectors.toList());
 		//借方の仕訳明細に対して、貸方の仕訳明細が組み合わせ可能かどうかを全て調べる
@@ -49,7 +49,7 @@ public class EntryDetails {
 	 */
     Amount debitSum() {
 		Amount total = Amount.valueOf(0);
-		for (EntryDetail each : entryDetails) {
+		for (EntryDetail each : elements) {
 			if (each.isCredit()) continue;
 			total = total.plus(each.amount);
 		}
@@ -61,7 +61,7 @@ public class EntryDetails {
 	 */
 	Amount creditSum() {
 		Amount total = Amount.valueOf(0);
-		for (EntryDetail each : entryDetails) {
+		for (EntryDetail each : elements) {
 			if (each.isDebit()) continue;
 			total = total.plus(each.amount);
 		}

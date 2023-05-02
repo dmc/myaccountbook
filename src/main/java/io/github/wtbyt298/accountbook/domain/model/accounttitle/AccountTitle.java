@@ -1,7 +1,5 @@
 package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 
-import java.util.Objects;
-
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 
 /**
@@ -39,21 +37,5 @@ public class AccountTitle {
 	public String toString() {
 		return id.toString() + " " + name.toString();
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (! (obj instanceof AccountTitle)) return false;
-		AccountTitle other = (AccountTitle) obj;
-		return Objects.equals(this.id, other.id)
-			&& Objects.equals(this.name, other.name)
-			&& Objects.equals(this.accountingType, other.accountingType);
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(accountingType, id, name);
-	}
-
 	
 }

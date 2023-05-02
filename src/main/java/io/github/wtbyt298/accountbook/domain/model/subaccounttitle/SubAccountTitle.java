@@ -1,7 +1,5 @@
 package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
-import java.util.Objects;
-
 /**
  * 補助科目クラス
  */
@@ -40,19 +38,6 @@ public class SubAccountTitle {
 	@Override
 	public String toString() {
 		return id.toString() + " " + name.toString();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (! (obj instanceof SubAccountTitle)) return false;
-		SubAccountTitle other = (SubAccountTitle) obj;
-		return Objects.equals(this.id, other.id) && Objects.equals(this.name, other.name);
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.id, this.name);
 	}
 	
 }

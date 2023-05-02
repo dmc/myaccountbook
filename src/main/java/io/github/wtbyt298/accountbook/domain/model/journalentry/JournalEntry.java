@@ -2,7 +2,6 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 仕訳伝票クラス
@@ -29,7 +28,7 @@ public class JournalEntry {
 		if (! entryDetails.isSameTotal()) {
 			throw new IllegalArgumentException("明細の貸借合計が一致していません。");
 		}
-		if (! entryDetails.isCollectCombination()) {
+		if (! entryDetails.isCorrectCombination()) {
 			throw new IllegalArgumentException("明細の貸借組み合わせが正しくありません。");
 		}
 		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetails);
@@ -80,25 +79,12 @@ public class JournalEntry {
 	 * @return 明細行のリスト
 	 */
 	public List<EntryDetail> entryDetails() {
-		return Collections.unmodifiableList(entryDetails.entryDetails); //外部から変更できないように不変にする
+		return Collections.unmodifiableList(entryDetails.elements); //外部から変更できないように不変にする
 	}
 	
 	@Override
 	public String toString() {
 		return entryId.toString() + " " +  dealDate.toString() + " " + description.toString();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (! (obj instanceof JournalEntry)) return false;
-		JournalEntry other = (JournalEntry) obj;
-		return Objects.equals(this.entryId, other.entryId); //仕訳IDの等価性をもって等価と判定する
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(entryId, dealDate, description, entryDetails);
 	}
 	
 }
