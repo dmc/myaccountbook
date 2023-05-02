@@ -7,7 +7,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
 import io.github.wtbyt298.accountbook.helper.testfactory.UserTestFactory;
 
 /**
- * DBにユーザのテストデータを投入するクラス
+ * DBにテスト用のユーザデータを作成するクラス
  */
 @Component
 public class UserTestDataCreator {
@@ -15,10 +15,6 @@ public class UserTestDataCreator {
 	@Autowired
 	private UserRepository userRepository;
 	
-	/**
-	 * DBにテストデータを保存する
-	 * @return 保存したユーザ
-	 */
 	public User create() {
 		User user = UserTestFactory.create();
 		userRepository.save(user);

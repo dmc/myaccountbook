@@ -18,11 +18,11 @@ public class SubAccountTitlesTestFactory {
 	 * 「1：三菱UFJ銀行」
 	 */
 	public static SubAccountTitles create() {
-		Map<SubAccountTitleId, SubAccountTitle> collection = new HashMap<>();
+		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();
 		AccountTitleId parentId = AccountTitleId.valueOf("102");
-		collection.put(SubAccountTitleId.valueOf("0"), createSubAccountTitle("0", "その他"));
-		collection.put(SubAccountTitleId.valueOf("1"), createSubAccountTitle("1", "三菱UFJ銀行"));
-		return new SubAccountTitles(collection, parentId);
+		map.put(SubAccountTitleId.valueOf("0"), createSubAccountTitle("0", "その他"));
+		map.put(SubAccountTitleId.valueOf("1"), createSubAccountTitle("1", "三菱UFJ銀行"));
+		return new SubAccountTitles(map, parentId);
 	}
 	
 	private static SubAccountTitle createSubAccountTitle(String id, String name) {
