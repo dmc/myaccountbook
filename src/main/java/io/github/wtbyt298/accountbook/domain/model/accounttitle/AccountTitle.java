@@ -24,6 +24,20 @@ public class AccountTitle {
 	public AccountTitleId id() {
 		return id;
 	}
+	
+	/**
+	 * @return 勘定科目名
+	 */
+	public AccountTitleName name() {
+		return name;
+	}
+	
+	/**
+	 * @return 会計区分
+	 */
+	public AccountingType accountingType() {
+		return accountingType;
+	}
 
 	/**
 	 * 自身を借方科目とした場合に、相手の勘定科目が貸方科目として組み合わせ可能かどうかを判断する
