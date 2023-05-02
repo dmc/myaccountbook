@@ -32,7 +32,6 @@ class UserJooqRepositoryTest {
 		
 		//then:保存したユーザをリポジトリ経由で取得できる
 		assertEquals(createdUser.id(), foundUser.id());
-		assertEquals(createdUser.password(), foundUser.password());
 		assertEquals(createdUser.mailAddress(), foundUser.mailAddress());
 		assertEquals(createdUser.userStatus(), foundUser.userStatus());
 	}

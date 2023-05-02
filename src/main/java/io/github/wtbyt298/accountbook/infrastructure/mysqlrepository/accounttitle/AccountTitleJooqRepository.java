@@ -28,7 +28,7 @@ public class AccountTitleJooqRepository implements AccountTitleRepository {
 	public AccountTitle findById(AccountTitleId id) {
 		Record result = jooq.select()
 							.from(ACCOUNTTITLES)
-						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.toString()))
+						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
 						    .fetchOne();
 		if (result == null) {
 			throw new RuntimeException("指定した勘定科目は存在しません。");

@@ -36,7 +36,7 @@ public class SubAccountTitleJooqRepository implements SubAccountTitleRepository 
 		//一旦DELETEして再度INSERTする実装とする
 		jooq.deleteFrom(SUB_ACCOUNTTITLES)
 			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(subAccountTitles.parentId().value()))
-			.and(SUB_ACCOUNTTITLES.USER_ID.eq(""))
+			.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.execute();
 		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.elements().entrySet()) {
 			insertIntoTable(each.getValue(), subAccountTitles.parentId(), userId);
