@@ -66,7 +66,7 @@ public class JournalEntryFactory {
 		SubAccountTitles subAccountTitles = subAccountTitleRepository.findCollectionByParentId(accountTitleId, userId);
 		SubAccountTitle subAccountTitle = subAccountTitles.find(subAccountTitleId);
 		//その他の処理
-		LoanType detailLoanType = LoanType.valueOf(command.getDetailLoanType());
+		LoanType detailLoanType = command.getDetailLoanType();
 		Amount amount = Amount.valueOf(command.getAmount());
 		//エンティティを返す
 		return new EntryDetail(accountTitle, subAccountTitle, detailLoanType, amount);
