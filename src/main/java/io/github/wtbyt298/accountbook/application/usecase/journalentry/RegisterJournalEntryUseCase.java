@@ -23,7 +23,7 @@ public class RegisterJournalEntryUseCase {
 	
 	/**
 	 * 仕訳を登録する
-	 * @param registerCommand 仕訳登録用のDTO
+	 * @param Command 仕訳登録用のDTO
 	 */
 	@Transactional
 	public void execute(RegisterJournalEntryCommand command, UserSession userSession) {
