@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.application.usecase.subaccounttitle;
+package io.github.wtbyt298.accountbook.helper.testfactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTit
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
 
-class SubAccountTitlesTestDataCreator {
+public class SubAccountTitlesTestFactory {
 	
 	/**
 	 * テスト用の補助科目のコレクションオブジェクトを生成する
@@ -17,7 +17,7 @@ class SubAccountTitlesTestDataCreator {
 	 * 「0：その他」
 	 * 「1：三菱UFJ銀行」
 	 */
-	static SubAccountTitles prepareTestObject() {
+	public static SubAccountTitles create() {
 		Map<SubAccountTitleId, SubAccountTitle> collection = new HashMap<>();
 		AccountTitleId parentId = AccountTitleId.valueOf("102");
 		collection.put(SubAccountTitleId.valueOf("0"), createSubAccountTitle("0", "その他"));

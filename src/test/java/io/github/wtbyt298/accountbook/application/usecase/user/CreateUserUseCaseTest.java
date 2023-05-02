@@ -1,7 +1,9 @@
 package io.github.wtbyt298.accountbook.application.usecase.user;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,10 +29,11 @@ class CreateUserUseCaseTest {
 	
 	@Test
 	void ユーザID等を渡すとその値を使って新規作成されたユーザが保存される() {
-		//given
+		//given:ユーザはまだ存在していない
 		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+		when(userRepository.exists(any())).thenReturn(false);
 		
-		//when
+		//when:ユーザID等からコマンドオブジェクトを生成し、テスト対象メソッドを実行する
 		String id = "TEST_USER";
 		String password = "Test0123OK";
 		String mailAddress = "test@example.com";
@@ -38,12 +41,28 @@ class CreateUserUseCaseTest {
 		createUseCase.execute(command);
 		verify(userRepository).save(captor.capture()); //リポジトリのsaveメソッドに渡される値をキャプチャする
 		
-		//then
+		//then:渡された値をもとにユーザが作成されている
 		User capturedUser = captor.getValue();
 		assertEquals(id, capturedUser.id().value());
 		assertTrue(capturedUser.acceptPassword(password));
 		assertEquals(mailAddress, capturedUser.mailAddress());
 		assertEquals(UserStatus.ACTIVE, capturedUser.userStatus());
+	}
+	
+	@Test
+	void 既に同一IDのユーザが存在している場合は例外発生() {
+		//given:既にユーザが存在している
+		when(userRepository.exists(any())).thenReturn(true);
+		
+		//when:ユーザID等からコマンドオブジェクトを生成し、テスト対象メソッドを実行する
+		String id = "TEST_USER";
+		String password = "Test0123OK";
+		String mailAddress = "test@example.com";
+		CreateUserCommand command = new CreateUserCommand(id, password, mailAddress);
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> createUseCase.execute(command));
+		
+		//then:想定した例外が発生している
+		assertEquals("既にユーザが存在しています。", exception.getMessage());
 	}
 
 }
