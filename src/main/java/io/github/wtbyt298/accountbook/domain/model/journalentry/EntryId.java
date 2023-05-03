@@ -17,7 +17,7 @@ public class EntryId {
 	 * 新規作成用のファクトリメソッド
 	 */
 	public static EntryId newInstance() {
-		String newId = nextIdentity().toString();
+		String newId = nextIdentity().toString().toUpperCase();
 		return new EntryId(newId);
 	}
 	
@@ -41,7 +41,7 @@ public class EntryId {
 	
 	@Override
 	public String toString() {
-		return "仕訳ID" + value;
+		return "仕訳ID：" + value;
 	}
 
 	@Override
