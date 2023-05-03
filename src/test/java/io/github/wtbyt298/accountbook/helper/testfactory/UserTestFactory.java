@@ -17,7 +17,7 @@ public class UserTestFactory {
 	 */
 	public static User create() {
 		return User.create(
-			UserId.valueOf("TEST_ID"), 
+			UserId.valueOf("TEST"), 
 			EncodedUserPassword.fromRawPassword("Test0123OK"), 
 			"test@example.com"
 		);
