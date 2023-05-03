@@ -35,7 +35,7 @@ public class EntryDetailTestFactory {
 	}
 	
 	/**
-	 * 勘定科目の会計区分と貸借区分と金額を指定して仕訳明細インスタンスを生成する
+	 * 会計区分と貸借区分と金額を指定して仕訳明細インスタンスを生成する
 	 */
 	public static EntryDetail create(AccountingType accountingType, LoanType loanType, int amount) {
 		return new EntryDetail(
@@ -45,5 +45,5 @@ public class EntryDetailTestFactory {
 			Amount.valueOf(amount)
 		);
 	}
-		
+	
 }
