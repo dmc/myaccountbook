@@ -23,7 +23,7 @@ class EncodedUserPasswordTest {
 		String rawPassword = "AAAAaaaa";
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
+		Exception exception = assertThrows(RuntimeException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
 		
 		//then:
 		assertEquals("パスワードの形式が正しくありません。", exception.getMessage());
@@ -35,7 +35,7 @@ class EncodedUserPasswordTest {
 		String rawPassword = "12345678";
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
+		Exception exception = assertThrows(RuntimeException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
 		
 		//then:
 		assertEquals("パスワードの形式が正しくありません。", exception.getMessage());
@@ -47,7 +47,7 @@ class EncodedUserPasswordTest {
 		String rawPassword = "Test123";
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
+		Exception exception = assertThrows(RuntimeException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
 		
 		//then:
 		assertEquals("パスワードの形式が正しくありません。", exception.getMessage());
@@ -59,7 +59,7 @@ class EncodedUserPasswordTest {
 		String rawPassword = "Test012345678OVER";
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
+		Exception exception = assertThrows(RuntimeException.class, () -> EncodedUserPassword.fromRawPassword(rawPassword));
 		
 		//then:
 		assertEquals("パスワードの形式が正しくありません。", exception.getMessage());

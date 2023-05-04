@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
+import io.github.wtbyt298.accountbook.application.shared.exception.ApplicationException;
 import io.github.wtbyt298.accountbook.domain.model.user.EncodedUserPassword;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
 
@@ -25,7 +26,7 @@ public class CreateUserUseCase {
 	public void execute(CreateUserCommand command) {
 		UserId userId = UserId.valueOf(command.getId());
 		if (userRepository.exists(userId)) {
-			throw new IllegalArgumentException("既にユーザが存在しています。");
+			throw new ApplicationException("既にユーザが存在しています。");
 		}
 		User user = mapCommandToEntity(command);
 		userRepository.save(user);

@@ -17,7 +17,7 @@ class SubAccountTitleIdTest {
 	@Test
 	void 空文字列で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> SubAccountTitleId.valueOf(""));
+		Exception exception = assertThrows(RuntimeException.class, () -> SubAccountTitleId.valueOf(""));
 		
 		//then:
 		assertEquals("補助科目IDは1文字で指定してください。", exception.getMessage());
@@ -26,7 +26,7 @@ class SubAccountTitleIdTest {
 	@Test
 	void 長さ1より大きい文字列で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> SubAccountTitleId.valueOf("11"));
+		Exception exception = assertThrows(RuntimeException.class, () -> SubAccountTitleId.valueOf("11"));
 		
 		//then:
 		assertEquals("補助科目IDは1文字で指定してください。", exception.getMessage());

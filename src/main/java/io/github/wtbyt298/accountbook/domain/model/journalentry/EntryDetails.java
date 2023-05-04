@@ -2,6 +2,7 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 仕訳明細のコレクションオブジェクト
@@ -12,7 +13,7 @@ public class EntryDetails {
 	
 	public EntryDetails(List<EntryDetail> elements) {
 		if (elements.stream().allMatch(each -> each.isDebit()) || elements.stream().allMatch(each -> each.isCredit())) {
-			throw new IllegalArgumentException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
+			throw new DomainException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
 		}
 		this.elements = elements;
 	}

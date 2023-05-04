@@ -1,6 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import java.util.Objects;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 補助科目IDクラス
@@ -19,7 +20,7 @@ public class SubAccountTitleId {
 	 */
 	public static SubAccountTitleId valueOf(String value) {
 		if (value.length() != DEFAULT_LENGTH) {
-			throw new IllegalArgumentException("補助科目IDは" + DEFAULT_LENGTH + "文字で指定してください。");
+			throw new DomainException("補助科目IDは" + DEFAULT_LENGTH + "文字で指定してください。");
 		}
 		return new SubAccountTitleId(value);
 	}

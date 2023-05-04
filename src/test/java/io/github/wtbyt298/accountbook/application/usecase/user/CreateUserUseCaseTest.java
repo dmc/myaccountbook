@@ -59,7 +59,7 @@ class CreateUserUseCaseTest {
 		String password = "Test0123OK";
 		String mailAddress = "test@example.com";
 		CreateUserCommand command = new CreateUserCommand(id, password, mailAddress);
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> createUseCase.execute(command));
+		Exception exception = assertThrows(RuntimeException.class, () -> createUseCase.execute(command));
 		
 		//then:想定した例外が発生している
 		assertEquals("既にユーザが存在しています。", exception.getMessage());

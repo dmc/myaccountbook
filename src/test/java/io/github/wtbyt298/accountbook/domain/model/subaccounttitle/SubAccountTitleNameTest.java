@@ -21,7 +21,7 @@ class SubAccountTitleNameTest {
 	@Test
 	void 空文字列で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> SubAccountTitleName.valueOf(""));
+		Exception exception = assertThrows(RuntimeException.class, () -> SubAccountTitleName.valueOf(""));
 		
 		//then:
 		assertEquals("補助科目名が空白です。", exception.getMessage());
@@ -33,7 +33,7 @@ class SubAccountTitleNameTest {
 		String over = new StringWriter() {{for (int i = 0; i < 33; i++) write("A");}}.toString();
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> SubAccountTitleName.valueOf(over));
+		Exception exception = assertThrows(RuntimeException.class, () -> SubAccountTitleName.valueOf(over));
 		
 		//then:
 		assertEquals("補助科目名は32文字以内で指定してください。", exception.getMessage());

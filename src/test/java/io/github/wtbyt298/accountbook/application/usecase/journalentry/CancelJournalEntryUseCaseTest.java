@@ -49,7 +49,7 @@ class CancelJournalEntryUseCaseTest {
 		
 		//when:新規生成した仕訳IDを渡してテスト対象メソッドを実行する
 		EntryId entryId = EntryId.newInstance();
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> cancelUseCase.execute(entryId));
+		Exception exception = assertThrows(RuntimeException.class, () -> cancelUseCase.execute(entryId));
 		
 		//then:想定した例外が発生している
 		assertEquals("指定した仕訳は存在しません。", exception.getMessage());

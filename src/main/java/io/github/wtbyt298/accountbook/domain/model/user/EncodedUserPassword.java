@@ -2,6 +2,8 @@ package io.github.wtbyt298.accountbook.domain.model.user;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+
 /**
  * パスワードクラス
  */
@@ -20,7 +22,7 @@ public class EncodedUserPassword {
 	 */
 	public static EncodedUserPassword fromRawPassword(String rawPassword) {
 		if (! isValidFormat(rawPassword)) {
-			throw new IllegalArgumentException("パスワードの形式が正しくありません。");
+			throw new DomainException("パスワードの形式が正しくありません。");
 		}
 		String encoded = generateHash(rawPassword);
 		return new EncodedUserPassword(encoded);

@@ -55,7 +55,7 @@ class DisableUserUseCaseTest {
 		
 		//when:IDを指定してテスト対象メソッドを実行する
 		UserId userId = UserId.valueOf("TEST_USER");
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> disableUseCase.execute(userId));
+		Exception exception = assertThrows(RuntimeException.class, () -> disableUseCase.execute(userId));
 		
 		//then:想定した例外が発生している
 		assertEquals("指定したユーザは存在しません。", exception.getMessage());

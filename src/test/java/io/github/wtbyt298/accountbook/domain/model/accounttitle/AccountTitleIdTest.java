@@ -18,7 +18,7 @@ class AccountTitleIdTest {
 	@Test
 	void 長さ3より小さい文字列で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> AccountTitleId.valueOf("10"));
+		Exception exception = assertThrows(RuntimeException.class, () -> AccountTitleId.valueOf("10"));
 		
 		//then:
 		assertEquals("勘定科目IDは3文字で指定してください。", exception.getMessage());
@@ -27,7 +27,7 @@ class AccountTitleIdTest {
 	@Test
 	void 長さ3より大きい文字列で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> AccountTitleId.valueOf("1011"));
+		Exception exception = assertThrows(RuntimeException.class, () -> AccountTitleId.valueOf("1011"));
 		
 		//then:
 		assertEquals("勘定科目IDは3文字で指定してください。", exception.getMessage());

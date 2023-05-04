@@ -26,7 +26,7 @@ class AmountTest {
 	@Test
 	void 負の数を引数に渡すと例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> Amount.valueOf(-1));
+		Exception exception = assertThrows(RuntimeException.class, () -> Amount.valueOf(-1));
 		
 		//then:
 		assertEquals("金額には0以上の数値を指定してください。", exception.getMessage());
@@ -64,7 +64,7 @@ class AmountTest {
 		Amount ten = Amount.valueOf(10);
 		  
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> five.minus(ten));
+		Exception exception = assertThrows(RuntimeException.class, () -> five.minus(ten));
 		
 		//then:
 		assertEquals("結果が負の値となるため計算できません。", exception.getMessage());

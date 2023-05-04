@@ -1,15 +1,15 @@
-package io.github.wtbyt298.accountbook.domain.shared.exception;
+package io.github.wtbyt298.accountbook.application.shared.exception;
 
 /**
- * ドメイン層で投げる例外クラス
+ * アプリケーション層で投げる例外クラス
  * プレゼンテーション層の例外ハンドラでキャッチする
  */
-public class DomainException extends RuntimeException {
+public class ApplicationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	private String errorMessage;
 	
-	public DomainException(String errorMessage) {
+	public ApplicationException(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
 	
@@ -18,4 +18,6 @@ public class DomainException extends RuntimeException {
 		return errorMessage;
 	}
 
+	
+	
 }

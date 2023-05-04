@@ -2,6 +2,7 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.Collections;
 import java.util.List;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 仕訳伝票クラス
@@ -26,10 +27,10 @@ public class JournalEntry {
 	 */
 	public static JournalEntry create(DealDate dealDate, Description description, EntryDetails entryDetails) {
 		if (! entryDetails.isSameTotal()) {
-			throw new IllegalArgumentException("明細の貸借合計が一致していません。");
+			throw new DomainException("明細の貸借合計が一致していません。");
 		}
 		if (! entryDetails.isCorrectCombination()) {
-			throw new IllegalArgumentException("明細の貸借組み合わせが正しくありません。");
+			throw new DomainException("明細の貸借組み合わせが正しくありません。");
 		}
 		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetails);
 	}

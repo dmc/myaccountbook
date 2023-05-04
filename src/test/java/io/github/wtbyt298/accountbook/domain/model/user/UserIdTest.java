@@ -24,7 +24,7 @@ class UserIdTest {
 		String str = new StringWriter() {{for (int i = 0; i < 33; i++) write("A");}}.toString();
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> UserId.valueOf(str));
+		Exception exception = assertThrows(RuntimeException.class, () -> UserId.valueOf(str));
 
 		//then:
 		assertEquals("ユーザIDは32文字以内で指定してください。", exception.getMessage());
@@ -33,7 +33,7 @@ class UserIdTest {
 	@Test
 	void 空白で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> UserId.valueOf(" "));
+		Exception exception = assertThrows(RuntimeException.class, () -> UserId.valueOf(" "));
 		
 		//then:
 		assertEquals("ユーザIDが空白です。", exception.getMessage());

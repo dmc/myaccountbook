@@ -1,6 +1,8 @@
 package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 
 import java.util.Objects;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+
 
 /**
  * 勘定科目名クラス
@@ -19,10 +21,10 @@ public class AccountTitleName {
 	 */
 	public static AccountTitleName valueOf(String value) {
 		if (value.isEmpty()) {
-			throw new IllegalArgumentException("勘定科目名が空白です。");
+			throw new DomainException("勘定科目名が空白です。");
 		}
 		if (value.length() > MAX_LENGTH) {
-			throw new IllegalArgumentException("勘定科目名は32文字以内で指定してください。");
+			throw new DomainException("勘定科目名は32文字以内で指定してください。");
 		}
 		return new AccountTitleName(value);
 	}

@@ -1,6 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.Objects;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 摘要クラス
@@ -20,10 +21,10 @@ public class Description {
 	 */
 	public static Description valueOf(String value) {
 		if (value.isBlank()) {
-			throw new IllegalArgumentException("摘要が空白です。");
+			throw new DomainException("摘要が空白です。");
 		}
 		if (value.length() > MAX_LENGTH) {
-			throw new IllegalArgumentException("摘要は" + MAX_LENGTH + "文字以内で入力してください。");
+			throw new DomainException("摘要は" + MAX_LENGTH + "文字以内で入力してください。");
 		}
 		return new Description(value);
 	}

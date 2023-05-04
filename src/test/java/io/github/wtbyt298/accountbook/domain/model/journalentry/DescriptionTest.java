@@ -24,7 +24,7 @@ class DescriptionTest {
 		String over = new StringWriter() {{for (int i = 0; i < 65; i++) write("A");}}.toString();
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> Description.valueOf(over));
+		Exception exception = assertThrows(RuntimeException.class, () -> Description.valueOf(over));
 		
 		//then:
 		assertEquals("摘要は64文字以内で入力してください。", exception.getMessage());
@@ -33,7 +33,7 @@ class DescriptionTest {
 	@Test
 	void 空白で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> Description.valueOf(" "));
+		Exception exception = assertThrows(RuntimeException.class, () -> Description.valueOf(" "));
 		
 		//then:
 		assertEquals("摘要が空白です。", exception.getMessage());

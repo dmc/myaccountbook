@@ -1,6 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import java.util.Objects;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 補助科目名クラス
@@ -16,10 +17,10 @@ public class SubAccountTitleName {
 	
 	public static SubAccountTitleName valueOf(String value) {
 		if (value.isEmpty()) {
-			throw new IllegalArgumentException("補助科目名が空白です。");
+			throw new DomainException("補助科目名が空白です。");
 		}
 		if (value.length() > MAX_LENGTH) {
-			throw new IllegalArgumentException("補助科目名は32文字以内で指定してください。");
+			throw new DomainException("補助科目名は32文字以内で指定してください。");
 		}
 		return new SubAccountTitleName(value);
 	}

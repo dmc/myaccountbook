@@ -3,8 +3,8 @@ package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 補助科目のコレクションオブジェクト
@@ -26,10 +26,10 @@ public class SubAccountTitles {
 	 */
 	public void add(SubAccountTitleName newName) {
 		if (elements.size() >= MAX_MEMBERS_COUNT) {
-			throw new RuntimeException("これ以上補助科目を追加できません。");
+			throw new DomainException("これ以上補助科目を追加できません。");
 		}
 		if (exists(newName)) {
-			throw new IllegalArgumentException("指定した補助科目は既に存在しています。");
+			throw new DomainException("指定した補助科目は既に存在しています。");
 		}
 		//補助科目を持っていない場合は、はじめに「その他」という補助科目を追加する
 		if (elements.isEmpty()) {
@@ -72,7 +72,7 @@ public class SubAccountTitles {
 			return SubAccountTitle.EMPTY;
 		}
 		if (! elements.containsKey(id)) {
-			throw new IllegalArgumentException("指定した補助科目は存在しません。");
+			throw new DomainException("指定した補助科目は存在しません。");
 		}
 		return elements.get(id);
 	}
@@ -82,7 +82,7 @@ public class SubAccountTitles {
 	 */
 	public void changeSubAccountTitleName(SubAccountTitleId id, SubAccountTitleName newName) {
 		if (! elements.containsKey(id)) {
-			throw new IllegalArgumentException("指定した補助科目は存在しません。");
+			throw new DomainException("指定した補助科目は存在しません。");
 		}
 		SubAccountTitle target = elements.get(id);
 		target.rename(newName);

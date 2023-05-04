@@ -2,7 +2,7 @@ package io.github.wtbyt298.accountbook.application.usecase.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import io.github.wtbyt298.accountbook.application.shared.exception.ApplicationException;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
@@ -22,7 +22,7 @@ public class DisableUserUseCase {
 	 */
 	public void execute(UserId userId) {
 		if (! userRepository.exists(userId)) {
-			throw new IllegalArgumentException("指定したユーザは存在しません。");
+			throw new ApplicationException("指定したユーザは存在しません。");
 		}
 		User user = userRepository.findById(userId);
 		user.disable();

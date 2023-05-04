@@ -18,7 +18,7 @@ class EntryDetailsTest {
 		list.add(EntryDetailTestFactory.create(LoanType.DEBIT));
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> new EntryDetails(list));
+		Exception exception = assertThrows(RuntimeException.class, () -> new EntryDetails(list));
 	
 		//then:
 		assertEquals("貸借それぞれに少なくとも1件ずつの明細が必要です。", exception.getMessage());
@@ -31,7 +31,7 @@ class EntryDetailsTest {
 		list.add(EntryDetailTestFactory.create(LoanType.DEBIT));
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> new EntryDetails(list));
+		Exception exception = assertThrows(RuntimeException.class, () -> new EntryDetails(list));
 		
 		//then:
 		assertEquals("貸借それぞれに少なくとも1件ずつの明細が必要です。", exception.getMessage());

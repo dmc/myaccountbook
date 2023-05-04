@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
+import io.github.wtbyt298.accountbook.application.shared.exception.ApplicationException;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 
 /**
@@ -22,7 +23,7 @@ public class CancelJournalEntryUseCase {
 	@Transactional
 	public void execute(EntryId entryId) {
 		if (! journalEntryRepository.exists(entryId)) {
-			throw new IllegalArgumentException("指定した仕訳は存在しません。");
+			throw new ApplicationException("指定した仕訳は存在しません。");
 		}
 		journalEntryRepository.drop(entryId);
 	}

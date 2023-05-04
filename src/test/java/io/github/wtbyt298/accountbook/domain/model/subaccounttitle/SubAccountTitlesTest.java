@@ -50,7 +50,7 @@ class SubAccountTitlesTest {
 		
 		//when:同名の補助科目を追加する
 		SubAccountTitleName same = SubAccountTitleName.valueOf("新規追加");
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> empty.add(same));
+		Exception exception = assertThrows(RuntimeException.class, () -> empty.add(same));
 	
 		//then:想定した例外が発生している
 		assertEquals("指定した補助科目は既に存在しています。", exception.getMessage());
@@ -95,7 +95,7 @@ class SubAccountTitlesTest {
 		
 		//when:存在しない補助科目IDを引数に渡してfindメソッドを呼び出す
 		SubAccountTitleId id = SubAccountTitleId.valueOf("5");
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> two.find(id));
+		Exception exception = assertThrows(RuntimeException.class, () -> two.find(id));
 		
 		//then:想定した例外が発生している
 		assertEquals("指定した補助科目は存在しません。", exception.getMessage());

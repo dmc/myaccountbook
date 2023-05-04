@@ -21,7 +21,7 @@ class AccountTitleNameTest {
 	@Test
 	void 空文字列で初期化すると例外発生() {
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> AccountTitleName.valueOf(""));
+		Exception exception = assertThrows(RuntimeException.class, () -> AccountTitleName.valueOf(""));
 		
 		//then:
 		assertEquals("勘定科目名が空白です。", exception.getMessage());
@@ -33,7 +33,7 @@ class AccountTitleNameTest {
 		String over = new StringWriter() {{for (int i = 0; i < 33; i++) write("A");}}.toString();
 		
 		//when:
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> AccountTitleName.valueOf(over));
+		Exception exception = assertThrows(RuntimeException.class, () -> AccountTitleName.valueOf(over));
 		
 		//then:
 		assertEquals("勘定科目名は32文字以内で指定してください。", exception.getMessage());

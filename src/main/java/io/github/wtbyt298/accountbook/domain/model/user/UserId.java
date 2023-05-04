@@ -2,6 +2,8 @@ package io.github.wtbyt298.accountbook.domain.model.user;
 
 import java.util.Objects;
 
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+
 /**
  * ユーザIDクラス
  */
@@ -16,10 +18,10 @@ public class UserId {
 	
 	public static UserId valueOf(String value) {
 		if (value.isBlank()) {
-			throw new IllegalArgumentException("ユーザIDが空白です。");
+			throw new DomainException("ユーザIDが空白です。");
 		}
 		if (value.length() > MAX_LENGTH) {
-			throw new IllegalArgumentException("ユーザIDは" + MAX_LENGTH + "文字以内で指定してください。");
+			throw new DomainException("ユーザIDは" + MAX_LENGTH + "文字以内で指定してください。");
 		}
 		return new UserId(value);
 	}

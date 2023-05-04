@@ -1,6 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.Objects;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 仕訳金額クラス
@@ -20,7 +21,7 @@ public class Amount {
 	 */
 	public static Amount valueOf(int value) {
 		if (value < MIN) {
-			throw new IllegalArgumentException("金額には" + MIN + "以上の数値を指定してください。");
+			throw new DomainException("金額には" + MIN + "以上の数値を指定してください。");
 		}
 		return new Amount(value);
 	}
@@ -39,7 +40,7 @@ public class Amount {
 	 */
 	public Amount minus(Amount other) {
 		if (! canMinus(other)) {
-			throw new IllegalArgumentException("結果が負の値となるため計算できません。");
+			throw new DomainException("結果が負の値となるため計算できません。");
 		}
 		final int result = this.value - other.value;
 		return new Amount(result);

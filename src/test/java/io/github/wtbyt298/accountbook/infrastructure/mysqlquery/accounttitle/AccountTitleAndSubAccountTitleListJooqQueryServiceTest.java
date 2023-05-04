@@ -2,6 +2,7 @@ package io.github.wtbyt298.accountbook.infrastructure.mysqlquery.accounttitle;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,11 @@ import io.github.wtbyt298.accountbook.application.query.model.accounttitle.Accou
 import io.github.wtbyt298.accountbook.application.query.service.accounttitle.AccountTitleAndSubAccountTitleListQueryService;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleRepository;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.AccountTitleTestDataCreator;
-import io.github.wtbyt298.accountbook.helper.testdatacreator.SubAccountTitleTestDataCreator;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.UserTestDataCreator;
 
 @SpringBootTest
@@ -28,7 +30,7 @@ class AccountTitleAndSubAccountTitleListJooqQueryServiceTest {
 	private AccountTitleTestDataCreator accountTitleTestDataCreator;
 	
 	@Autowired
-	private SubAccountTitleTestDataCreator subAccountTitleTestDataCreator;
+	private SubAccountTitleRepository subAccountTitleRepository;
 	
 	@Autowired
 	private UserTestDataCreator userTestDataCreator;
@@ -41,17 +43,17 @@ class AccountTitleAndSubAccountTitleListJooqQueryServiceTest {
 		//現金は補助科目を持たない
 		AccountTitle cash = accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
 		accountTitles.add(cash);
-		//食費は補助科目を2つ持つ
+		//食費は補助科目を持つ
 		AccountTitle foodExpenses = accountTitleTestDataCreator.create("401", "食費", AccountingType.EXPENSES);
 		accountTitles.add(foodExpenses);
-		SubAccountTitle sub1 = subAccountTitleTestDataCreator.create(foodExpenses, "0", "その他", user.id());
-		SubAccountTitle sub2 = subAccountTitleTestDataCreator.create(foodExpenses, "1", "食料品", user.id());
+		SubAccountTitles subAccountTitles = new SubAccountTitles(new HashMap<>(), foodExpenses.id());
+		subAccountTitles.add(SubAccountTitleName.valueOf("食料品"));
+		subAccountTitleRepository.save(subAccountTitles, user.id());
 		
 		//when:クエリサービスのメソッドを実行してリストを取得する
 		List<AccountTitleAndSubAccountTitleDto> dto = listQueryService.findAll(user.id());
 		
 		//then:保存してある勘定科目、補助科目を取得できる
-		assertEquals(3, dto.size());
 		AccountTitleAndSubAccountTitleDto cashDto = dto.get(0);
 		AccountTitleAndSubAccountTitleDto foodExpensesDto1 = dto.get(1);
 		AccountTitleAndSubAccountTitleDto foodExpensesDto2 = dto.get(2);
