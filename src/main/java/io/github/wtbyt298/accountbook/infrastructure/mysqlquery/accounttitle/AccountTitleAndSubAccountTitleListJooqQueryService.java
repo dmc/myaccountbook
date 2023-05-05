@@ -16,7 +16,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * DBから取得した値をDTOに詰め替えて返す
  */
 @Component
-public class AccountTitleAndSubAccountTitleListJooqQueryService implements AccountTitleAndSubAccountTitleListQueryService {
+class AccountTitleAndSubAccountTitleListJooqQueryService implements AccountTitleAndSubAccountTitleListQueryService {
 
 	@Autowired
 	private DSLContext jooq;

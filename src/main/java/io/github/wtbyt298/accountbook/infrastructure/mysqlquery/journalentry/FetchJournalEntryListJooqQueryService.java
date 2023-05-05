@@ -25,7 +25,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * DBから取得した値を戻り値クラスに詰め替えて返す
  */
 @Component
-public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryListQueryService {
+class FetchJournalEntryListJooqQueryService implements FetchJournalEntryListQueryService {
 	
 	//TODO コードが読みにくくなっているのでリファクタリングする
 	
@@ -106,7 +106,7 @@ public class FetchJournalEntryListJooqQueryService implements FetchJournalEntryL
 				return JOURNAL_ENTRIES.DEAL_DATE.asc();
 			case TOTAL_AMOUNT:
 				return JOURNAL_ENTRIES.TOTAL_AMOUNT.asc();
-			//ソート条件が追加された場合はここに書く
+			//ソート条件が追加された場合はここに書くこと
 		}
 		return JOURNAL_ENTRIES.DEAL_DATE.asc();
 	}

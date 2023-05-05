@@ -16,7 +16,7 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepo
  * 勘定科目集約の永続化と再構築の詳細を記述する
  */
 @Repository
-public class AccountTitleJooqRepository implements AccountTitleRepository {
+class AccountTitleJooqRepository implements AccountTitleRepository {
 
 	@Autowired
 	private DSLContext jooq;

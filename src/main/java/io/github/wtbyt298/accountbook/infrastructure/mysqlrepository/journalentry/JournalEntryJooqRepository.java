@@ -17,7 +17,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * 仕訳集約の永続化と再構築の詳細を記述する
  */
 @Repository
-public class JournalEntryJooqRepository implements JournalEntryRepository {
+class JournalEntryJooqRepository implements JournalEntryRepository {
 
 	@Autowired
 	private DSLContext jooq;

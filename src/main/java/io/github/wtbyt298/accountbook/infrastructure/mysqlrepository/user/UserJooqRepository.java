@@ -16,7 +16,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserStatus;
  * ユーザ集約の永続化と再構築の詳細を記述する
  */
 @Repository
-public class UserJooqRepository implements UserRepository {
+class UserJooqRepository implements UserRepository {
 
 	@Autowired
 	private DSLContext jooq;
