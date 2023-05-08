@@ -45,7 +45,7 @@ public enum AccountingType {
 	 * 自身を借方、引数を貸方として組み合わせ可能かどうかを判断する
 	 * @param other 貸方の会計区分
 	 */
-	public boolean canCombinate(AccountingType other) {
+	public boolean canCombineWith(AccountingType other) {
 		return AllowedCombinationRule.ok(this, other);
 	}
 	

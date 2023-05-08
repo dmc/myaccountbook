@@ -43,8 +43,8 @@ public class AccountTitle {
 	 * 自身を借方科目とした場合に、相手の勘定科目が貸方科目として組み合わせ可能かどうかを判断する
 	 * @return 組み合わせ可能である場合true
 	 */
-	public boolean canCombinate(AccountTitle other) {
-		return this.accountingType.canCombinate(other.accountingType);
+	public boolean canCombineWith(AccountTitle other) {
+		return this.accountingType.canCombineWith(other.accountingType);
 	}
 	
 	@Override
