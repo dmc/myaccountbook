@@ -42,6 +42,7 @@ class SpringSecurityUserAuthenticatorTest {
 		
 		//then:認証されたユーザのIDが渡したIDと一致する
 		assertEquals("TEST_USER", userDetails.getUsername());
+
 	}
 	
 	@Test

@@ -31,7 +31,7 @@ class DisableUserUseCaseTest {
 	
 	@Test
 	void 指定したユーザIDに該当するユーザを無効化できる() {
-		//given:テスト用のユーザ
+		//given:テスト用のユーザ（ユーザIDは"TEST_ID"）
 		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 		User user = UserTestFactory.create("TEST_USER");
 		//依存オブジェクトの設定
