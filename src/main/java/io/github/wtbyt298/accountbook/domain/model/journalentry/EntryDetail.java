@@ -43,8 +43,8 @@ public class EntryDetail {
 	 * @param other 組み合わせ相手の明細行
 	 * @return 組み合わせ可能である場合true
 	 */
-	boolean canCombinate(EntryDetail other) {
-		return this.accountTitle.canCombinate(other.accountTitle);
+	boolean canCombineWith(EntryDetail other) {
+		return this.accountTitle.canCombineWith(other.accountTitle);
 	}
 	
 	/**

@@ -32,7 +32,7 @@ public class EntryDetails {
 		//借方の仕訳明細に対して、貸方の仕訳明細が組み合わせ可能かどうかを全て調べる
 		for (EntryDetail debit : debitDetails) {
 			for (EntryDetail credit : creditDetails) {
-				if (! debit.canCombinate(credit)) return false;
+				if (! debit.canCombineWith(credit)) return false;
 			}
 		}
 		return true;
