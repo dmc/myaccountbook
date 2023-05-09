@@ -35,9 +35,13 @@ public class JournalEntry {
 		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetails);
 	}
 	
-	//再構築用のメソッドは必要になったら実装する
-	//現状、内部状態の変更はせず、参照時は参照用のモデルを使っているため
-	
+	/**
+	 * 再構築用のファクトリメソッド
+	 */
+	public static JournalEntry reconstruct(EntryId enetryId, DealDate dealDate, Description description, EntryDetails entryDetails) {
+		return new JournalEntry(enetryId, dealDate, description, entryDetails);
+	}	
+		
 	/**
 	 * @return 仕訳合計金額
 	 */
