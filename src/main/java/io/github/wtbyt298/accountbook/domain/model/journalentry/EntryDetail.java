@@ -1,8 +1,6 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
-import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
@@ -11,54 +9,44 @@ import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
  */
 public class EntryDetail {
 	
-	//TODO フィールドが多いので設計を見直したい
-	private final AccountTitle accountTitle;
-	private final SubAccountTitle subAccountTitle;
+	private final AccountTitleId accountTitleId;
+	private final SubAccountTitleId subAccountTitleId;
 	private final LoanType detailLoanType;
 	final Amount amount;
 	
-	public EntryDetail(AccountTitle accountTitle, SubAccountTitle subAccountTitle, LoanType detailLoanType, Amount amount) {
-		this.accountTitle = accountTitle;
-		this.subAccountTitle = subAccountTitle;
+	public EntryDetail(AccountTitleId accountTitleId, SubAccountTitleId subAccountTitleId, LoanType detailLoanType, Amount amount) {
+		this.accountTitleId = accountTitleId;
+		this.subAccountTitleId = subAccountTitleId;
 		this.detailLoanType = detailLoanType;
 		this.amount = amount;
 	}
 	
 	/**
-	 * @return 借方明細である場合true
+	 * 借方明細かどうかを判断する
 	 */
 	boolean isDebit() {
 		return detailLoanType.equals(LoanType.DEBIT);
 	}
 	
 	/**
-	 * @return 貸方明細である場合true
+	 * 貸方明細かどうかを判断する
 	 */
 	boolean isCredit() {
 		return detailLoanType.equals(LoanType.CREDIT);
 	}
 	
 	/**
-	 * 
-	 * @param other 組み合わせ相手の明細行
-	 * @return 組み合わせ可能である場合true
-	 */
-	boolean canCombineWith(EntryDetail other) {
-		return this.accountTitle.canCombineWith(other.accountTitle);
-	}
-	
-	/**
 	 * @return 勘定科目ID
 	 */
 	public AccountTitleId accountTitleId() {
-		return accountTitle.id();
+		return accountTitleId;
 	}
 	
 	/**
 	 * @return 補助科目ID
 	 */
 	public SubAccountTitleId subAccountTitleId() {
-		return subAccountTitle.id();
+		return subAccountTitleId;
 	}
 	
 	/**
@@ -74,7 +62,5 @@ public class EntryDetail {
 	public Amount amount() {
 		return amount;
 	}
-	
-	//toString()などは必要になったら実装する
 	
 }
