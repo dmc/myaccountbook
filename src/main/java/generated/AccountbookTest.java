@@ -7,6 +7,7 @@ package generated;
 import generated.tables.Accounttitles;
 import generated.tables.EntryDetails;
 import generated.tables.JournalEntries;
+import generated.tables.MonthlyBalances;
 import generated.tables.SubAccounttitles;
 import generated.tables.Users;
 
@@ -47,6 +48,11 @@ public class AccountbookTest extends SchemaImpl {
     public final JournalEntries JOURNAL_ENTRIES = JournalEntries.JOURNAL_ENTRIES;
 
     /**
+     * The table <code>accountbook_test.monthly_balances</code>.
+     */
+    public final MonthlyBalances MONTHLY_BALANCES = MonthlyBalances.MONTHLY_BALANCES;
+
+    /**
      * The table <code>accountbook_test.sub_accounttitles</code>.
      */
     public final SubAccounttitles SUB_ACCOUNTTITLES = SubAccounttitles.SUB_ACCOUNTTITLES;
@@ -75,6 +81,7 @@ public class AccountbookTest extends SchemaImpl {
             Accounttitles.ACCOUNTTITLES,
             EntryDetails.ENTRY_DETAILS,
             JournalEntries.JOURNAL_ENTRIES,
+            MonthlyBalances.MONTHLY_BALANCES,
             SubAccounttitles.SUB_ACCOUNTTITLES,
             Users.USERS
         );

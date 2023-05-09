@@ -47,3 +47,14 @@ CREATE TABLE entry_details (
     FOREIGN KEY (entry_id) REFERENCES journal_entries (entry_id),
     FOREIGN KEY (accounttitle_id) REFERENCES accounttitles (accounttitle_id)
 );
+
+#月次残高テーブル
+CREATE TABLE monthly_balances (
+	accounttitle_id varchar(3),
+    sub_accounttitle_id varchar(1),
+    fiscal_yearmonth varchar(6),
+    user_id varchar(32),
+    balance int,
+    FOREIGN KEY (accounttitle_id) REFERENCES accounttitles (accounttitle_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);

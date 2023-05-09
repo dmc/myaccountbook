@@ -7,6 +7,7 @@ package generated;
 import generated.tables.Accounttitles;
 import generated.tables.EntryDetails;
 import generated.tables.JournalEntries;
+import generated.tables.MonthlyBalances;
 import generated.tables.SubAccounttitles;
 import generated.tables.Users;
 
@@ -31,6 +32,11 @@ public class Tables {
      * The table <code>accountbook_test.journal_entries</code>.
      */
     public static final JournalEntries JOURNAL_ENTRIES = JournalEntries.JOURNAL_ENTRIES;
+
+    /**
+     * The table <code>accountbook_test.monthly_balances</code>.
+     */
+    public static final MonthlyBalances MONTHLY_BALANCES = MonthlyBalances.MONTHLY_BALANCES;
 
     /**
      * The table <code>accountbook_test.sub_accounttitles</code>.

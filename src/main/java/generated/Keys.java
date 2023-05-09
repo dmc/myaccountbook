@@ -7,11 +7,13 @@ package generated;
 import generated.tables.Accounttitles;
 import generated.tables.EntryDetails;
 import generated.tables.JournalEntries;
+import generated.tables.MonthlyBalances;
 import generated.tables.SubAccounttitles;
 import generated.tables.Users;
 import generated.tables.records.AccounttitlesRecord;
 import generated.tables.records.EntryDetailsRecord;
 import generated.tables.records.JournalEntriesRecord;
+import generated.tables.records.MonthlyBalancesRecord;
 import generated.tables.records.SubAccounttitlesRecord;
 import generated.tables.records.UsersRecord;
 
@@ -45,6 +47,8 @@ public class Keys {
     public static final ForeignKey<EntryDetailsRecord, JournalEntriesRecord> ENTRY_DETAILS_IBFK_1 = Internal.createForeignKey(EntryDetails.ENTRY_DETAILS, DSL.name("entry_details_ibfk_1"), new TableField[] { EntryDetails.ENTRY_DETAILS.ENTRY_ID }, Keys.KEY_JOURNAL_ENTRIES_PRIMARY, new TableField[] { JournalEntries.JOURNAL_ENTRIES.ENTRY_ID }, true);
     public static final ForeignKey<EntryDetailsRecord, AccounttitlesRecord> ENTRY_DETAILS_IBFK_2 = Internal.createForeignKey(EntryDetails.ENTRY_DETAILS, DSL.name("entry_details_ibfk_2"), new TableField[] { EntryDetails.ENTRY_DETAILS.ACCOUNTTITLE_ID }, Keys.KEY_ACCOUNTTITLES_PRIMARY, new TableField[] { Accounttitles.ACCOUNTTITLES.ACCOUNTTITLE_ID }, true);
     public static final ForeignKey<JournalEntriesRecord, UsersRecord> JOURNAL_ENTRIES_IBFK_1 = Internal.createForeignKey(JournalEntries.JOURNAL_ENTRIES, DSL.name("journal_entries_ibfk_1"), new TableField[] { JournalEntries.JOURNAL_ENTRIES.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.USER_ID }, true);
+    public static final ForeignKey<MonthlyBalancesRecord, AccounttitlesRecord> MONTHLY_BALANCES_IBFK_1 = Internal.createForeignKey(MonthlyBalances.MONTHLY_BALANCES, DSL.name("monthly_balances_ibfk_1"), new TableField[] { MonthlyBalances.MONTHLY_BALANCES.ACCOUNTTITLE_ID }, Keys.KEY_ACCOUNTTITLES_PRIMARY, new TableField[] { Accounttitles.ACCOUNTTITLES.ACCOUNTTITLE_ID }, true);
+    public static final ForeignKey<MonthlyBalancesRecord, UsersRecord> MONTHLY_BALANCES_IBFK_2 = Internal.createForeignKey(MonthlyBalances.MONTHLY_BALANCES, DSL.name("monthly_balances_ibfk_2"), new TableField[] { MonthlyBalances.MONTHLY_BALANCES.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.USER_ID }, true);
     public static final ForeignKey<SubAccounttitlesRecord, AccounttitlesRecord> SUB_ACCOUNTTITLES_IBFK_1 = Internal.createForeignKey(SubAccounttitles.SUB_ACCOUNTTITLES, DSL.name("sub_accounttitles_ibfk_1"), new TableField[] { SubAccounttitles.SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID }, Keys.KEY_ACCOUNTTITLES_PRIMARY, new TableField[] { Accounttitles.ACCOUNTTITLES.ACCOUNTTITLE_ID }, true);
     public static final ForeignKey<SubAccounttitlesRecord, UsersRecord> SUB_ACCOUNTTITLES_IBFK_2 = Internal.createForeignKey(SubAccounttitles.SUB_ACCOUNTTITLES, DSL.name("sub_accounttitles_ibfk_2"), new TableField[] { SubAccounttitles.SUB_ACCOUNTTITLES.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.USER_ID }, true);
 }
