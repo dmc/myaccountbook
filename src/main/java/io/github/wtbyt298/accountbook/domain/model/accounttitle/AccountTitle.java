@@ -1,6 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.accounttitle;
 
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
  * 勘定科目クラス
@@ -38,7 +39,21 @@ public class AccountTitle {
 	public AccountingType accountingType() {
 		return accountingType;
 	}
-
+	
+	/**
+	 * 借方勘定科目かどうかを判断する
+	 */
+	public boolean isDebit() {
+		return accountingType.loanType().equals(LoanType.DEBIT);
+	}
+	
+	/**
+	 * 貸方勘定科目かどうかを判断する
+	 */
+	public boolean isCredit() {
+		return accountingType.loanType().equals(LoanType.CREDIT);
+	}
+	
 	/**
 	 * 自身を借方科目とした場合に、相手の勘定科目が貸方科目として組み合わせ可能かどうかを判断する
 	 * @return 組み合わせ可能である場合true
