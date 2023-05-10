@@ -6,9 +6,8 @@ package io.github.wtbyt298.accountbook.domain.model.accounttitle;
  */
 public interface AccountTitleRepository {
 
-	/**
-	 * 勘定科目をIDで検索する
-	 */
 	AccountTitle findById(AccountTitleId id);
+	
+	boolean exists(AccountTitleId id);
 	
 }

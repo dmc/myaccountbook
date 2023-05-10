@@ -47,4 +47,17 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 		);
 	}
 	
+	/**
+	 * IDに一致する勘定科目が存在するかどうかを判断する
+	 */
+	@Override
+	public boolean exists(AccountTitleId id) {
+		Record result = jooq.select()
+							.from(ACCOUNTTITLES)
+						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
+						    .fetchOne();
+		if (result == null) return false;
+		return true;
+	}
+	
 }

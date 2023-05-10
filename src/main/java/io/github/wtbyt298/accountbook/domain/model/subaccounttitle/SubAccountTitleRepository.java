@@ -13,4 +13,6 @@ public interface SubAccountTitleRepository {
 	
 	SubAccountTitles findCollectionByParentId(AccountTitleId parentId, UserId userId);
 	
+	boolean exists(AccountTitleId parentId, SubAccountTitleId id, UserId userId);
+	
 }

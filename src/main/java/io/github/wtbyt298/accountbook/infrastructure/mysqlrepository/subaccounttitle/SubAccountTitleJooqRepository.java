@@ -54,7 +54,7 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME, subAccountTitle.name().value())
 			.execute();
 	}
-
+	
 	/**
 	 * 勘定科目IDに一致する補助科目のコレクションを取得する
 	 */
@@ -69,9 +69,9 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 		if (result.isEmpty()) {
 			return new SubAccountTitles(subAccountTitles, parentId); //補助科目が存在しない場合は、要素数0のコレクションを返す
 		}
-		for (Record record : result) {
-			SubAccountTitleId id = SubAccountTitleId.valueOf(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
-			SubAccountTitle subAccountTitle = mapRecordToEntity(record);
+		for (Record each : result) {
+			SubAccountTitleId id = SubAccountTitleId.valueOf(each.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
+			SubAccountTitle subAccountTitle = mapRecordToEntity(each);
 			subAccountTitles.put(id, subAccountTitle);
 		}
 		return new SubAccountTitles(subAccountTitles, parentId);
@@ -85,6 +85,21 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 			SubAccountTitleId.valueOf(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)), 
 			SubAccountTitleName.valueOf(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME))
 		);
+	}
+	
+	/**
+	 * 勘定科目ID、補助科目ID、ユーザIDに一致する補助科目が存在するかどうかを判断する
+	 */
+	@Override
+	public boolean exists(AccountTitleId parentId, SubAccountTitleId id, UserId userId) {
+		Record result = jooq.select()
+							.from(SUB_ACCOUNTTITLES)
+							.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
+							.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
+							.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+							.fetchOne();
+		if (result == null) return false;
+		return true;
 	}
 	
 }
