@@ -10,6 +10,8 @@ public interface JournalEntryRepository {
 
 	void save(JournalEntry entry, UserId userId);
 	
+	JournalEntry findById(EntryId entryId);
+	
 	void drop(EntryId id);
 
 	boolean exists(EntryId entryId);

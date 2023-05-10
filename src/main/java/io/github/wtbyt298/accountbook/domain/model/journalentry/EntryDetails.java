@@ -1,7 +1,6 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
@@ -16,26 +15,6 @@ public class EntryDetails {
 			throw new DomainException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
 		}
 		this.elements = elements;
-	}
-
-	/**
-	 * 仕訳明細の会計要素の貸借組み合わせをチェックする
-	 * @return 全ての仕訳明細が貸借の組み合わせ条件を満たしている場合true
-	 */
-	boolean isCorrectCombination() {
-		List<EntryDetail> debitDetails = elements.stream()
-													 .filter(each -> each.isDebit())
-													 .collect(Collectors.toList());
-		List<EntryDetail> creditDetails = elements.stream()
-													  .filter(each -> each.isCredit())
-													  .collect(Collectors.toList());
-		//借方の仕訳明細に対して、貸方の仕訳明細が組み合わせ可能かどうかを全て調べる
-		for (EntryDetail debit : debitDetails) {
-			for (EntryDetail credit : creditDetails) {
-				if (! debit.canCombineWith(credit)) return false;
-			}
-		}
-		return true;
 	}
 	
 	/**
@@ -67,6 +46,17 @@ public class EntryDetails {
 			total = total.plus(each.amount);
 		}
 		return total;
+	}
+	
+	/**
+	 * 仕訳明細の貸借区分を反転させる
+	 */
+	EntryDetails transpose() {
+		List<EntryDetail> transposed = new ArrayList<>();
+		for (EntryDetail each : elements) {
+			transposed.add(each.transposeLoanType());
+		}
+		return new EntryDetails(transposed);
 	}
 	
 }

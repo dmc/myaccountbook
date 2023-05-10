@@ -1,7 +1,10 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
+import java.time.YearMonth;
 import java.util.Collections;
 import java.util.List;
+
+import io.github.wtbyt298.accountbook.domain.service.JournalEntrySpecification;
 import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
@@ -10,9 +13,9 @@ import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
  */
 public class JournalEntry {
 
-	private final EntryId entryId;         //仕訳番号
-	private final DealDate dealDate;       //取引日
-	private final Description description; //摘要
+	private final EntryId entryId;           //仕訳ID
+	private final DealDate dealDate;         //取引日
+	private final Description description;   //摘要
 	private final EntryDetails entryDetails; //仕訳明細のコレクション
 	
 	private JournalEntry(EntryId entryId, DealDate dealDate, Description description, EntryDetails entryDetails) {
@@ -25,11 +28,11 @@ public class JournalEntry {
 	/**
 	 * 新規作成用のファクトリメソッド
 	 */
-	public static JournalEntry create(DealDate dealDate, Description description, EntryDetails entryDetails) {
+	public static JournalEntry create(DealDate dealDate, Description description, EntryDetails entryDetails, JournalEntrySpecification journalEntrySpecification) {
 		if (! entryDetails.isSameTotal()) {
 			throw new DomainException("明細の貸借合計が一致していません。");
 		}
-		if (! entryDetails.isCorrectCombination()) {
+		if (! journalEntrySpecification.isSatisfied(entryDetails.elements)) {
 			throw new DomainException("明細の貸借組み合わせが正しくありません。");
 		}
 		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetails);
@@ -41,6 +44,13 @@ public class JournalEntry {
 	public static JournalEntry reconstruct(EntryId enetryId, DealDate dealDate, Description description, EntryDetails entryDetails) {
 		return new JournalEntry(enetryId, dealDate, description, entryDetails);
 	}	
+	
+	/**
+	 * 明細の貸借を逆にした仕訳を生成する
+	 */
+	public JournalEntry toReversingJournalEntry() {
+		return JournalEntry.reconstruct(entryId, dealDate, description, entryDetails.transpose());
+	}
 		
 	/**
 	 * @return 仕訳合計金額
@@ -52,13 +62,10 @@ public class JournalEntry {
 	/**
 	 * @return 会計年月
 	 */
-	public String fiscalYearMonth() {
-		return dealDate.yearMonth();
+	public YearMonth fiscalYearMonth() {
+		return dealDate.toYearMonth();
 	}
 	
-	 //以下、永続化用のメソッド定義
-	 //※リポジトリクラスで内部データの取得のために呼び出す以外には極力使用しない
-	 
 	/**
 	 * @return 仕訳ID
 	 */

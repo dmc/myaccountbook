@@ -24,15 +24,26 @@ public class EntryDetail {
 	/**
 	 * 借方明細かどうかを判断する
 	 */
-	boolean isDebit() {
+	public boolean isDebit() {
 		return detailLoanType.equals(LoanType.DEBIT);
 	}
 	
 	/**
 	 * 貸方明細かどうかを判断する
 	 */
-	boolean isCredit() {
+	public boolean isCredit() {
 		return detailLoanType.equals(LoanType.CREDIT);
+	}
+	
+	/**
+	 * 貸借区分を反転する
+	 */
+	EntryDetail transposeLoanType() {
+		if (isDebit()) {
+			return new EntryDetail(accountTitleId, subAccountTitleId, LoanType.CREDIT, amount);
+		} else {
+			return new EntryDetail(accountTitleId, subAccountTitleId, LoanType.DEBIT, amount);
+		}
 	}
 	
 	/**

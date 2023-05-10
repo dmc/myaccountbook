@@ -1,7 +1,7 @@
 package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.YearMonth;
 import java.util.Objects;
 
 /**
@@ -23,10 +23,10 @@ public class DealDate {
 	}
 	
 	/**
-	 * yyyyMM形式の文字列を返す
+	 * 年月に変換する
 	 */
-	String yearMonth() {
-		return value.format(DateTimeFormatter.ofPattern("yyyyMM"));
+	YearMonth toYearMonth() {
+		return YearMonth.of(value.getYear(), value.getMonth());
 	}
 	
 	public LocalDate value() {
