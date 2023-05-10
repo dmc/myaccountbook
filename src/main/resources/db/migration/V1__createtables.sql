@@ -31,7 +31,7 @@ CREATE TABLE journal_entries (
 	entry_id varchar(36) PRIMARY KEY,
     deal_date date NOT NULL,
     entry_description varchar(64) NOT NULL,
-    fiscal_yearmonth varchar(6) NOT NULL,
+    fiscal_yearmonth varchar(7) NOT NULL,
     total_amount int NOT NULL,
     user_id varchar(32) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
@@ -52,7 +52,7 @@ CREATE TABLE entry_details (
 CREATE TABLE monthly_balances (
 	accounttitle_id varchar(3),
     sub_accounttitle_id varchar(1),
-    fiscal_yearmonth varchar(6),
+    fiscal_yearmonth varchar(7),
     user_id varchar(32),
     balance int,
     FOREIGN KEY (accounttitle_id) REFERENCES accounttitles (accounttitle_id),
