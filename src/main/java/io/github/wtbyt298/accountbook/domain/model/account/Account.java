@@ -4,6 +4,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.Amount;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 
@@ -71,6 +72,27 @@ public class Account {
 			total = total.plus(each.amount);
 		}
 		return total;
+	}
+	
+	/**
+	 * @return 勘定科目ID
+	 */
+	public AccountTitleId accountTitleId() {
+		return accountTitle.id();
+	}
+	
+	/**
+	 * @return 補助科目ID
+	 */
+	public SubAccountTitleId subAccountTitleId() {
+		return subAccountTitleId;
+	}
+	
+	/**
+	 * @return 会計年月
+	 */
+	public YearMonth fiscalYearMonth() {
+		return fiscalYearMonth;
 	}
 	
 	@Override
