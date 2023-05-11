@@ -28,6 +28,7 @@ class AccountTitleJooqRepositoryTest {
 		//given:既に勘定科目が作成されている
 		AccountTitle createdAccountTitle = accountTitleTestDataCreator.create("000", "テスト用勘定科目", AccountingType.ASSETS);
 		AccountTitleId id = createdAccountTitle.id();
+		assertTrue(accountTitleRepository.exists(id));
 		
 		//when:IDで勘定科目を検索して取得する
 		AccountTitle foundAccountTitle = accountTitleRepository.findById(id);
@@ -42,6 +43,7 @@ class AccountTitleJooqRepositoryTest {
 	void IDに一致する勘定科目が存在しない場合は例外発生() {
 		//given:勘定科目ID"999"に該当するデータは存在しない
 		AccountTitleId id = AccountTitleId.valueOf("999");
+		assertFalse(accountTitleRepository.exists(id));
 		
 		//when:IDで勘定科目を検索して取得する
 		Exception exception = assertThrows(RuntimeException.class, () -> accountTitleRepository.findById(id));

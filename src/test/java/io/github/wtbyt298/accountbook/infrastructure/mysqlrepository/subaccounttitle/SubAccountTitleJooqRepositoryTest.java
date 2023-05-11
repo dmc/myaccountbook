@@ -11,6 +11,7 @@ import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingT
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleRepository;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
@@ -69,6 +70,43 @@ class SubAccountTitleJooqRepositoryTest {
 		//then:空のコレクションオブジェクトをリポジトリ経由で取得できる
 		assertEquals(0, found.elements().size());
 		assertEquals("補助科目ID：0 補助科目名：補助科目なし", found.find(SubAccountTitleId.valueOf("0")).toString());
+	}
+	
+	@Test
+	void 補助科目を持たない場合の存在チェックメソッドのテスト() {
+		//given:勘定科目とユーザが既に作成されている
+		AccountTitle parent = accountTitleTestDataCreator.create("000", "テスト用の勘定科目",AccountingType.ASSETS);
+		User user = userTestDataCreator.create();
+		
+		//when:検索対象の補助科目を用意する
+		SubAccountTitle empty = SubAccountTitleTestFactory.create("0", "補助科目なし");
+		SubAccountTitle notExist = SubAccountTitleTestFactory.create("1", "テスト用の補助科目");
+		
+		//then:補助科目ID「0」の場合はtrueを返す
+		//それ以外はfalseを返す
+		assertTrue(subAccountTitleRepository.exists(parent.id(), empty.id(), user.id()));
+		assertFalse(subAccountTitleRepository.exists(parent.id(), notExist.id(), user.id()));
+	}
+	
+	@Test
+	void 補助科目を持つ場合の存在チェックメソッドのテスト() {
+		//given:勘定科目とユーザが既に作成されている
+		AccountTitle parent = accountTitleTestDataCreator.create("000", "テスト用の勘定科目",AccountingType.ASSETS);
+		User user = userTestDataCreator.create();
+		//補助科目が追加されている
+		SubAccountTitles store = subAccountTitleRepository.findCollectionByParentId(parent.id(), user.id());
+		store.add(SubAccountTitleName.valueOf("テスト用の補助科目"));
+		subAccountTitleRepository.save(store, user.id());
+		
+		//when:検索対象の補助科目を用意する
+		SubAccountTitle element1 = store.find(SubAccountTitleId.valueOf("0")); //0：その他
+		SubAccountTitle element2 = store.find(SubAccountTitleId.valueOf("1")); //1：テスト用の補助科目
+		
+		//then:補助科目ID「0」「1」の場合はtrueを返す
+		//存在しない補助科目IDを指定した場合はfalseを返す
+		assertTrue(subAccountTitleRepository.exists(parent.id(), element1.id(), user.id()));
+		assertTrue(subAccountTitleRepository.exists(parent.id(), element2.id(), user.id()));
+		assertFalse(subAccountTitleRepository.exists(parent.id(), SubAccountTitleId.valueOf("2"), user.id()));
 	}
 	
 }

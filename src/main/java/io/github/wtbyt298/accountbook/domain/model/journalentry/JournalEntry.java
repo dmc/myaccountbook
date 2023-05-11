@@ -3,8 +3,6 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 import java.time.YearMonth;
 import java.util.Collections;
 import java.util.List;
-
-import io.github.wtbyt298.accountbook.domain.service.JournalEntrySpecification;
 import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
@@ -28,12 +26,9 @@ public class JournalEntry {
 	/**
 	 * 新規作成用のファクトリメソッド
 	 */
-	public static JournalEntry create(DealDate dealDate, Description description, EntryDetails entryDetails, JournalEntrySpecification journalEntrySpecification) {
+	public static JournalEntry create(DealDate dealDate, Description description, EntryDetails entryDetails) {
 		if (! entryDetails.isSameTotal()) {
 			throw new DomainException("明細の貸借合計が一致していません。");
-		}
-		if (! journalEntrySpecification.isSatisfied(entryDetails.elements)) {
-			throw new DomainException("明細の貸借組み合わせが正しくありません。");
 		}
 		return new JournalEntry(EntryId.newInstance(), dealDate, description, entryDetails);
 	}

@@ -3,6 +3,8 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+
 import org.junit.jupiter.api.Test;
 
 class DealDateTest {
@@ -17,12 +19,12 @@ class DealDateTest {
 	}
 	
 	@Test
-	void 年月をyyyyMM形式の文字列として出力する() {
+	void 日付型から年月型に変換できる() {
 		//when:
 		DealDate date = DealDate.valueOf(LocalDate.of(2023, 4, 1));
 		
 		//then:
-		assertEquals("202304", date.yearMonth());
+		assertEquals(YearMonth.of(2023, 4), date.toYearMonth());
 	}
 	
 	@Test

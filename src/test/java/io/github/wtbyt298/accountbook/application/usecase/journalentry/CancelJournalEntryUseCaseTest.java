@@ -10,13 +10,22 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
+import io.github.wtbyt298.accountbook.application.usecase.shared.AccountBalanceUpdator;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
+import io.github.wtbyt298.accountbook.helper.testfactory.JournalEntryTestFactory;
 
 class CancelJournalEntryUseCaseTest {
 	
 	@Mock
 	private JournalEntryRepository journalEntryRepository;
+	
+	@Mock
+	private AccountBalanceUpdator accountBalanceUpdator;
+	
+	@Mock
+	private UserSession userSession;
 	
 	@InjectMocks
 	private CancelJournalEntryUseCase cancelUseCase;
@@ -31,10 +40,11 @@ class CancelJournalEntryUseCaseTest {
 		//given:仕訳IDに該当する仕訳は存在している
 		ArgumentCaptor<EntryId> captor = ArgumentCaptor.forClass(EntryId.class);
 		when(journalEntryRepository.exists(any())).thenReturn(true);
+		when(journalEntryRepository.findById(any())).thenReturn(JournalEntryTestFactory.create());
 		
 		//when:仕訳IDを指定してテスト対象メソッドを実行する
 		EntryId entryId = EntryId.fromString("TEST");
-		cancelUseCase.execute(entryId);
+		cancelUseCase.execute(entryId, userSession);
 		verify(journalEntryRepository).drop(captor.capture()); //リポジトリのdropメソッドに渡される値をキャプチャする
 		
 		//then:指定した仕訳IDがリポジトリに渡されている
@@ -49,7 +59,7 @@ class CancelJournalEntryUseCaseTest {
 		
 		//when:新規生成した仕訳IDを渡してテスト対象メソッドを実行する
 		EntryId entryId = EntryId.newInstance();
-		Exception exception = assertThrows(RuntimeException.class, () -> cancelUseCase.execute(entryId));
+		Exception exception = assertThrows(RuntimeException.class, () -> cancelUseCase.execute(entryId, userSession));
 		
 		//then:想定した例外が発生している
 		assertEquals("指定した仕訳は存在しません。", exception.getMessage());

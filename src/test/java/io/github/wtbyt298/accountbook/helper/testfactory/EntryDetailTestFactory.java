@@ -1,8 +1,9 @@
 package io.github.wtbyt298.accountbook.helper.testfactory;
 
-import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.Amount;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
@@ -15,8 +16,8 @@ public class EntryDetailTestFactory {
 	 */
 	public static EntryDetail create(LoanType loanType) {
 		return new EntryDetail(
-			AccountTitleTestFactory.create("102", "普通預金", AccountingType.ASSETS), 
-			SubAccountTitleTestFactory.create("0", "その他"), 
+			AccountTitleId.valueOf("101"), 
+			SubAccountTitleId.valueOf("0"), 
 			loanType, 
 			Amount.valueOf(100)
 		);
@@ -27,20 +28,20 @@ public class EntryDetailTestFactory {
 	 */
 	public static EntryDetail create(LoanType loanType, int amount) {
 		return new EntryDetail(
-			AccountTitleTestFactory.create("102", "普通預金", AccountingType.ASSETS), 
-			SubAccountTitleTestFactory.create("0", "その他"), 
-			loanType, 
-			Amount.valueOf(amount)
+				AccountTitleId.valueOf("101"), 
+				SubAccountTitleId.valueOf("0"), 
+				loanType, 
+				Amount.valueOf(amount)
 		);
 	}
 	
 	/**
-	 * 会計区分と貸借区分と金額を指定して仕訳明細インスタンスを生成する
+	 * 全ての引数を指定して仕訳明細インスタンスを生成する
 	 */
-	public static EntryDetail create(AccountingType accountingType, LoanType loanType, int amount) {
+	public static EntryDetail create(String accountTitleId, String subAccountTitleId, LoanType loanType, int amount) {
 		return new EntryDetail(
-			AccountTitleTestFactory.create("000", "TEST", accountingType), 
-			SubAccountTitleTestFactory.create("0", "その他"), 
+			AccountTitleId.valueOf(accountTitleId), 
+			SubAccountTitleId.valueOf(subAccountTitleId), 
 			loanType, 
 			Amount.valueOf(amount)
 		);

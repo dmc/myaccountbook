@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.wtbyt298.accountbook.application.shared.exception.ApplicationException;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.application.usecase.shared.AccountBalanceUpdator;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.*;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.service.JournalEntryFactory;
+import io.github.wtbyt298.accountbook.domain.service.JournalEntrySpecification;
 
 /**
  * 仕訳登録処理クラス
@@ -25,6 +27,9 @@ public class RegisterJournalEntryUseCase {
 	@Autowired
 	private JournalEntryFactory journalEntryFactory;
 	
+	@Autowired
+	private JournalEntrySpecification journalEntrySpecification;
+	
 	/**
 	 * 仕訳を登録する
 	 * @param command 仕訳登録用のDTO
@@ -32,10 +37,13 @@ public class RegisterJournalEntryUseCase {
 	@Transactional
 	public void execute(RegisterJournalEntryCommand command, UserSession userSession) {
 		UserId userId = userSession.userId();
-		JournalEntry journalEntry = journalEntryFactory.create(command, userId);
+		JournalEntry entry = journalEntryFactory.create(command, userId);
+		if (! journalEntrySpecification.isSatisfied(entry)) {
+			throw new ApplicationException("仕訳明細の貸借組み合わせが正しくありません。");
+		}
 		//残高更新サービスに引き渡し、リポジトリに保存する
-		accountBalanceUpdator.execute(journalEntry, userId);
-		journalEntryRepository.save(journalEntry, userId);
+		accountBalanceUpdator.execute(entry, userId);
+		journalEntryRepository.save(entry, userId);
 	}
 	
 }

@@ -34,8 +34,7 @@ public class JournalEntryFactory {
 		return JournalEntry.create(
 			DealDate.valueOf(command.getDealDate()), 
 			Description.valueOf(command.getDescription()), 
-			createEntryDetails(command.getDetailCommands(), userId),
-			new JournalEntrySpecification()
+			createEntryDetails(command.getDetailCommands(), userId)
 		);
 	}
 	

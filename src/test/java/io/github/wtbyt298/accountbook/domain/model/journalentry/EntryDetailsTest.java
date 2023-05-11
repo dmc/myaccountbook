@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-
-import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 import io.github.wtbyt298.accountbook.helper.testfactory.EntryDetailTestFactory;
 
@@ -86,25 +84,6 @@ class EntryDetailsTest {
 		//then
 		assertTrue(correct.isSameTotal());
 		assertFalse(incorrect.isSameTotal());
-	}
-	
-	@Test
-	void 明細行の貸借組み合わせの可否を判断できる() {
-		//given:
-		//借方：資産　貸方：負債、収益
-		//借方：費用　貸方：負債、収益
-		//今回の例だと全てtrueになるはずである
-		List<EntryDetail> list = new ArrayList<>();
-		list.add(EntryDetailTestFactory.create(AccountingType.ASSETS, LoanType.DEBIT, 100));
-		list.add(EntryDetailTestFactory.create(AccountingType.EXPENSES, LoanType.DEBIT, 100));
-		list.add(EntryDetailTestFactory.create(AccountingType.LIABILITIES, LoanType.CREDIT, 100));
-		list.add(EntryDetailTestFactory.create(AccountingType.REVENUE, LoanType.CREDIT, 100));
-		
-		//when:
-		EntryDetails entryDetails = new EntryDetails(list);
-		
-		//then:
-		assertTrue(entryDetails.isCorrectCombination());
 	}
 
 }

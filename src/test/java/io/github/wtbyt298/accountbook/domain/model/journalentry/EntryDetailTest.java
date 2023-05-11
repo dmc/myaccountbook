@@ -2,10 +2,9 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
+import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
+import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
-import io.github.wtbyt298.accountbook.helper.testfactory.AccountTitleTestFactory;
-import io.github.wtbyt298.accountbook.helper.testfactory.SubAccountTitleTestFactory;
 
 class EntryDetailTest {
 
@@ -13,8 +12,8 @@ class EntryDetailTest {
 	void 貸借区分が借方なら借方明細と判定される() {
 		//when:
 		EntryDetail detail = new EntryDetail(
-			AccountTitleTestFactory.create("102", "普通預金", AccountingType.ASSETS), 
-			SubAccountTitleTestFactory.create("0", "その他"), 
+			AccountTitleId.valueOf("101"), 
+			SubAccountTitleId.valueOf("0"), 
 			LoanType.DEBIT, 
 			Amount.valueOf(100)
 		);
@@ -28,15 +27,40 @@ class EntryDetailTest {
 	void 貸借区分が貸方なら貸方明細と判定される() {
 		//when:
 		EntryDetail detail = new EntryDetail(
-				AccountTitleTestFactory.create("102", "普通預金", AccountingType.ASSETS), 
-				SubAccountTitleTestFactory.create("0", "その他"), 
-				LoanType.CREDIT, 
-				Amount.valueOf(100)
-			);
+			AccountTitleId.valueOf("101"), 
+			SubAccountTitleId.valueOf("0"), 
+			LoanType.CREDIT, 
+			Amount.valueOf(100)
+		);
 		
 		//then:
 		assertTrue(detail.isCredit());
 		assertFalse(detail.isDebit());
+	}
+	
+	@Test
+	void 貸借区分を反転できる() {
+		//given:借方、貸方それぞれの仕訳明細
+		EntryDetail debit = new EntryDetail(
+			AccountTitleId.valueOf("101"), 
+			SubAccountTitleId.valueOf("0"), 
+			LoanType.DEBIT, 
+			Amount.valueOf(100)
+		);
+		EntryDetail credit = new EntryDetail(
+			AccountTitleId.valueOf("101"), 
+			SubAccountTitleId.valueOf("0"), 
+			LoanType.CREDIT, 
+			Amount.valueOf(100)
+		);
+		
+		//when:貸借区分を反転させる
+		EntryDetail debitToCredit = debit.transposeLoanType();
+		EntryDetail creditToDebit = credit.transposeLoanType();
+		
+		//then:貸借区分が変更されている
+		assertEquals(LoanType.CREDIT, debitToCredit.detailLoanType());
+		assertEquals(LoanType.DEBIT, creditToDebit.detailLoanType());
 	}
 
 }
