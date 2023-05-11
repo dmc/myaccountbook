@@ -19,7 +19,7 @@ public class JournalEntryTestFactory {
 
 	public static JournalEntry create() {
 		return JournalEntry.reconstruct(
-			EntryId.newInstance(),
+			EntryId.fromString("TEST"),
 			DealDate.valueOf(LocalDate.now()), 
 			Description.valueOf("テスト用の仕訳です。"), 
 			createEntryDetails()

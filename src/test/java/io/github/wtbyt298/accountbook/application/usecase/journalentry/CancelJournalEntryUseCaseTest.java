@@ -57,8 +57,8 @@ class CancelJournalEntryUseCaseTest {
 		//given:仕訳IDに該当する仕訳は存在しない
 		when(journalEntryRepository.exists(any())).thenReturn(false);
 		
-		//when:新規生成した仕訳IDを渡してテスト対象メソッドを実行する
-		EntryId entryId = EntryId.newInstance();
+		//when:仕訳IDを渡してテスト対象メソッドを実行する
+		EntryId entryId = EntryId.fromString("TEST");
 		Exception exception = assertThrows(RuntimeException.class, () -> cancelUseCase.execute(entryId, userSession));
 		
 		//then:想定した例外が発生している
