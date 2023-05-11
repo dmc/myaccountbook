@@ -39,11 +39,7 @@ public class CreateUserUseCase {
 		UserId userId = UserId.valueOf(command.getId());
 		EncodedUserPassword userPassword = EncodedUserPassword.fromRawPassword(command.getPassword());
 		String mailAddress = command.getMailAddress();
-		return User.create(
-			userId, 
-			userPassword, 
-			mailAddress
-		);		
+		return User.create(userId, userPassword, mailAddress);		
 	}
 	
 }
