@@ -15,6 +15,15 @@ class EntryIdTest {
 	}
 	
 	@Test
+	void 空文字列で初期化すると例外発生() {
+		//when:
+		Exception exception = assertThrows(RuntimeException.class, () -> EntryId.fromString(""));
+		
+		//then:
+		assertEquals("仕訳IDが空白です。", exception.getMessage());
+	}
+	
+	@Test
 	void 保持している文字列が同一なら等価判定されハッシュ値も等しくなる() {
 		//when:
 		EntryId a = EntryId.fromString("ABC");

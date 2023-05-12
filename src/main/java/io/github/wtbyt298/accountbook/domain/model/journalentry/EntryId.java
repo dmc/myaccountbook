@@ -2,6 +2,8 @@ package io.github.wtbyt298.accountbook.domain.model.journalentry;
 
 import java.util.*;
 
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+
 /**
  * 仕訳番号クラス
  */
@@ -25,6 +27,9 @@ public class EntryId {
 	 * 再構築用のファクトリメソッド
 	 */
 	public static EntryId fromString(String value) {
+		if (value.isBlank()) {
+			throw new DomainException("仕訳IDが空白です。");
+		}
 		return new EntryId(value);
 	}
 
