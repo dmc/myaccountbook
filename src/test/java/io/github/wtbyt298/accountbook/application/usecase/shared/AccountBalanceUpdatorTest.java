@@ -68,7 +68,8 @@ class AccountBalanceUpdatorTest {
 		
 		//when:仕訳とユーザIDを渡してテスト対象メソッドを実行する
 		accountBalanceUpdator.execute(entry, user.id());
-		verify(accountRepository, times(entry.entryDetails().size())).save(captor.capture(), any());
+		final int count = entry.entryDetails().size(); //仕訳が保持している仕訳明細の数
+		verify(accountRepository, times(count)).save(captor.capture(), any()); //リポジトリのsaveメソッドに渡される値をキャプチャする
 		
 		//then:仕訳明細の金額が勘定の残高に反映されている
 		List<Account> capturedAccounts = captor.getAllValues();
