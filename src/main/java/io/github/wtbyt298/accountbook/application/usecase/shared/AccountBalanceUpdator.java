@@ -28,7 +28,7 @@ public class AccountBalanceUpdator {
 	 * 仕訳を受け取って各勘定の残高を更新する
 	 */
 	public void execute(JournalEntry entry, UserId userId) {
-		//明細1件ごとに勘定を生成し、残高を更新する
+		//明細1件ごとに勘定を生成し、残高を更新して保存する
 		for (EntryDetail each : entry.entryDetails()) {
 			Account account = createAccountFrom(each, userId, entry.fiscalYearMonth());
 			AccountingTransaction adding = new AccountingTransaction(each.detailLoanType(), each.amount());
