@@ -44,7 +44,7 @@ public class JournalEntry {
 	 * 明細の貸借を逆にした仕訳を生成する
 	 */
 	public JournalEntry toReversingJournalEntry() {
-		return JournalEntry.reconstruct(entryId, dealDate, description, entryDetails.transpose());
+		return new JournalEntry(entryId, dealDate, description, entryDetails.transpose());
 	}
 		
 	/**
