@@ -21,4 +21,10 @@ public class UserTestDataCreator {
 		return user;
 	}
 	
+	public User create(String userId) {
+		User user = UserTestFactory.create(userId);
+		userRepository.save(user);
+		return user;
+	}
+	
 }
