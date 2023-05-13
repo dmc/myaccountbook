@@ -1,62 +1,54 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlquery.accounttitle;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
-import io.github.wtbyt298.accountbook.application.query.service.accounttitle.AccountTitleAndSubAccountTitleListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleName;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleRepository;
-import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.AccountTitleTestDataCreator;
+import io.github.wtbyt298.accountbook.helper.testdatacreator.SubAccountTitleTestDataCreator;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.UserTestDataCreator;
 
 @SpringBootTest
 @Transactional
-class AccountTitleAndSubAccountTitleListJooqQueryServiceTest {
+class FetchListOfAccountTitleAndSubAccountTitleJooqQueryServiceTest {
 	
 	@Autowired
-	private AccountTitleAndSubAccountTitleListQueryService listQueryService;
+	private FetchListOfAccountTitleAndSubAccountTitleQueryService fetchListQueryService;
 
 	@Autowired
 	private AccountTitleTestDataCreator accountTitleTestDataCreator;
 	
 	@Autowired
-	private SubAccountTitleRepository subAccountTitleRepository;
+	private SubAccountTitleTestDataCreator subAccountTitleTestDataCreator;
 	
 	@Autowired
 	private UserTestDataCreator userTestDataCreator;
 	
 	@Test
-	void 勘定科目と補助科目テーブルからIDと科目名を取得できる() {
+	void ユーザIDを指定して勘定科目と補助科目のIDと名前の一覧を取得できる() {
 		//given:ユーザと勘定科目と補助科目が既に作成されている
-		User user = userTestDataCreator.create();
-		List<AccountTitle> accountTitles  = new ArrayList<>();
+		User user = userTestDataCreator.create("TEST_USER");
 		//現金は補助科目を持たない
-		AccountTitle cash = accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
-		accountTitles.add(cash);
+		accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
 		//食費は補助科目を持つ
 		AccountTitle foodExpenses = accountTitleTestDataCreator.create("401", "食費", AccountingType.EXPENSES);
-		accountTitles.add(foodExpenses);
-		SubAccountTitles subAccountTitles = new SubAccountTitles(new HashMap<>(), foodExpenses.id());
-		subAccountTitles.add(SubAccountTitleName.valueOf("食料品"));
-		subAccountTitleRepository.save(subAccountTitles, user.id());
-		
+		subAccountTitleTestDataCreator.create(foodExpenses.id(), "0", "その他", user.id());
+		subAccountTitleTestDataCreator.create(foodExpenses.id(), "1", "食料品", user.id());
+
 		//when:クエリサービスのメソッドを実行してリストを取得する
-		List<AccountTitleAndSubAccountTitleDto> dto = listQueryService.findAll(user.id());
+		List<AccountTitleAndSubAccountTitleDto> list = fetchListQueryService.findAll(user.id());
 		
 		//then:保存してある勘定科目、補助科目を取得できる
-		AccountTitleAndSubAccountTitleDto cashDto = dto.get(0);
-		AccountTitleAndSubAccountTitleDto foodExpensesDto1 = dto.get(1);
-		AccountTitleAndSubAccountTitleDto foodExpensesDto2 = dto.get(2);
+		AccountTitleAndSubAccountTitleDto cashDto = list.get(0);
+		AccountTitleAndSubAccountTitleDto foodExpensesDto1 = list.get(1);
+		AccountTitleAndSubAccountTitleDto foodExpensesDto2 = list.get(2);
 		//現金は補助科目を持たないので、補助科目IDと補助科目名はデフォルト値を使う
 		assertEquals("101", cashDto.getAccountTitleId());
 		assertEquals("現金", cashDto.getAccountTitleName());
@@ -71,6 +63,36 @@ class AccountTitleAndSubAccountTitleListJooqQueryServiceTest {
 		assertEquals("食費", foodExpensesDto2.getAccountTitleName());
 		assertEquals("1", foodExpensesDto2.getSubAccountTitleId());
 		assertEquals("食料品", foodExpensesDto2.getSubAccountTitleName());
+	}
+	
+	@Test
+	void ユーザIDに該当する補助科目が存在しない場合は勘定科目のみが取り出される() {
+		//given:ユーザが既に作成されている
+		User testUser = userTestDataCreator.create("TEST_USER");
+		User beginner = userTestDataCreator.create("BEGINNER");
+		//勘定科目が作成されている
+		accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
+		AccountTitle foodExpenses = accountTitleTestDataCreator.create("401", "食費", AccountingType.EXPENSES);
+		//ユーザID「TEST_USER」は補助科目を作成している
+		//ユーザID「BEGINNER」は補助科目を作成していない
+		subAccountTitleTestDataCreator.create(foodExpenses.id(), "0", "その他", testUser.id());
+		subAccountTitleTestDataCreator.create(foodExpenses.id(), "1", "食料品", testUser.id());
+		
+		//when:クエリサービスのメソッドを実行してリストを取得する
+		//ユーザID「BEGINNER」を指定する
+		List<AccountTitleAndSubAccountTitleDto> list = fetchListQueryService.findAll(beginner.id());
+		
+		//then:勘定科目のみが取り出されている
+		//補助科目は取り出されないので、listの要素数は2である
+		assertEquals(2, list.size());
+		assertEquals("101", list.get(0).getAccountTitleId());
+		assertEquals("現金", list.get(0).getAccountTitleName());
+		assertEquals("0", list.get(0).getSubAccountTitleId());
+		assertEquals("", list.get(0).getSubAccountTitleName());
+		assertEquals("401", list.get(1).getAccountTitleId());
+		assertEquals("食費", list.get(1).getAccountTitleName());
+		assertEquals("0", list.get(1).getSubAccountTitleId());
+		assertEquals("", list.get(1).getSubAccountTitleName());
 	}
 
 }
