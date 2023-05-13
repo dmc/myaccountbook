@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static generated.Tables.*;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
-import io.github.wtbyt298.accountbook.application.query.service.accounttitle.AccountTitleAndSubAccountTitleListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 
 /**
@@ -16,7 +16,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * DBから取得した値をDTOに詰め替えて返す
  */
 @Component
-class AccountTitleAndSubAccountTitleListJooqQueryService implements AccountTitleAndSubAccountTitleListQueryService {
+class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements FetchListOfAccountTitleAndSubAccountTitleQueryService {
 
 	@Autowired
 	private DSLContext jooq;

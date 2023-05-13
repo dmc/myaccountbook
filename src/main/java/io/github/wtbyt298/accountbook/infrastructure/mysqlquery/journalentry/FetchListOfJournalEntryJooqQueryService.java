@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
-import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchListOfJournalEntryQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 
@@ -25,7 +25,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * DBから取得した値を戻り値クラスに詰め替えて返す
  */
 @Component
-class FetchJournalEntryListJooqQueryService implements FetchJournalEntryListQueryService {
+class FetchListOfJournalEntryJooqQueryService implements FetchListOfJournalEntryQueryService {
 	
 	//TODO コードが読みにくくなっているのでリファクタリングする
 	

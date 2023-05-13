@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
-import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchListOfJournalEntryQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.presentation.response.JournalEntryView;
@@ -22,10 +22,10 @@ import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessio
  * 仕訳一覧取得処理のコントローラクラス
  */
 @Controller
-public class FetchJournalEntryListController {
+public class FetchListOfJournalEntryController {
 
 	@Autowired
-	private FetchJournalEntryListQueryService fetchQueryService;
+	private FetchListOfJournalEntryQueryService fetchQueryService;
 	
 	@Autowired
 	private UserSessionProvider userSessionProvider;

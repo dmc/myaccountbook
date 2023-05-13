@@ -9,7 +9,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * 仕訳一覧取得用のインタフェース
  * 実装クラスはインフラ層に置く
  */
-public interface FetchJournalEntryListQueryService {
+public interface FetchListOfJournalEntryQueryService {
 
 	List<JournalEntryDto> findAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId);
 	

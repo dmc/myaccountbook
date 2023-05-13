@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
-import io.github.wtbyt298.accountbook.application.query.service.accounttitle.AccountTitleAndSubAccountTitleListQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 public class RegisterJournalEntryController {
 	
 	@Autowired
-	private AccountTitleAndSubAccountTitleListQueryService listQueryService;
+	private FetchListOfAccountTitleAndSubAccountTitleQueryService listQueryService;
 	
 	@Autowired
 	private RegisterJournalEntryUseCase registerUseCase;
