@@ -26,7 +26,7 @@ public class CreateUserUseCase {
 	public void execute(CreateUserCommand command) {
 		UserId userId = UserId.valueOf(command.getId());
 		if (userRepository.exists(userId)) {
-			throw new ApplicationException("既にユーザが存在しています。");
+			throw new ApplicationException("同一IDのユーザが既に存在しています。");
 		}
 		User user = mapCommandToEntity(command);
 		userRepository.save(user);

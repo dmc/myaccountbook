@@ -62,7 +62,7 @@ class CreateUserUseCaseTest {
 		Exception exception = assertThrows(RuntimeException.class, () -> createUseCase.execute(command));
 		
 		//then:想定した例外が発生している
-		assertEquals("既にユーザが存在しています。", exception.getMessage());
+		assertEquals("同一IDのユーザが既に存在しています。", exception.getMessage());
 	}
 
 }
