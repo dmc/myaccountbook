@@ -30,6 +30,7 @@ public class WebSecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/user/signup").permitAll()
 				.requestMatchers(HttpMethod.POST, "/signup").permitAll()
 				.anyRequest().authenticated()
+			).csrf(
 		);
 		return http.build();
 	}
