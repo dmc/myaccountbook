@@ -74,7 +74,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
      * The column
      * <code>accountbook_test.journal_entries.fiscal_yearmonth</code>.
      */
-    public final TableField<JournalEntriesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(6).nullable(false), this, "");
+    public final TableField<JournalEntriesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(7).nullable(false), this, "");
 
     /**
      * The column <code>accountbook_test.journal_entries.total_amount</code>.

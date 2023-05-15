@@ -68,7 +68,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
      * The column
      * <code>accountbook_test.monthly_balances.fiscal_yearmonth</code>.
      */
-    public final TableField<MonthlyBalancesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(6), this, "");
+    public final TableField<MonthlyBalancesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(7), this, "");
 
     /**
      * The column <code>accountbook_test.monthly_balances.user_id</code>.
