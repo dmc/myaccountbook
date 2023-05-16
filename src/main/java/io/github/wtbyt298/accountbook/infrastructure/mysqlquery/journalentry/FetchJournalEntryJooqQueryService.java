@@ -16,29 +16,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
-import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchListOfJournalEntryQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
+import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 
 /**
- * 仕訳の一覧取得処理クラス
+ * 仕訳の取得処理クラス
  * DBから取得した値を戻り値クラスに詰め替えて返す
  */
 @Component
-class FetchListOfJournalEntryJooqQueryService implements FetchListOfJournalEntryQueryService {
+class FetchJournalEntryJooqQueryService implements FetchJournalEntryQueryService {
 	
 	//TODO コードが読みにくくなっているのでリファクタリングする
 	
 	@Autowired
 	private DSLContext jooq;
-
+	
 	/**
+	 * 単一の仕訳を取得する
+	 */
+	@Override
+	public JournalEntryDto fetchOne(EntryId entryId) {
+		Record result = jooq.select()
+							.from(JOURNAL_ENTRIES)
+							.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
+							.fetchOne();
+		if (result == null) {
+			throw new RuntimeException("該当する仕訳が見つかりませんでした。");
+		}
+		return new JournalEntryDto(
+			result.get(JOURNAL_ENTRIES.ENTRY_ID), 
+			result.get(JOURNAL_ENTRIES.DEAL_DATE), 
+			result.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
+			result.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
+			findEntryDetailById(entryId.value())
+		);
+	}
+
+	/**w
 	 * 仕訳の一覧を取得する
 	 * 年月を絞り込みの条件とする
 	 */
 	@Override
-	public List<JournalEntryDto> findAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
-		List<JournalEntryDto> resultList = new ArrayList<>();
+	public List<JournalEntryDto> fetchAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
+		List<JournalEntryDto> data = new ArrayList<>();
 		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
 		String yyyyMm = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
 		//ORDER BY句で並べ替えるフィールドを取得
@@ -60,9 +82,9 @@ class FetchListOfJournalEntryJooqQueryService implements FetchListOfJournalEntry
 				record.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
 				findEntryDetailById(record.get(JOURNAL_ENTRIES.ENTRY_ID))
 			);
-			resultList.add(dto);
+			data.add(dto);
 		}
-		return resultList;
+		return data;
 	}
 	
 	/**
