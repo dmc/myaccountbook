@@ -21,14 +21,16 @@ public class WebSecurityConfig {
 		http.formLogin(login -> login
 				.loginProcessingUrl("/login")
 				.loginPage("/user/login")
-				.defaultSuccessUrl("/user/home")
+				.defaultSuccessUrl("/home")
 				.permitAll()
 			).logout(logout -> logout
+				.logoutUrl("/logout")
 				.logoutSuccessUrl("/")
 			).authorizeHttpRequests(auth -> auth
 				.requestMatchers("/").permitAll()
 				.requestMatchers(HttpMethod.GET, "/user/signup").permitAll()
 				.requestMatchers(HttpMethod.POST, "/signup").permitAll()
+				.requestMatchers("/css/**", "/js/**", "/lib/**").permitAll()
 				.anyRequest().authenticated()
 			).csrf(
 		);
