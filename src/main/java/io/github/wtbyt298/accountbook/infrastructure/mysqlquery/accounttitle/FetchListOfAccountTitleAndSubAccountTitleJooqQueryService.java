@@ -26,7 +26,7 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 	 */
 	@Override
 	public List<AccountTitleAndSubAccountTitleDto> findAll(UserId userId) {
-		List<AccountTitleAndSubAccountTitleDto> list = new ArrayList<>();
+		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
 		Result<Record> result = jooq.select()
 									.from(ACCOUNTTITLES)
 									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID)
@@ -37,9 +37,9 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 			throw new RuntimeException("勘定科目と補助科目のデータの取得ができませんでした。");
 		}
 		for (Record record : result) {
-			list.add(mapRecordToDto(record));
+			data.add(mapRecordToDto(record));
 		}
-		return list;
+		return data;
 	}
 	
 	/**
