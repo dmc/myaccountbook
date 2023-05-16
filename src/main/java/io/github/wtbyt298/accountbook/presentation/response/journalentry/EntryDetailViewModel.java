@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.response;
+package io.github.wtbyt298.accountbook.presentation.response.journalentry;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.presentation.shared.util.AmountPresentationFormatter;
@@ -8,12 +8,12 @@ import lombok.Getter;
  * 仕訳明細の画面表示用クラス
  */
 @Getter
-public class EntryDetailView {
+public class EntryDetailViewModel {
 
 	private final String mergedAccountTitleName;
 	private final String amount;
 	
-	public EntryDetailView(EntryDetailDto dto) {
+	public EntryDetailViewModel(EntryDetailDto dto) {
 		this.mergedAccountTitleName = mergedName(dto.getAccountTitleName(), dto.getSubAccountTitleName());
 		this.amount = AmountPresentationFormatter.yen(dto.getAmount());
 	}

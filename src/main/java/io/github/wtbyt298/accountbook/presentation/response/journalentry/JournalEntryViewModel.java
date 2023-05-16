@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.response;
+package io.github.wtbyt298.accountbook.presentation.response.journalentry;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,16 +13,16 @@ import lombok.Getter;
  * 仕訳の画面表示用クラス
  */
 @Getter
-public class JournalEntryView {
+public class JournalEntryViewModel {
 	
 	private final String entryId;
 	private final String dealDate;
 	private final String description;
 	private final String totalAmount;
-	private final List<EntryDetailView> debitDetails = new ArrayList<>();
-	private final List<EntryDetailView> creditDetails = new ArrayList<>();
+	private final List<EntryDetailViewModel> debitDetails = new ArrayList<>();
+	private final List<EntryDetailViewModel> creditDetails = new ArrayList<>();
 	
-	public JournalEntryView(JournalEntryDto dto) {
+	public JournalEntryViewModel(JournalEntryDto dto) {
 		this.entryId = dto.getEntryId();
 		this.dealDate = dto.getDealDate().format(DateTimeFormatter.ofPattern("yyyy年M月d日"));
 		this.description = dto.getDescription();
@@ -30,9 +30,9 @@ public class JournalEntryView {
 		//仕訳明細DTOを1件ずつViewモデルに詰め替える
 		for (EntryDetailDto detailDto : dto.getEntryDetails()) {
 			if (detailDto.isDebit()) {
-				this.debitDetails.add(new EntryDetailView(detailDto));
+				this.debitDetails.add(new EntryDetailViewModel(detailDto));
 			} else {
-				this.creditDetails.add(new EntryDetailView(detailDto));
+				this.creditDetails.add(new EntryDetailViewModel(detailDto));
 			}
 		}
 	}
