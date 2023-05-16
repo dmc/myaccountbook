@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.controller.user;
+package io.github.wtbyt298.accountbook.presentation.controller.shared;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +20,12 @@ public class HomeController {
 	/**
 	 * ホーム画面を表示する
 	 */
-	@GetMapping("/user/home")
+	@GetMapping("/home")
 	public String load(Model model) {
 		UserSession userSession = userSessionProvider.getUserSession();
 		String loginUser = userSession.userId().toString();
 		model.addAttribute("loginUser", loginUser);
-		return "/user/home";
+		return "/home";
 	}
 	
 }

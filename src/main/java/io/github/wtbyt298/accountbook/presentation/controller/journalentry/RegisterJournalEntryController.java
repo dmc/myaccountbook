@@ -14,7 +14,7 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJ
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryUseCase;
 import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterEntryDetailParam;
 import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterJournalEntryParam;
-import io.github.wtbyt298.accountbook.presentation.response.MergedAccountTitleView;
+import io.github.wtbyt298.accountbook.presentation.response.accounttitle.MergedAccountTitleViewModel;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 import jakarta.validation.Valid;
 
@@ -25,34 +25,34 @@ import jakarta.validation.Valid;
 public class RegisterJournalEntryController {
 	
 	@Autowired
-	private FetchListOfAccountTitleAndSubAccountTitleQueryService listQueryService;
+	private FetchListOfAccountTitleAndSubAccountTitleQueryService fetchListQueryService;
 	
 	@Autowired
-	private RegisterJournalEntryUseCase registerUseCase;
+	private RegisterJournalEntryUseCase registerJournalEntryUseCase;
 	
 	@Autowired
 	private UserSessionProvider userSessionProvider;
 		
 	/**
-	 * ページ読み込み時の処理
+	 * 仕訳登録画面を表示する
 	 */
-	@GetMapping("/entryregisterform")
-	public String entryRegisterForm(@ModelAttribute("entryParam") RegisterJournalEntryParam param) {
-		return "entryregisterform";
+	@GetMapping("/entry/registerform")
+	public String load(@ModelAttribute("entryParam") RegisterJournalEntryParam param) {
+		return "/entry/registerform";
 	}
 	
 	/**
-	 * フォームに入力した内容で仕訳を登録する
+	 * 仕訳を登録する
 	 */
-	@PostMapping("/register")
+	@PostMapping("/entry/register")
 	public String register(@Valid @ModelAttribute("entryParam") RegisterJournalEntryParam param, BindingResult result) {
 		if (result.hasErrors()) {
-			return entryRegisterForm(param);
+			return load(param);
 		}
 		RegisterJournalEntryCommand command = mapRequestToCommand(param);
 		UserSession userSession = userSessionProvider.getUserSession();
-		registerUseCase.execute(command, userSession);
-		return "redirect:/entryregisterform";
+		registerJournalEntryUseCase.execute(command, userSession);
+		return "redirect:/entry/registerform";
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class RegisterJournalEntryController {
 	 */
 	private RegisterJournalEntryCommand mapRequestToCommand(RegisterJournalEntryParam param) {
 		List<RegisterEntryDetailCommand> detailCommands = new ArrayList<>();
-		//仕訳明細データ（ネストした要素）を詰め替える
+		//仕訳明細データを詰め替える
 		for (RegisterEntryDetailParam detailParam : param.getDetailParams()) {
 			RegisterEntryDetailCommand detailCommand = new RegisterEntryDetailCommand(
 				detailParam.getAccountTitleId(),    //勘定科目ID
@@ -81,15 +81,21 @@ public class RegisterJournalEntryController {
 	 * 勘定科目のセレクトボックスに表示するデータを取得する
 	 */
 	@ModelAttribute("selectBoxElements")
-	public List<MergedAccountTitleView> selectBoxElements() {
+	public List<MergedAccountTitleViewModel> selectBoxElements() {
 		UserSession userSession = userSessionProvider.getUserSession();
-		List<AccountTitleAndSubAccountTitleDto> fetchedData = listQueryService.findAll(userSession.userId());
-		List<MergedAccountTitleView> views = new ArrayList<>();
-		//DBから取得したデータを表示用のモデルに詰め替える
-		for (AccountTitleAndSubAccountTitleDto dto : fetchedData) {
-			views.add(new MergedAccountTitleView(dto));
+		List<AccountTitleAndSubAccountTitleDto> data = fetchListQueryService.findAll(userSession.userId());
+		return mapDtoToViewModel(data);
+	}
+	
+	/**
+	 * DBから取得したデータをViewモデルに詰め替える
+	 */
+	private List<MergedAccountTitleViewModel> mapDtoToViewModel(List<AccountTitleAndSubAccountTitleDto> data) {
+		List<MergedAccountTitleViewModel> viewModels = new ArrayList<>();
+		for (AccountTitleAndSubAccountTitleDto dto : data) {
+			viewModels.add(new MergedAccountTitleViewModel(dto));
 		}
-		return views;
+		return viewModels;
 	}
 
 }

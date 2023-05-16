@@ -17,7 +17,7 @@ import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessio
 public class CancelJournalEntryController {
 
 	@Autowired
-	private CancelJournalEntryUseCase cancelUseCase;
+	private CancelJournalEntryUseCase cancelJournalEntryUseCase;
 	
 	@Autowired
 	private UserSessionProvider userSessionProvider;
@@ -29,8 +29,8 @@ public class CancelJournalEntryController {
 	public String cancel(@PathVariable String id) {
 		EntryId entryId = EntryId.fromString(id);
 		UserSession userSession = userSessionProvider.getUserSession();
-		cancelUseCase.execute(entryId, userSession);
-		return "/";
+		cancelJournalEntryUseCase.execute(entryId, userSession);
+		return "/home";
 	}
 	
 }
