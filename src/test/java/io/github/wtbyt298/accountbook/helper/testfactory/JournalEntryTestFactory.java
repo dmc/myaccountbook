@@ -3,12 +3,10 @@ package io.github.wtbyt298.accountbook.helper.testfactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import io.github.wtbyt298.accountbook.domain.model.journalentry.DealDate;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.Description;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetails;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
@@ -16,22 +14,59 @@ import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
  * テスト用の仕訳明細インスタンスを生成するクラス
  */
 public class JournalEntryTestFactory {
-
-	public static JournalEntry create() {
-		return JournalEntry.reconstruct(
-			EntryId.fromString("TEST"),
-			DealDate.valueOf(LocalDate.now()), 
-			Description.valueOf("テスト用の仕訳です。"), 
-			createEntryDetails()
-		);
+	
+	private final DealDate dealDate;
+	private final Description description;
+	private final EntryDetails entryDetails;
+	
+	private JournalEntryTestFactory(Builder builder) {
+		this.dealDate = builder.dealDate;
+		this.description = builder.description;
+		//デフォルトでは貸借それぞれ1件ずつの明細をセットする
+		//明細が追加されていれば、それを使う
+		if (builder.elements.isEmpty()) {
+			List<EntryDetail> defaultElements = new ArrayList<>();
+			defaultElements.add(EntryDetailTestFactory.create("401", "0", LoanType.DEBIT, 1000));
+			defaultElements.add(EntryDetailTestFactory.create("101", "0", LoanType.CREDIT, 1000));
+			this.entryDetails = new EntryDetails(defaultElements);
+		} else {
+			this.entryDetails = new EntryDetails(builder.elements);
+		}
 	}
 	
-	private static EntryDetails createEntryDetails() {
-		List<EntryDetail> elements = new ArrayList<>();
-		elements.add(EntryDetailTestFactory.create(LoanType.DEBIT, 1000));
-		elements.add(EntryDetailTestFactory.create(LoanType.DEBIT, 2000));
-		elements.add(EntryDetailTestFactory.create(LoanType.CREDIT, 3000));
-		return new EntryDetails(elements);
+	private JournalEntry create() {
+		return JournalEntry.create(dealDate, description, entryDetails);
+	}
+	
+	public static class Builder {
+		
+		private DealDate dealDate = DealDate.valueOf(LocalDate.now());
+		private Description description = Description.valueOf("テスト用に作成した仕訳です。");
+		private List<EntryDetail> elements;
+		
+		public Builder() {
+			this.elements = new ArrayList<>();
+		}
+		
+		public JournalEntry build() {
+			return new JournalEntryTestFactory(this).create();
+		}
+		
+		public Builder dealDate(LocalDate dete) {
+			this.dealDate = DealDate.valueOf(dete);
+			return this;
+		}
+		
+		public Builder description(String description) {
+			this.description = Description.valueOf(description);
+			return this;
+		}
+		
+		public Builder addDetail(String parentId, String subId, LoanType loanType, int amount) {
+			this.elements.add(EntryDetailTestFactory.create(parentId, subId, loanType, amount));
+			return this;
+		}
+		
 	}
 	
 }

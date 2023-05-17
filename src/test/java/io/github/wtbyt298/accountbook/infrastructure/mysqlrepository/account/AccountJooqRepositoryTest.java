@@ -5,21 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import io.github.wtbyt298.accountbook.domain.model.account.Account;
 import io.github.wtbyt298.accountbook.domain.model.account.AccountRepository;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.DealDate;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.Description;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetails;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
@@ -27,7 +20,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.AccountTitleTestDataCreator;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.UserTestDataCreator;
-import io.github.wtbyt298.accountbook.helper.testfactory.EntryDetailTestFactory;
+import io.github.wtbyt298.accountbook.helper.testfactory.JournalEntryTestFactory;
 
 @SpringBootTest
 @Transactional
@@ -76,7 +69,11 @@ class AccountJooqRepositoryTest {
 		assertEquals(0, accountOfAssets.balance());
 		assertEquals(0, accountOfExpenses.balance());
 		//仕訳を作成して保存する
-		JournalEntry entry = createTestJournalEntry();
+		JournalEntry entry = new JournalEntryTestFactory.Builder()
+			.dealDate(LocalDate.of(2023, 4, 1))
+			.addDetail(expenses.id().value(), "0", LoanType.DEBIT, 1000)
+			.addDetail(assets.id().value(), "0", LoanType.CREDIT, 1000)
+			.build();
 		journalEntryRepository.save(entry, user.id());
 		
 		//when:再度勘定を取得する
@@ -89,17 +86,6 @@ class AccountJooqRepositoryTest {
 		//異なる会計年月の勘定を取得した場合、残高は0である
 		Account previousMonth = accountRepository.find(assets, SubAccountTitleId.valueOf("0"), user.id(), current.minusMonths(1)); //前月の現金勘定
 		assertEquals(0, previousMonth.balance());
-	}
-	
-	private JournalEntry createTestJournalEntry() {
-		List<EntryDetail> elements = new ArrayList<>();
-		elements.add(EntryDetailTestFactory.create("401", "0", LoanType.DEBIT, 1000)); //食費
-		elements.add(EntryDetailTestFactory.create("101", "0", LoanType.CREDIT, 1000)); //現金
-		return JournalEntry.create(
-			DealDate.valueOf(LocalDate.of(2023, 4, 1)), 
-			Description.valueOf("テスト用の仕訳です。"), 
-			new EntryDetails(elements)
-		);
 	}
 
 }

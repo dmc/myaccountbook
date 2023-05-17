@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +20,12 @@ import io.github.wtbyt298.accountbook.domain.model.account.AccountRepository;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.DealDate;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.Description;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetails;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 import io.github.wtbyt298.accountbook.helper.testfactory.AccountTitleTestFactory;
-import io.github.wtbyt298.accountbook.helper.testfactory.EntryDetailTestFactory;
+import io.github.wtbyt298.accountbook.helper.testfactory.JournalEntryTestFactory;
 import io.github.wtbyt298.accountbook.helper.testfactory.UserTestFactory;
 
 class AccountBalanceUpdatorTest {
@@ -59,11 +54,14 @@ class AccountBalanceUpdatorTest {
 	}
 
 	@Test
-	void test() {
+	void 仕訳を渡すと各勘定の残高が更新された状態でリポジトリに渡される() {
 		//given:
 		ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 		
-		JournalEntry entry = createTestJournalEntry();
+		JournalEntry entry = new JournalEntryTestFactory.Builder()
+			.addDetail("401", "0", LoanType.DEBIT, 1000)
+			.addDetail("101", "0", LoanType.CREDIT, 1000)
+			.build();
 		User user = UserTestFactory.create();
 		
 		//when:仕訳とユーザIDを渡してテスト対象メソッドを実行する
@@ -77,22 +75,6 @@ class AccountBalanceUpdatorTest {
 		assertEquals(1000, capturedAccounts.get(0).balance()); //費用が1000円発生しているので残高は「1000円」
 		assertEquals("101", capturedAccounts.get(1).accountTitleId().value());
 		assertEquals(-1000, capturedAccounts.get(1).balance()); //資産が1000円減少しているので残高は「-1000円」
-	}
-	
-	/**
-	 * テスト用の仕訳インスタンスを生成する
-	 * 借方　勘定科目ID：401　金額：1000円
-	 * 貸方　勘定科目ID：101　金額：1000円
-	 */
-	private JournalEntry createTestJournalEntry() {
-		List<EntryDetail> elements = new ArrayList<>();
-		elements.add(EntryDetailTestFactory.create("401", "0", LoanType.DEBIT, 1000));
-		elements.add(EntryDetailTestFactory.create("101", "0", LoanType.CREDIT, 1000));
-		return JournalEntry.create(
-			DealDate.valueOf(LocalDate.now()), 
-			Description.valueOf("テスト用の仕訳です。"), 
-			new EntryDetails(elements)
-		);
 	}
 
 }

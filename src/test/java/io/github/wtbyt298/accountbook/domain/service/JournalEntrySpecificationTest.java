@@ -2,10 +2,6 @@ package io.github.wtbyt298.accountbook.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,14 +10,10 @@ import org.mockito.MockitoAnnotations;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.DealDate;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.Description;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
-import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetails;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 import io.github.wtbyt298.accountbook.helper.testfactory.AccountTitleTestFactory;
-import io.github.wtbyt298.accountbook.helper.testfactory.EntryDetailTestFactory;
+import io.github.wtbyt298.accountbook.helper.testfactory.JournalEntryTestFactory;
 
 class JournalEntrySpecificationTest {
 
@@ -59,18 +51,14 @@ class JournalEntrySpecificationTest {
 		//借方：資産　貸方：負債、収益
 		//借方：費用　貸方：負債、収益
 		//今回の例だと全てtrueになるはずである
-		List<EntryDetail> elements = new ArrayList<>();
-		elements.add(EntryDetailTestFactory.create("101", "0", LoanType.DEBIT, 100));
-		elements.add(EntryDetailTestFactory.create("401", "0", LoanType.DEBIT, 100));
-		elements.add(EntryDetailTestFactory.create("201", "0", LoanType.CREDIT, 100));
-		elements.add(EntryDetailTestFactory.create("501", "0", LoanType.CREDIT, 100));
-		
+
 		//when:仕訳のインスタンスを生成する
-		JournalEntry entry = JournalEntry.create(
-			DealDate.valueOf(LocalDate.now()), 
-			Description.valueOf("仕様オブジェクトのテスト"), 
-			new EntryDetails(elements)
-		);
+		JournalEntry entry = new JournalEntryTestFactory.Builder()
+			.addDetail("101", "0", LoanType.DEBIT, 100)
+			.addDetail("401", "0", LoanType.DEBIT, 100)
+			.addDetail("201", "0", LoanType.CREDIT, 100)
+			.addDetail("501", "0", LoanType.CREDIT, 100)
+			.build();
 		
 		//then:仕様オブジェクトによる整合性チェックを通過する
 		assertTrue(journalEntrySpecification.isSatisfied(entry));
@@ -81,16 +69,12 @@ class JournalEntrySpecificationTest {
 		//given:
 		//借方：収益　貸方：費用
 		//今回の例だとfalseになるはずである
-		List<EntryDetail> elements = new ArrayList<>();
-		elements.add(EntryDetailTestFactory.create("501", "0", LoanType.DEBIT, 100));
-		elements.add(EntryDetailTestFactory.create("401", "0", LoanType.CREDIT, 100));
-		
+
 		//when:仕訳のインスタンスを生成する
-		JournalEntry entry = JournalEntry.create(
-			DealDate.valueOf(LocalDate.now()), 
-			Description.valueOf("仕様オブジェクトのテスト"), 
-			new EntryDetails(elements)
-		);
+		JournalEntry entry = new JournalEntryTestFactory.Builder()
+			.addDetail("501", "0", LoanType.DEBIT, 100)
+			.addDetail("401", "0", LoanType.CREDIT, 100)
+			.build();
 		
 		//then:仕様オブジェクトによる整合性チェックを通過しない
 		assertFalse(journalEntrySpecification.isSatisfied(entry));

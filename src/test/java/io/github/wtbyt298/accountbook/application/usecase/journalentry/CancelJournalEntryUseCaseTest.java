@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.application.usecase.shared.AccountBalanceUpdator;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
+import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
 import io.github.wtbyt298.accountbook.helper.testfactory.JournalEntryTestFactory;
 
@@ -39,8 +40,9 @@ class CancelJournalEntryUseCaseTest {
 	void 仕訳IDを渡すと該当する仕訳が削除される() {
 		//given:仕訳IDに該当する仕訳は存在している
 		ArgumentCaptor<EntryId> captor = ArgumentCaptor.forClass(EntryId.class);
+		JournalEntry entry = new JournalEntryTestFactory.Builder().build();
 		when(journalEntryRepository.exists(any())).thenReturn(true);
-		when(journalEntryRepository.findById(any())).thenReturn(JournalEntryTestFactory.create());
+		when(journalEntryRepository.findById(any())).thenReturn(entry);
 		
 		//when:仕訳IDを指定してテスト対象メソッドを実行する
 		EntryId entryId = EntryId.fromString("TEST");
