@@ -11,7 +11,7 @@ import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
- * テスト用の仕訳明細インスタンスを生成するクラス
+ * テスト用の仕訳インスタンスを生成するクラス
  */
 public class JournalEntryTestFactory {
 	
