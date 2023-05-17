@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
-import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
@@ -26,7 +26,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * DBから取得した値を戻り値クラスに詰め替えて返す
  */
 @Component
-class FetchJournalEntryJooqQueryService implements FetchJournalEntryQueryService {
+class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQueryService {
 	
 	//TODO コードが読みにくくなっているのでリファクタリングする
 	
@@ -60,9 +60,8 @@ class FetchJournalEntryJooqQueryService implements FetchJournalEntryQueryService
 	 */
 	@Override
 	public List<JournalEntryDto> fetchAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
-		List<JournalEntryDto> data = new ArrayList<>();
 		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
-		String yyyyMm = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
+		String yyyyMm = yearMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
 		//ORDER BY句で並べ替えるフィールドを取得
 		SortField<?> orderColumn = buildOrderColumn(orderKey);
 		Result<Record> result = jooq.select()
@@ -74,6 +73,7 @@ class FetchJournalEntryJooqQueryService implements FetchJournalEntryQueryService
 		if (result.isEmpty()) {
 			throw new RuntimeException("該当する仕訳が見つかりませんでした。");
 		}
+		List<JournalEntryDto> data = new ArrayList<>();
 		for (Record record : result) {
 			JournalEntryDto dto = new JournalEntryDto(
 				record.get(JOURNAL_ENTRIES.ENTRY_ID), 
@@ -102,12 +102,11 @@ class FetchJournalEntryJooqQueryService implements FetchJournalEntryQueryService
 			throw new RuntimeException("該当する仕訳明細が見つかりませんでした。");
 		}
 		for (Record record : result) {
-			String subAccountTitleName;
+			String subAccountTitleName = record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME);
 			//補助科目名がnullの場合は空文字列を返す
-			if (record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) == null) {
+			if (subAccountTitleName == null) {
 				subAccountTitleName = "";
 			}
-			subAccountTitleName = record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME);
 			EntryDetailDto dto = new EntryDetailDto(
 				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
 				subAccountTitleName,
@@ -127,10 +126,11 @@ class FetchJournalEntryJooqQueryService implements FetchJournalEntryQueryService
 			case DEAL_DATE:
 				return JOURNAL_ENTRIES.DEAL_DATE.asc();
 			case TOTAL_AMOUNT:
-				return JOURNAL_ENTRIES.TOTAL_AMOUNT.asc();
+				return JOURNAL_ENTRIES.TOTAL_AMOUNT.desc();
 			//ソート条件が追加された場合はここに書くこと
+			default:
+				return JOURNAL_ENTRIES.DEAL_DATE.asc();
 		}
-		return JOURNAL_ENTRIES.DEAL_DATE.asc();
 	}
 	
 }

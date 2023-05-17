@@ -10,7 +10,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  * 仕訳データ取得用のインタフェース
  * 実装クラスはインフラ層に置く
  */
-public interface FetchJournalEntryQueryService {
+public interface FetchJournalEntryDataQueryService {
 	
 	JournalEntryDto fetchOne(EntryId entryId);
 

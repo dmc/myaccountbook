@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
-import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.presentation.response.journalentry.JournalEntryViewModel;
@@ -23,7 +23,7 @@ import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessio
 public class FetchListOfJournalEntryController {
 
 	@Autowired
-	private FetchJournalEntryQueryService fetchQueryService;
+	private FetchJournalEntryDataQueryService fetchQueryService;
 	
 	@Autowired
 	private UserSessionProvider userSessionProvider;
@@ -39,8 +39,8 @@ public class FetchListOfJournalEntryController {
 			List<JournalEntryViewModel> viewModels = mapDtoToViewModel(data);
 			model.addAttribute("entries", viewModels);
 			return "/entry/entries";
-		} catch (RuntimeException e) {
-			model.addAttribute("errorMessage", e.getMessage());
+		} catch (RuntimeException exception) {
+			model.addAttribute("errorMessage", exception.getMessage());
 			return "/entry/entries";
 		}
 	}
