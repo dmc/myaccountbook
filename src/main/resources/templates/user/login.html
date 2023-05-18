@@ -2,22 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
-<title>ログイン画面</title>
+<title>ログイン</title>
+<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
-<body>
-<form th:action="@{/login}" method="post">
+<body class="text-center">
+<div class="container-fluid">
+	<h1 class="h3 mb-3 font-weight-normal">Login</h1>
+	<form th:action="@{/login}" method="post" class="form-login">
+		<input type="text" class="form-control" name="username" placeholder="User Id">
+		<input type="password" class="form-control" name="password" placeholder="Password">
+		<button type="submit" class="btn btn-lg btn-primary btn-block">ログイン</button>
+	</form>
+	<p class="err-msg" th:if="${param.error}">ユーザIDまたはパスワードが正しくありません。</p>
 	<div>
-		ユーザID<br>
-		<input type="text" name="username">
+		<p>ユーザ登録は<a th:href="@{/user/signup}">こちら</a></p>
 	</div>
-	<div>
-		パスワード<br>
-		<input type="text" name="password">
-	</div>
-	<div>
-		<input type="submit" value="ログイン">
-	</div>
-</form>
-<p th:if="${param.error}">ユーザIDもしくはパスワードが正しくありません。</p>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
+<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

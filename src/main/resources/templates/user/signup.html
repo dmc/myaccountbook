@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
 <title>ユーザ登録</title>
+<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/signup.css}">
 </head>
 <body>
-
+<div class="container-fluid">
+	<div class="text-center">
+		<h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+		<h3 class="h5 mb-3 font-weight-normal">アカウントを作成しましょう</h3>
+	</div>
+	<form th:action="@{/signup}" method="post" th:object="${userParam}" class="form-signup">
+		<div class="text-start mt-3">
+			<label class="my-1">ユーザID</label>
+			<input type="text" class="form-control" th:field="*{id}" placeholder="Your Name">
+			<p class="annotation my-1">※32文字以内</p>
+			<span class="err-msg my-1" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+		</div>
+		<div class="text-start mt-3">
+			<label class="my-1">パスワード</label>
+			<input type="password" class="form-control" th:field="*{password}" placeholder="Your Password">
+			<p class="annotation my-1">※16文字以内で、英大文字、英小文字、数字を全て含む</p>
+			<span class="err-msg my-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+		</div>
+		<div class="text-start mt-3">
+			<label class="my-1">メールアドレス</label>
+			<input type="text" class="form-control" th:field="*{mailAddress}" placeholder="xxx@example.com">
+			<span class="err-msg my-1" th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}"></span>
+		</div>
+		<button type="submit" class="btn btn-lg btn-primary btn-block">ユーザ登録</button>
+	</form>
+	<p class="err-msg" th:text="${errorMessage}"></p>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
+<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
