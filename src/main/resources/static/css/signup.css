@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+html, body {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	align-items: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #f5f5f5;
+}
+
+.form-signup {
+	width: 100%;
+	max-width: 400px;
+	padding: 15px;
+	margin: auto;
+}
+
+.form-signup .form-control {
+	position: relative;
+	box-sizing: border-box;
+	height: auto;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.form-signup .btn {
+	margin-top: 40px;
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+.annotation {
+	font-size: 0.8rem;
+}
+
+.err-msg {
+	font-size: 16px;
+	color: #ff0000;
+	font-weight: 400;
+}
