@@ -46,7 +46,7 @@ public class SignUpController {
 			);
 			createUserUseCase.execute(command);
 			autoLogin(param.getId(), param.getPassword(), request);
-			return "redirect:/home";
+			return "redirect:/user/home";
 		} catch (RuntimeException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
 			return "/user/signup";

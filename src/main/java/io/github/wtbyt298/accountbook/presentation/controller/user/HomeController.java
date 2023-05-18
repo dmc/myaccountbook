@@ -1,10 +1,9 @@
-package io.github.wtbyt298.accountbook.presentation.controller.shared;
+package io.github.wtbyt298.accountbook.presentation.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.ModelAttribute;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 
@@ -20,12 +19,18 @@ public class HomeController {
 	/**
 	 * ホーム画面を表示する
 	 */
-	@GetMapping("/home")
-	public String load(Model model) {
+	@GetMapping("/user/home")
+	public String load() {
+		return "/user/home";
+	}
+	
+	/**
+	 * ログイン中のユーザ名を返す
+	 */
+	@ModelAttribute("loginUser")
+	public String loginUser() {
 		UserSession userSession = userSessionProvider.getUserSession();
-		String loginUser = userSession.userId().toString();
-		model.addAttribute("loginUser", loginUser);
-		return "/home";
+		return userSession.userId().toString();
 	}
 	
 }
