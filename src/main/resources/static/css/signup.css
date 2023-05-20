@@ -2,14 +2,14 @@
 
 html, body {
 	height: 100%;
+	background-color: #f5f5f5;
 }
 
-body {
-	display: flex;
+.main-area {
+	text-align: center;
 	align-items: center;
-	padding-top: 40px;
+	padding-top: 80px;
 	padding-bottom: 40px;
-	background-color: #f5f5f5;
 }
 
 .form-signup {
@@ -34,6 +34,7 @@ body {
 }
 
 .form-area {
+	text-align: left;
 	margin-top: 20px;
 	margin-bottom: 20px; 
 }
@@ -44,8 +45,6 @@ body {
 	
 }
 
-.err-msg {
-	font-size: 16px;
-	color: #ff0000;
-	font-weight: 400;
+.footer {
+	background-color: #f5f5f5;
 }

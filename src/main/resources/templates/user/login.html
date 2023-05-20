@@ -4,26 +4,37 @@
 <meta charset="UTF-8">
 <title>ログイン</title>
 <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/shared.css}">
 <link rel="stylesheet" th:href="@{/css/login.css}">
 <link rel="stylesheet" th:href="@{http://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css}">
 </head>
-<body class="text-center">
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+	<a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" th:href="@{/}">Account Book Application</a>
+</header>
 <div class="container-fluid">
-	<h1 class="h3 mb-3 font-weight-normal">Login</h1>
-	<form th:action="@{/login}" method="post" class="form-login">
-		<input type="text" class="form-control" name="username" placeholder="User Id">
-		<input type="password" class="form-control" name="password" placeholder="Password">
-		<button type="submit" class="btn btn-lg btn-primary btn-block">ログイン</button>
-		<div th:if="${param.error}">
-			<div class="alert alert-danger d-flex align-items-center" role="alert">
-				<i class="bi bi-exclamation-triangle-fill"></i>
-	    		<span class="mx-2">ユーザIDまたはパスワードが正しくありません。</span>
-	    	</div>
-	    </div>	
-	</form>
-	<div>
-		<p>ユーザ登録は<a th:href="@{/user/signup}">こちら</a></p>
+	<div class="row">
+		<div class="main-area">
+			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
+			<form th:action="@{/login}" method="post" class="form-login">
+				<input type="text" class="form-control" name="username" placeholder="User Id">
+				<input type="password" class="form-control" name="password" placeholder="Password">
+				<button type="submit" class="btn btn-lg btn-primary btn-block">ログイン</button>
+				<div th:if="${param.error}">
+					<div class="alert alert-danger d-flex align-items-center" role="alert">
+						<i class="bi bi-exclamation-triangle-fill"></i>
+			    		<span class="mx-2">ユーザIDまたはパスワードが正しくありません。</span>
+			    	</div>
+			    </div>	
+			</form>
+			<div>
+				<p>ユーザ登録は<a th:href="@{/user/signup}">こちら</a></p>
+			</div>
+		</div>
 	</div>
 </div>
+<footer class="footer">
+	<div class="container"></div>
+</footer>
+<script type="text/javascript" th:src="@{/js/shared.js}"></script>
 </body>
 </html>

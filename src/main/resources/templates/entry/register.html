@@ -104,7 +104,7 @@
 							<span class="invalid-feedback" th:if="${#fields.hasErrors('dealDate')}" th:errors="*{dealDate}"></span>
 						</div>
 					</div>
-					<div class="form-group w-75">
+					<div class="form-group">
 						<label>摘要</label>
 						<input type="text" class="form-control" th:field="*{description}" th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'">
 						<div class="invalid-feedback">
@@ -122,63 +122,63 @@
 				          	<tbody>
 				          		<tr>
 				          			<td>
-				          				<table class="table table-sm" id="debit-detail-wrapper">
-				          					<tr class="w-50" id="debit-detail">
+				          				<table class="table table-sm">
+				          					<tr class="w-50" th:each="debit, stat : *{debitParams}">
 				          						<td class="col-6">
 				          							<label>勘定科目</label>
-				          							<select class="form-select" th:field="*{debitParams[0].mergedId}">
+				          							<select class="form-select" th:field="*{debitParams[__${stat.index}__].mergedId}">
 				          								<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 				          							</select>
-				          							<input type="hidden" value="DEBIT" name="debitParams[0].detailLoanType">
+				          							<input type="hidden" value="DEBIT" th:name="debitParams[__${stat.index}__].detailLoanType">
 				          						</td>
 				          						<td>
 				          							<label>金額</label>
-				          							<input type="number" class="form-control" th:field="*{debitParams[0].amount}" th:classappend="${#fields.hasErrors('debitParams[0].amount')} ? 'is-invalid'">
+				          							<input type="number" class="form-control" th:field="*{debitParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('debitParams[__${stat.index}__].amount')} ? 'is-invalid'">
 				          							<div class="invalid-feedback">
-				          								<span th:if="${#fields.hasErrors('debitParams[0].amount')}" th:errors="*{debitParams[0].amount}"></span>
+				          								<span th:if="${#fields.hasErrors('debitParams[__${stat.index}__].amount')}" th:errors="*{debitParams[__${stat.index}__].amount}"></span>
 				          							</div>
 				          						</td> 
 				          						<td>
 				          							<label></label>
-				          							<button type="button" class="form-control btn btn-sm btn-outline-secondary btn-block" onclick="">
+				          							<button type="submit" name="remove" th:value="DEBIT-__${stat.index}__" class="form-control btn btn-sm btn-outline-secondary btn-block">
 				          								<i class="bi bi-x-circle"></i>
 				          								削除
 				          							</button>
 				          						</td>
 				          					</tr>
 				          				</table>
-   										<button type="button" class="btn btn-sm btn-outline-secondary btn-block" onclick="addForm('debit-detail')">
+   										<button type="submit" name="add" value="DEBIT" class="btn btn-sm btn-outline-secondary btn-block">
 	          								<i class="bi bi-plus-circle"></i>
 	          								明細追加
 	          							</button>
 				          			</td>
 				          			<td>
 				          				<table class="table table-sm">
-				          					<tr class="w-50" id="credit-detail">
+				          					<tr class="w-50" th:each="credit, stat : *{creditParams}">
 				          						<td class="col-6">
 				          							<label>勘定科目</label>
-				          							<select class="form-select" th:field="*{creditParams[0].mergedId}">
+				          							<select class="form-select" th:field="*{creditParams[__${stat.index}__].mergedId}">
 				          								<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 				          							</select>
-				          							<input type="hidden" value="CREDIT" name="creditParams[0].detailLoanType">
+				          							<input type="hidden" value="CREDIT" th:name="creditParams[__${stat.index}__].detailLoanType">
 				          						</td>
 				          						<td>
 				          							<label>金額</label>
-				          							<input type="number" class="form-control" th:field="*{creditParams[0].amount}" th:classappend="${#fields.hasErrors('creditParams[0].amount')} ? 'is-invalid'">
+				          							<input type="number" class="form-control" th:field="*{creditParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('creditParams[__${stat.index}__].amount')} ? 'is-invalid'">
 				          							<div class="invalid-feedback">
-				          								<span th:if="${#fields.hasErrors('creditParams[0].amount')}" th:errors="*{creditParams[0].amount}"></span>
+				          								<span th:if="${#fields.hasErrors('creditParams[__${stat.index}__].amount')}" th:errors="*{creditParams[__${stat.index}__].amount}"></span>
 				          							</div>
 				          						</td>
 				          						<td>
 				          							<label></label>
-				          							<button type="button" class="form-control btn btn-sm btn-outline-secondary btn-block" onclick="">
+				          							<button type="submit" name="remove" th:value="CREDIT-__${stat.index}__" class="form-control btn btn-sm btn-outline-secondary btn-block">
 				          								<i class="bi bi-x-circle"></i>
 				          								削除
 				          							</button>
 				          						</td>				          						
 				          					</tr>
 				          				</table>
-				          				<button type="button" class="btn btn-sm btn-outline-secondary btn-block" onclick="">
+				          				<button type="submit" name="add" value="CREDIT" class="btn btn-sm btn-outline-secondary btn-block">
 	          								<i class="bi bi-plus-circle"></i>
 	          								明細追加
 	          							</button>
@@ -186,7 +186,7 @@
 				          		</tr>
 				          	</tbody>
 				        </table>
-				        <button type="submit" class="btn btn-primary btn-block col-1">登録</button>
+				        <button type="submit" class="form-control btn btn-primary btn-block col-1 my-4">登録</button>
           			</div>
 				</form>
 			</div>
