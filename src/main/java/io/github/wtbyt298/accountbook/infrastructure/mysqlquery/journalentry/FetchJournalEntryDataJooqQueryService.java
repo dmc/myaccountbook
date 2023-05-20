@@ -43,7 +43,7 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 							.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 							.fetchOne();
 		if (result == null) {
-			throw new RuntimeException("該当する仕訳が見つかりませんでした。");
+			throw new RuntimeException("該当するデータが見つかりませんでした。");
 		}
 		return new JournalEntryDto(
 			result.get(JOURNAL_ENTRIES.ENTRY_ID), 
@@ -71,7 +71,7 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 									.orderBy(orderColumn)
 									.fetch();
 		if (result.isEmpty()) {
-			throw new RuntimeException("該当する仕訳が見つかりませんでした。");
+			throw new RuntimeException("該当するデータが見つかりませんでした。");
 		}
 		List<JournalEntryDto> data = new ArrayList<>();
 		for (Record record : result) {
