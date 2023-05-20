@@ -29,13 +29,7 @@ body {
 
 .form-login .btn {
 	margin-top: 40px;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	width: 100%;
-}
-
-.err-msg {
-	font-size: 16px;
-	color: #ff0000;
-	font-weight: 400;
 }
 

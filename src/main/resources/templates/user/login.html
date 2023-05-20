@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
-<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}">
 <link rel="stylesheet" th:href="@{/css/login.css}">
+<link rel="stylesheet" th:href="@{http://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css}">
 </head>
 <body class="text-center">
 <div class="container-fluid">
@@ -13,13 +14,16 @@
 		<input type="text" class="form-control" name="username" placeholder="User Id">
 		<input type="password" class="form-control" name="password" placeholder="Password">
 		<button type="submit" class="btn btn-lg btn-primary btn-block">ログイン</button>
+		<div th:if="${param.error}">
+			<div class="alert alert-danger d-flex align-items-center" role="alert">
+				<i class="bi bi-exclamation-triangle-fill"></i>
+	    		<span class="mx-2">ユーザIDまたはパスワードが正しくありません。</span>
+	    	</div>
+	    </div>	
 	</form>
-	<p class="err-msg" th:if="${param.error}">ユーザIDまたはパスワードが正しくありません。</p>
 	<div>
 		<p>ユーザ登録は<a th:href="@{/user/signup}">こちら</a></p>
 	</div>
 </div>
-<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
-<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
