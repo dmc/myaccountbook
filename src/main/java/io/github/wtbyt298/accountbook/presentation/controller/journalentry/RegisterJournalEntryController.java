@@ -129,13 +129,4 @@ public class RegisterJournalEntryController {
 		return "/entry/register";
 	}
 	
-	/**
-	 * ログイン中のユーザ名を返す
-	 */
-	@ModelAttribute("loginUser")
-	public String loginUser() {
-		UserSession userSession = userSessionProvider.getUserSession();
-		return userSession.userId().toString();
-	}
-	
 }
