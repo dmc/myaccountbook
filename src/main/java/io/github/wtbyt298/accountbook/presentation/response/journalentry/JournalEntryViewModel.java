@@ -37,4 +37,11 @@ public class JournalEntryViewModel {
 		}
 	}
 	
+	/**
+	 * 一覧画面表示用のID
+	 */
+	public String idForView() {
+		return entryId.substring(0, 7) + "...";
+	}
+	
 }
