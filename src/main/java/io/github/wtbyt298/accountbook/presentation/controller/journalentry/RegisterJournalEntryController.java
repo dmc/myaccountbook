@@ -11,7 +11,7 @@ import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryUseCase;
-import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJournalEntryException;
 import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterEntryDetailParam;
 import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterJournalEntryParam;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
@@ -52,7 +52,7 @@ public class RegisterJournalEntryController {
 			UserSession userSession = userSessionProvider.getUserSession();
 			registerJournalEntryUseCase.execute(command, userSession);
 			return "redirect:/entry/register";
-		} catch (DomainException exception) {
+		} catch (CannotCreateJournalEntryException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
 			return load(param, model);
 		}
