@@ -1,7 +1,7 @@
 package io.github.wtbyt298.accountbook.application.shared.exception;
 
 /**
- * アプリケーション層で投げる例外クラス
+ * ユースケース内で投げる例外クラス
  * プレゼンテーション層の例外ハンドラでキャッチする
  */
 public class UseCaseException extends RuntimeException {
@@ -17,7 +17,5 @@ public class UseCaseException extends RuntimeException {
 	public String getMessage() {
 		return errorMessage;
 	}
-
-	
 	
 }
