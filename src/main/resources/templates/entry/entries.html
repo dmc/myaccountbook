@@ -113,7 +113,7 @@
 		          	<tbody>
 		            	<tr th:each="entry : ${entries}" th:object="${entry}">
 		            		<td>
-		            			<a th:href="@{/entry/entry/*{entryId}}" th:text="*{idForView}"></a>
+		            			<a th:href="@{/entry/entry/__*{entryId}__}" th:text="*{idForView}"></a>
 		            		</td>
 		              		<td th:text="*{dealDate}"></td>
 		              		<td th:text="*{description}"></td>
