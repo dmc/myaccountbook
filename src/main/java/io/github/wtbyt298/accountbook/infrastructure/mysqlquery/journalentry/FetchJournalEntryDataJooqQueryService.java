@@ -4,6 +4,8 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static generated.tables.JournalEntries.*;
 import static generated.tables.EntryDetails.*;
 import static generated.tables.Accounttitles.*;
@@ -54,7 +56,7 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 		);
 	}
 
-	/**w
+	/**
 	 * 仕訳の一覧を取得する
 	 * 年月を絞り込みの条件とする
 	 */
@@ -102,14 +104,13 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 			throw new RuntimeException("該当する仕訳明細が見つかりませんでした。");
 		}
 		for (Record record : result) {
-			String subAccountTitleName = record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME);
-			//補助科目名がnullの場合は空文字列を返す
-			if (subAccountTitleName == null) {
-				subAccountTitleName = "";
-			}
+			Optional<String> subAccountTitleId = Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
+			Optional<String> subAccountTitleName = Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME)); 
 			EntryDetailDto dto = new EntryDetailDto(
+				record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID),
 				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
-				subAccountTitleName,
+				subAccountTitleId.orElse("0"), //補助科目IDがnullの場合は"0"を返す
+				subAccountTitleName.orElse(""), //補助科目名がnullの場合は空文字列を返す
 				record.get(ENTRY_DETAILS.LOAN_TYPE),
 				record.get(ENTRY_DETAILS.AMOUNT)
 			);
