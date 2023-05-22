@@ -22,6 +22,7 @@ import io.github.wtbyt298.accountbook.application.query.service.journalentry.Fet
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 
 /**
  * 仕訳の取得処理クラス
@@ -45,7 +46,7 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 							.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 							.fetchOne();
 		if (result == null) {
-			throw new RuntimeException("該当するデータが見つかりませんでした。");
+			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
 		return new JournalEntryDto(
 			result.get(JOURNAL_ENTRIES.ENTRY_ID), 
@@ -73,7 +74,7 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 									.orderBy(orderColumn)
 									.fetch();
 		if (result.isEmpty()) {
-			throw new RuntimeException("該当するデータが見つかりませんでした。");
+			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
 		List<JournalEntryDto> data = new ArrayList<>();
 		for (Record record : result) {

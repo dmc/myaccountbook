@@ -10,6 +10,7 @@ import static generated.Tables.*;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import io.github.wtbyt298.accountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 
 /**
  * 勘定科目と補助科目の一覧取得処理クラス
@@ -34,7 +35,7 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 									.orderBy(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
 									.fetch();
 		if (result.isEmpty()) {
-			throw new RuntimeException("勘定科目と補助科目のデータの取得ができませんでした。");
+			throw new RecordNotFoundException("勘定科目と補助科目のデータの取得ができませんでした。");
 		}
 		for (Record record : result) {
 			data.add(mapRecordToDto(record));
@@ -46,20 +47,13 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 	 * 取得したレコードを戻り値のDTOクラスに詰め替える
 	 */
 	private AccountTitleAndSubAccountTitleDto mapRecordToDto(Record record) {
-		if (record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID) == null ||
-			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) == null	) {
-			return new AccountTitleAndSubAccountTitleDto(
-				record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID), 
-				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
-				"0", //補助科目が存在しない場合は
-				""   //補助科目ID："0"　補助科目名：""（空白）とする
-			);
-		}
+		Optional<String> subAccountTitleId = Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
+		Optional<String> subAccountTitleName = Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME));
  		return new AccountTitleAndSubAccountTitleDto(
 			record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID), 
-			record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME), 
-			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID), 
-			record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME) 
+			record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
+ 			subAccountTitleId.orElse("0"), //補助科目が存在しない場合、補助科目IDは"0"
+ 			subAccountTitleName.orElse("") //補助科目が存在しない場合、補助科目名は空白
 		);
 	}
 	

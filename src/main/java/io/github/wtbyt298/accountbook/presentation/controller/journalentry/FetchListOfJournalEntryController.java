@@ -16,6 +16,7 @@ import io.github.wtbyt298.accountbook.application.query.model.journalentry.Journ
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 import io.github.wtbyt298.accountbook.presentation.response.journalentry.JournalEntryViewModel;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 
@@ -67,8 +68,8 @@ public class FetchListOfJournalEntryController {
 		return viewModels;
 	}
 	
-	@ExceptionHandler(RuntimeException.class)
-	public String handleException(RuntimeException exception, Model model) {
+	@ExceptionHandler(RecordNotFoundException.class)
+	public String handleException(RecordNotFoundException exception, Model model) {
 		model.addAttribute("errorMessage", exception.getMessage());
 		return "/entry/entries";
 	}

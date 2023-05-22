@@ -10,6 +10,7 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleName;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 
 /**
  * 勘定科目のリポジトリクラス
@@ -31,7 +32,7 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
 						    .fetchOne();
 		if (result == null) {
-			throw new RuntimeException("指定した勘定科目は存在しません。");
+			throw new RecordNotFoundException("指定した勘定科目は存在しません。");
 		}
 		return mapRecordToEntity(result);
 	}
