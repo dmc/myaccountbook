@@ -88,20 +88,20 @@
 		    </div>  	        
 			<div>
 				<form id="form-register" th:action="@{/entry/correct}" method="post" th:object="${entryParam}">
-					<div class="form-group w-50">
-						<label>ID</label>
+					<div class="form-group mb-3 w-50">
+						<label class="form-label">ID</label>
 						<input type="text" class="form-control" th:value="${entryId}" disabled>
 						<input type="hidden" th:name="entryId" th:value="${entryId}">
 					</div>
-					<div class="form-group w-25">
-						<label>取引日</label>
+					<div class="form-group mb-3 w-25">
+						<label class="form-label">取引日</label>
 						<input type="date" class="form-control" id="form-date" th:field="*{dealDate}" th:classappend="${#fields.hasErrors('dealDate')} ? 'is-invalid'">
 						<div class="invalid-feedback">
 							<span class="invalid-feedback" th:if="${#fields.hasErrors('dealDate')}" th:errors="*{dealDate}"></span>
 						</div>
 					</div>
-					<div class="form-group">
-						<label>摘要</label>
+					<div class="form-group mb-3">
+						<label class="form-label">摘要</label>
 						<input type="text" class="form-control" th:field="*{description}" th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'">
 						<div class="invalid-feedback">
 							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
@@ -119,23 +119,23 @@
 				          		<tr>
 				          			<td>
 				          				<table class="table table-sm">
-				          					<tr class="w-50" th:each="debit, stat : *{debitParams}">
-				          						<td class="col-6">
-				          							<label>勘定科目</label>
+				          					<tr class="mb-3 w-50" th:each="debit, stat : *{debitParams}">
+				          						<td class="col-7">
+				          							<label class="form-label">勘定科目</label>
 				          							<select class="form-select" th:field="*{debitParams[__${stat.index}__].mergedId}">
 				          								<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 				          							</select>
 				          							<input type="hidden" value="DEBIT" th:name="debitParams[__${stat.index}__].detailLoanType">
 				          						</td>
-				          						<td>
-				          							<label>金額</label>
-				          							<input type="number" class="form-control" th:field="*{debitParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('debitParams[__${stat.index}__].amount')} ? 'is-invalid'">
+				          						<td class="col-3">
+				          							<label class="form-label">金額</label>
+				          							<input type="number" class="form-control debit-amount" th:field="*{debitParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('debitParams[__${stat.index}__].amount')} ? 'is-invalid'" onchange="showTotalAmount('debit')">
 				          							<div class="invalid-feedback">
 				          								<span th:if="${#fields.hasErrors('debitParams[__${stat.index}__].amount')}" th:errors="*{debitParams[__${stat.index}__].amount}"></span>
 				          							</div>
 				          						</td> 
 				          						<td>
-				          							<label></label>
+				          							<label class="form-label"></label>
 				          							<button type="submit" name="remove" th:value="DEBIT-__${stat.index}__" class="form-control btn btn-sm btn-outline-secondary btn-block">
 				          								<i class="bi bi-x-circle"></i>
 				          								削除
@@ -152,22 +152,22 @@
 				          			<td>
 				          				<table class="table table-sm">
 				          					<tr class="w-50" th:each="credit, stat : *{creditParams}">
-				          						<td class="col-6">
-				          							<label>勘定科目</label>
+				          						<td class="col-7">
+				          							<label class="form-label">勘定科目</label>
 				          							<select class="form-select" th:field="*{creditParams[__${stat.index}__].mergedId}">
 				          								<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 				          							</select>
 				          							<input type="hidden" value="CREDIT" th:name="creditParams[__${stat.index}__].detailLoanType">
 				          						</td>
-				          						<td>
-				          							<label>金額</label>
-				          							<input type="number" class="form-control" th:field="*{creditParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('creditParams[__${stat.index}__].amount')} ? 'is-invalid'">
+				          						<td class="col-3">
+				          							<label class="form-label">金額</label>
+				          							<input type="number" class="form-control credit-amount" th:field="*{creditParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('creditParams[__${stat.index}__].amount')} ? 'is-invalid'" onchange="showTotalAmount('credit')">
 				          							<div class="invalid-feedback">
 				          								<span th:if="${#fields.hasErrors('creditParams[__${stat.index}__].amount')}" th:errors="*{creditParams[__${stat.index}__].amount}"></span>
 				          							</div>
 				          						</td>
 				          						<td>
-				          							<label></label>
+				          							<label class="form-label"></label>
 				          							<button type="submit" name="remove" th:value="CREDIT-__${stat.index}__" class="form-control btn btn-sm btn-outline-secondary btn-block">
 				          								<i class="bi bi-x-circle"></i>
 				          								削除
@@ -184,8 +184,12 @@
 				          		</tr>
 				          	</tbody>
 				        </table>
-				        <button type="submit" class="form-control btn btn-primary btn-block col-1 my-4" onclick="activate()">この内容で再登録する</button>
-				        <button type="submit" name="cancel" class="form-control btn btn-danger btn-block col-1 my-4" onclick="showConfirmMessage()">仕訳を削除する</button>
+				        <div class="d-flex w-100">
+				        	<span class="w-50 text-end" id="debit-total"></span>
+				        	<span class="w-50 text-end" id="credit-total"></span>
+				        </div>				        
+				        <button type="submit" class="form-control btn btn-primary btn-block col-1 my-3" onclick="activate()">この内容で再登録する</button>
+				        <button type="submit" name="cancel" class="form-control btn btn-danger btn-block col-1 my-3" onclick="showConfirmMessage()">仕訳を削除する</button>
           			</div>
 				</form>
 			</div>      
@@ -195,6 +199,9 @@
 <footer class="fixed-bottom">
 	<div class="container"></div>
 </footer>
+<script type="text/javascript">
+
+</script>
 <script type="text/javascript" th:src="@{/js/shared.js}"></script>
 <script type="text/javascript" th:src="@{/js/entry.js}"></script>
 </body>
