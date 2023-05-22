@@ -1,19 +1,37 @@
 package io.github.wtbyt298.accountbook.presentation.controller.shared;
 
+import java.util.Date;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
+import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 共通の例外処理用のコントローラクラス
- * 各層で投げられた例外を処理する
  */
 @ControllerAdvice
 public class ExceptionHandlerUtilityController {
 
+	@ExceptionHandler({DomainException.class, UseCaseException.class})
+	public String handleDomainException(DomainException exception, Model model) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		model.addAttribute("status", status.value());
+		model.addAttribute("error", status.name());
+		model.addAttribute("timestamp", new Date());
+		model.addAttribute("message", exception.getMessage());
+		return "error";
+	}
+
 	@ExceptionHandler(Exception.class)
-	public String handle(Exception exception, Model model) {
-		model.addAttribute("errorMessage", exception.getMessage());
+	public String handleException(Exception exception, Model model, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		model.addAttribute("status", status.value());
+		model.addAttribute("error", status.name());
+		model.addAttribute("timestamp", new Date());
+		model.addAttribute("message", "予期せぬエラーが発生しました。");
 		return "error";
 	}
 	
