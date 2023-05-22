@@ -45,10 +45,10 @@ window.addEventListener('load', function() {
 function showTotalAmount(type) {
 	switch (type) {
 		case 'debit':
-			document.getElementById('debit-total').innerText = '借方合計：' + calculate(type) + '円';
+			document.getElementById('debit-total').innerText = '借方合計：' + calculate(type).toLocaleString() + '円';
 			break;
 		case 'credit':
-			document.getElementById('credit-total').innerText = '貸方合計：' + calculate(type) + '円';
+			document.getElementById('credit-total').innerText = '貸方合計：' + calculate(type).toLocaleString() + '円';
 			break;
 	}
 }
