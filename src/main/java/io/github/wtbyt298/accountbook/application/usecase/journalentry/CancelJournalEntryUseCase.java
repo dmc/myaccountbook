@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
-import io.github.wtbyt298.accountbook.application.shared.exception.ApplicationException;
+import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.application.usecase.shared.AccountBalanceUpdator;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
@@ -30,7 +30,7 @@ public class CancelJournalEntryUseCase {
 	@Transactional
 	public void execute(EntryId entryId, UserSession userSession) {
 		if (! journalEntryRepository.exists(entryId)) {
-			throw new ApplicationException("指定した仕訳は存在しません。");
+			throw new UseCaseException("指定した仕訳は存在しません。");
 		}
 		JournalEntry entry = journalEntryRepository.findById(entryId);
 		UserId userId = userSession.userId();
