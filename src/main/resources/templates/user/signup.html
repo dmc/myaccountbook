@@ -41,8 +41,13 @@
 					</div>
 				</div>
 				<button type="submit" class="btn btn-lg btn-primary btn-block">ユーザ登録</button>
+				<div  th:if="${errorMessage}">
+					<div class="alert alert-danger d-flex align-items-center" role="alert">
+						<i class="bi bi-exclamation-triangle-fill"></i>
+		    			<span class="mx-2" th:text="${errorMessage}"></span>
+		    		</div>
+		    	</div>
 			</form>
-			<p class="err-msg" th:text="${errorMessage}"></p>
 		</div>
 	</div>
 </div>
