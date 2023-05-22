@@ -26,10 +26,10 @@ public class RegisterJournalEntryParam {
 	private String description;
 
 	@Valid
-	private List<RegisterEntryDetailParam> debitParams;
+	private List<RegisterEntryDetailParam> debitParams = new ArrayList<>();
 	
 	@Valid
-	private List<RegisterEntryDetailParam> creditParams;
+	private List<RegisterEntryDetailParam> creditParams = new ArrayList<>();
 	
 	public List<RegisterEntryDetailParam> getEntryDetailParams() {
 		List<RegisterEntryDetailParam> list = new ArrayList<>(debitParams);
@@ -41,8 +41,6 @@ public class RegisterJournalEntryParam {
 	 * 仕訳明細パラメータを初期化する
 	 */
 	public void initList() {
-		debitParams = new ArrayList<>();
-		creditParams = new ArrayList<>();
 		debitParams.add(new RegisterEntryDetailParam());
 		creditParams.add(new RegisterEntryDetailParam());
 	}
@@ -73,6 +71,16 @@ public class RegisterJournalEntryParam {
 			if (creditParams.size() <= MIN_LIST_SIZE) return;
 			creditParams.remove(index);
 		}
+	}
+	
+	/**
+	 * リストが最大数を超えて追加されているかを判断する
+	 */
+	public boolean isFull(String type) {
+		Objects.requireNonNull(type);
+		if (type.equals("DEBIT")) return debitParams.size() >= MAX_LIST_SIZE;
+		if (type.equals("CREDIT")) return creditParams.size() >= MAX_LIST_SIZE;
+		return false;
 	}
 	
 }
