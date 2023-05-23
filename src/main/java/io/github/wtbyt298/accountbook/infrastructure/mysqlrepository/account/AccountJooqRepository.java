@@ -41,21 +41,21 @@ public class AccountJooqRepository implements AccountRepository {
 	}
 	
 	private void insertRecord(Account account, UserId userId) {
-		jooq.deleteFrom(MONTHLY_BALANCES)
-			.where(MONTHLY_BALANCES.ACCOUNTTITLE_ID.eq(account.accountTitleId().value()))
-			.and(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID.eq(account.subAccountTitleId().value()))
-			.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
-			.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.eq(account.fiscalYearMonth().toString()))
-			.execute();
-	}
-	
-	private void deleteRecord(Account account, UserId userId) {
 		jooq.insertInto(MONTHLY_BALANCES)
 			.set(MONTHLY_BALANCES.ACCOUNTTITLE_ID, account.accountTitleId().value())
 			.set(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID, account.subAccountTitleId().value())
 			.set(MONTHLY_BALANCES.USER_ID, userId.value())
 			.set(MONTHLY_BALANCES.FISCAL_YEARMONTH, account.fiscalYearMonth().toString())
 			.set(MONTHLY_BALANCES.BALANCE, account.balance())
+			.execute();
+	}
+	
+	private void deleteRecord(Account account, UserId userId) {
+		jooq.deleteFrom(MONTHLY_BALANCES)
+			.where(MONTHLY_BALANCES.ACCOUNTTITLE_ID.eq(account.accountTitleId().value()))
+			.and(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID.eq(account.subAccountTitleId().value()))
+			.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
+			.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.eq(account.fiscalYearMonth().toString()))
 			.execute();
 	}
 	

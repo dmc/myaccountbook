@@ -1,4 +1,5 @@
 package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +51,7 @@ public class FetchJournalEntryController {
 		param.setDescription(dto.getDescription());
 		for (EntryDetailDto each : dto.getEntryDetails()) {
 			RegisterEntryDetailParam detailParam = new RegisterEntryDetailParam();
-			detailParam.setMergedId(each.getAccountTitleId() + each.getSubAccountTitleId());
+			detailParam.setMergedId(each.getAccountTitleId() + "-" + each.getSubAccountTitleId());
 			detailParam.setDetailLoanType(each.getDetailLoanType().toString());
 			detailParam.setAmount(each.getAmount());
 			if (each.isDebit()) {
