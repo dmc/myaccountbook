@@ -79,7 +79,7 @@
       		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	        	<h1 class="h2">勘定科目詳細</h1>
 	        </div>
-	        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+	        <div class="fw-light justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
 	        	<h5 class="fw-light">1つの勘定科目につき、補助科目（内訳）を10個まで追加できます。</h5>
 	        </div>
 			<div th:if="${errorMessage}">
@@ -166,6 +166,10 @@
 								<div class="modal-body">
 									<input type="hidden" name="parentId" th:value="${accountTitle.id}">
 									<input type="text" class="form-control" name="appendSubAccountTitleName">
+									<p class="text-secondary">
+										※補助科目が追加されていない状態で補助科目を新規作成すると、「その他」という名前の補助科目が自動で追加されます。<br>
+										<span class="text-danger">※一度作成した補助科目は削除できません。</span>
+									</p>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
