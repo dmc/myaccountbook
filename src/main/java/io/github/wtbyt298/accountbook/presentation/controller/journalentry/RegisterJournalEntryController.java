@@ -54,7 +54,7 @@ public class RegisterJournalEntryController {
 			return "redirect:/entry/register";
 		} catch (CannotCreateJournalEntryException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
-			return load(param, model);
+			return "/entry/register";
 		}
 	}
 	
