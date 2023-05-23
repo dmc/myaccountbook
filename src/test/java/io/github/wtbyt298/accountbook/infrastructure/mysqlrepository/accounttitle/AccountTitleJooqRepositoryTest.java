@@ -2,6 +2,9 @@ package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.accounttit
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,6 +53,27 @@ class AccountTitleJooqRepositoryTest {
 		
 		//then:想定した例外が発生している
 		assertEquals("指定した勘定科目は存在しません。", exception.getMessage());
+	}
+	
+	@Test
+	void findAllメソッドで全ての勘定科目を取得できる() {
+		//given:勘定科目が複数作成されている
+		AccountTitle created1 = accountTitleTestDataCreator.create("001", "科目1", AccountingType.ASSETS);
+		AccountTitle created2 = accountTitleTestDataCreator.create("002", "科目2", AccountingType.LIABILITIES);
+		AccountTitle created3 = accountTitleTestDataCreator.create("003", "科目3", AccountingType.EQUITY);
+		AccountTitle created4 = accountTitleTestDataCreator.create("004", "科目4", AccountingType.EXPENSES);
+		AccountTitle created5 = accountTitleTestDataCreator.create("005", "科目5", AccountingType.REVENUE);
+		List<AccountTitle> created = Arrays.asList(created1, created2, created3, created4, created5);
+		
+		//when:findAllメソッドを実行して勘定科目のリストを取得する
+		List<AccountTitle> found = accountTitleRepository.findAll();
+		
+		//then:作成した勘定科目と取得した勘定科目の各属性が一致する
+		for (int i = 0; i < created.size(); i++) {
+			assertEquals(found.get(i).id(), created.get(i).id());
+			assertEquals(found.get(i).name(), created.get(i).name());
+			assertEquals(found.get(i).accountingType(), found.get(i).accountingType());
+		}
 	}
 	
 }

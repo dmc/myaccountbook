@@ -2,9 +2,12 @@ package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.accounttit
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static generated.tables.Accounttitles.*;
+import java.util.ArrayList;
+import java.util.List;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
@@ -35,6 +38,24 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 			throw new RecordNotFoundException("指定した勘定科目は存在しません。");
 		}
 		return mapRecordToEntity(result);
+	}
+	
+	/**
+	 * 全ての勘定科目を取得する
+	 */
+	@Override
+	public List<AccountTitle> findAll() {
+		Result<Record> result = jooq.select()
+									.from(ACCOUNTTITLES)
+									.fetch();
+		if (result.isEmpty()) {
+			throw new RecordNotFoundException("勘定科目が存在しません。");
+		}
+		List<AccountTitle> accountTitles = new ArrayList<>();
+		for (Record each : result) {
+			accountTitles.add(mapRecordToEntity(each));
+		}
+		return accountTitles;
 	}
 	
 	/**
