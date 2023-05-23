@@ -6,6 +6,12 @@ package io.github.wtbyt298.accountbook.domain.shared.types;
 public enum SummaryType {
 
 	BS, //貸借対照表項目
-	PL  //損益計算書項目
+	PL; //損益計算書項目
+	
+	@Override
+	public String toString() {
+		if (this.equals(BS)) return "貸借";
+		return "損益";
+	}
 	
 }

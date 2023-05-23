@@ -6,6 +6,12 @@ package io.github.wtbyt298.accountbook.domain.shared.types;
 public enum LoanType {
 	
 	DEBIT,   //借方
-	CREDIT   //貸方
+	CREDIT;  //貸方
+	
+	@Override
+	public String toString() {
+		if (this.equals(DEBIT)) return "借方";
+		return "貸方";
+	}
 
 }
