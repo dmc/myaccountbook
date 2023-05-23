@@ -84,6 +84,9 @@ public class SubAccountTitles {
 		if (! elements.containsKey(id)) {
 			throw new DomainException("指定した補助科目は存在しません。");
 		}
+		if (exists(newName)) {
+			throw new DomainException("同名の補助科目が既に存在しています。");
+		}
 		SubAccountTitle target = elements.get(id);
 		target.rename(newName);
 	}

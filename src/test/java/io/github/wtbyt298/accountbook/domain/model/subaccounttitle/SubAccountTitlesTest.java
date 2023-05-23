@@ -101,6 +101,19 @@ class SubAccountTitlesTest {
 		assertEquals("指定した補助科目は存在しません。", exception.getMessage());
 	}
 	
+	@Test
+	void 既に同名の補助科目が存在している場合は名前を変更できない() {
+		//given:「0：その他」「1：食料品」が既に追加されている
+		SubAccountTitles two = hasTwoElements();
+		
+		//when:「1：食料品」の補助科目名を「その他」に変更する
+		SubAccountTitleName newName = SubAccountTitleName.valueOf("その他");
+		Exception exception = assertThrows(RuntimeException.class, () -> two.changeSubAccountTitleName(SubAccountTitleId.valueOf("1"), newName));
+		
+		//then:想定した例外が発生している
+		assertEquals("同名の補助科目が既に存在しています。", exception.getMessage());
+	}
+	
 	//以下ヘルパーメソッド
 	
 	/**
