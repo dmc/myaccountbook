@@ -87,7 +87,7 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		Exception exception = assertThrows(RuntimeException.class, () -> fetchJournalEntryQueryService.fetchOne(entryId));
 		
 		//then:想定した例外が発生している
-		assertEquals("該当する仕訳が見つかりませんでした。", exception.getMessage());
+		assertEquals("該当するデータが見つかりませんでした。", exception.getMessage());
 	}
 	
 	@Test
@@ -129,7 +129,7 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		);
 		
 		//then:想定した例外が発生している
-		assertEquals("該当する仕訳が見つかりませんでした。", exception.getMessage());
+		assertEquals("該当するデータが見つかりませんでした。", exception.getMessage());
 	}
 	
 	@Test

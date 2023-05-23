@@ -114,7 +114,7 @@ class RegisterJournalEntryUseCaseTest {
 		Exception exception = assertThrows(RuntimeException.class, () -> registerUseCase.execute(command, userSession));
 		
 		//then:想定した例外が発生している
-		assertEquals("仕訳明細の貸借組み合わせが正しくありません。", exception.getMessage());
+		assertEquals("明細の貸借組み合わせが正しくありません。", exception.getMessage());
 	}
 	
 	private RegisterJournalEntryCommand createTestCommand() {
