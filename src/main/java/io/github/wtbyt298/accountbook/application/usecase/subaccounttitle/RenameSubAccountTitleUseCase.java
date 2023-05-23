@@ -28,9 +28,10 @@ public class RenameSubAccountTitleUseCase {
 	public void execute(RenameSubAccountTitleCommand command, UserSession userSession) {
 		AccountTitleId parentId = AccountTitleId.valueOf(command.getParentId());
 		SubAccountTitles store = subAccountTitleRepository.findCollectionByParentId(parentId, userSession.userId());
-		SubAccountTitleId childId = SubAccountTitleId.valueOf(command.getChildId());
+		SubAccountTitleId subId = SubAccountTitleId.valueOf(command.getSubId());
 		SubAccountTitleName newName = SubAccountTitleName.valueOf(command.getNewName());
-		store.changeSubAccountTitleName(childId, newName);
+		
+		store.changeSubAccountTitleName(subId, newName);
 		subAccountTitleRepository.save(store, userSession.userId());
 	}
 	

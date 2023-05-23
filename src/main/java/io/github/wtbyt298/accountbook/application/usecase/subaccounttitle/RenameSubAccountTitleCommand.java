@@ -9,12 +9,12 @@ import lombok.Getter;
 public class RenameSubAccountTitleCommand {
 
 	private final String parentId;
-	private final String childId;
+	private final String subId;
 	private final String newName;
 	
-	public RenameSubAccountTitleCommand(String parentId, String childId, String newName) {
+	public RenameSubAccountTitleCommand(String parentId, String subId, String newName) {
 		this.parentId = parentId;
-		this.childId = childId;
+		this.subId = subId;
 		this.newName = newName;
 	}
 	
