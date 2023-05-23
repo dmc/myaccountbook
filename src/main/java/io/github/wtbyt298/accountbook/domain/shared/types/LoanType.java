@@ -7,11 +7,10 @@ public enum LoanType {
 	
 	DEBIT,   //借方
 	CREDIT;  //貸方
-	
-	@Override
-	public String toString() {
+
+	public String label() {
 		if (this.equals(DEBIT)) return "借方";
 		return "貸方";
 	}
-
+	
 }

@@ -8,8 +8,7 @@ public enum SummaryType {
 	BS, //貸借対照表項目
 	PL; //損益計算書項目
 	
-	@Override
-	public String toString() {
+	public String label() {
 		if (this.equals(BS)) return "貸借";
 		return "損益";
 	}
