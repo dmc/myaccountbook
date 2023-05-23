@@ -97,8 +97,10 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 		List<EntryDetailDto> resultList = new ArrayList<>();
 		Result<Record> result = jooq.select()
 									.from(ENTRY_DETAILS)
+									.join(JOURNAL_ENTRIES).on(ENTRY_DETAILS.ENTRY_ID.eq(JOURNAL_ENTRIES.ENTRY_ID))
 									.leftOuterJoin(ACCOUNTTITLES).on(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(ACCOUNTTITLES.ACCOUNTTITLE_ID))
-									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID))
+									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
+									.and(SUB_ACCOUNTTITLES.USER_ID.eq(JOURNAL_ENTRIES.USER_ID)))
 									.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId))
 									.fetch();
 		if (result.isEmpty()) {
