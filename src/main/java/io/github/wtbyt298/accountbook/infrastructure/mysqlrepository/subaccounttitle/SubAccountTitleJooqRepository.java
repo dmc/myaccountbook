@@ -6,7 +6,7 @@ import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static generated.Tables.SUB_ACCOUNTTITLES;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
@@ -60,7 +60,7 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	 */
 	@Override
 	public SubAccountTitles findCollectionByParentId(AccountTitleId parentId, UserId userId) {
-		Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new HashMap<>();
+		Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new LinkedHashMap<>();
 		Result<Record> result = jooq.select()
 									.from(SUB_ACCOUNTTITLES)
 									.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
