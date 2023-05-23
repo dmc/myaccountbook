@@ -31,7 +31,8 @@ public class JournalEntryViewModel {
 		for (EntryDetailDto detailDto : dto.getEntryDetails()) {
 			if (detailDto.isDebit()) {
 				this.debitDetails.add(new EntryDetailViewModel(detailDto));
-			} else {
+			} 
+			if (detailDto.isCredit()) {
 				this.creditDetails.add(new EntryDetailViewModel(detailDto));
 			}
 		}
