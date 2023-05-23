@@ -57,8 +57,8 @@ public class AccountTitleDetailController {
 			accountTitle.id().value(), 
 			accountTitle.name().value(), 
 			accountTitle.accountingType().lavel(), 
-			accountTitle.accountingType().loanType().toString(), 
-			accountTitle.accountingType().summaryType().toString()
+			accountTitle.accountingType().loanType().label(), 
+			accountTitle.accountingType().summaryType().label()
 		);
 	}
 	
