@@ -2,8 +2,26 @@
  * 月別仕訳一覧画面へのリンクを作成する
  */
 window.addEventListener('load', function() {
-	var link = document.getElementById('link');
+	var link = document.getElementById('entries');
 	var url = '/entry/entries/' + currentYearMonth();
+	link.setAttribute('href', url);
+});
+
+/**
+ * 月別収支一覧画面へのリンクを作成する
+ */
+window.addEventListener('load', function() {
+	var link = document.getElementById('pl');
+	var url = '/summary/pl/' + currentYearMonth();
+	link.setAttribute('href', url);
+});
+
+/**
+ * 月別資産状況一覧画面へのリンクを作成する
+ */
+window.addEventListener('load', function() {
+	var link = document.getElementById('bs');
+	var url = '/summary/bs/' + currentYearMonth();
 	link.setAttribute('href', url);
 });
 

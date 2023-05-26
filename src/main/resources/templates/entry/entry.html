@@ -31,25 +31,25 @@
         				</a>
         			</li>        		
         			<li class="nav-item">
-        				<a class="nav-link" th:href="@{/entry/register}">
+        				<a class="nav-link active" th:href="@{/entry/register}">
         					<i class="bi bi-pencil"></i>
         					仕訳登録
         				</a>
         			</li>
         			<li class="nav-item">
-        				<a class="nav-link" id="link" th:href="@{#}">
+        				<a class="nav-link" id="entries" th:href="@{#}">
         					<i class="bi bi-file-text"></i>
         					月別仕訳一覧
         				</a>
         			</li>
         			<li class="nav-item">
-        				<a class="nav-link" th:href="@{/summary/pl}">
+        				<a class="nav-link" id="pl" th:href="@{#}">
         					<i class="bi bi-bar-chart-line"></i>
         					月別収支一覧
         				</a>
         			</li>
                 	<li class="nav-item">
-        				<a class="nav-link" th:href="@{/summary/bs}">
+        				<a class="nav-link" id="bs" th:href="@{#}">
         					<i class="bi bi-bar-chart-line"></i>
         					月別資産状況一覧
         				</a>
@@ -75,7 +75,7 @@
         		</ul>
         	</div>
 		</nav>
- 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+ 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-4">
       		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	        	<h1 class="h2">仕訳詳細</h1>
 	        </div>

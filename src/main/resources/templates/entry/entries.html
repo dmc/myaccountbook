@@ -37,19 +37,19 @@
         				</a>
         			</li>
         			<li class="nav-item">
-        				<a class="nav-link active" id="link" th:href="@{#}">
+        				<a class="nav-link active" id="entries" th:href="@{#}">
         					<i class="bi bi-file-text"></i>
         					月別仕訳一覧
         				</a>
         			</li>
         			<li class="nav-item">
-        				<a class="nav-link" th:href="@{/summary/pl}">
+        				<a class="nav-link" id="pl" th:href="@{#}">
         					<i class="bi bi-bar-chart-line"></i>
         					月別収支一覧
         				</a>
         			</li>
                 	<li class="nav-item">
-        				<a class="nav-link" th:href="@{/summary/bs}">
+        				<a class="nav-link" id="bs" th:href="@{#}">
         					<i class="bi bi-bar-chart-line"></i>
         					月別資産状況一覧
         				</a>
@@ -75,7 +75,7 @@
         		</ul>
         	</div>
 		</nav>
- 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+ 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-4">
       		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	        	<h1 class="h2">月別仕訳一覧</h1>
         		<div class="btn-toolbar mb-2 mb-md-0">
@@ -97,43 +97,43 @@
 		    	</div>
 		    </div>
  			<div class="table-responsive">
-		        <table class="table table-striped table-sm">
+		        <table class="table table-striped">
 		        	<thead>
 		            	<tr>
-		            		<th>ID</th>
 		              		<th>取引日</th>
-		              		<th>摘要</th>
-		              		<th>借方科目</th>
-		              		<th>借方金額</th>
-		              		<th>貸方科目</th>
-		              		<th>貸方金額</th>
-		              		<th>合計金額</th>
+		              		<th class="col-3">摘要</th>
+		              		<th class="col-1">借方科目</th>
+		              		<th class="text-end">借方金額</th>
+		              		<th class="col-1">貸方科目</th>
+		              		<th class="text-end">貸方金額</th>
+		              		<th class="text-end">合計金額</th>
+		              		<th></th>
 		            	</tr>	            	
 		          	</thead>
 		          	<tbody>
 		            	<tr th:each="entry : ${entries}" th:object="${entry}">
-		            		<td>
-		            			<a th:href="@{/entry/entry/__*{entryId}__}" th:text="*{idForView}"></a>
-		            		</td>
 		              		<td th:text="*{dealDate}"></td>
 		              		<td th:text="*{description}"></td>
 			              	<td colspan="2">
-			              		<table>
+			              		<table class="w-100 m-0 p-0">
 			              			<tr th:each="debit : *{debitDetails}" th:object="${debit}">
-										<td th:text="*{mergedAccountTitleName}"></td>
-										<td th:text="*{amount}"></td>		              			
+										<td class="p-0" th:text="*{mergedAccountTitleName}"></td>
+										<td class="p-0 text-end" th:text="*{amount}"></td>		              			
 			              			</tr>			              			
 			              		</table>
 			              	</td>
 		              		<td colspan="2">
-		              			<table>
+		              			<table class="w-100">
 			              			<tr th:each="credit : *{creditDetails}" th:object="${credit}">
-										<td th:text="*{mergedAccountTitleName}"></td>
-										<td th:text="*{amount}"></td>		              			
+										<td class="p-0" th:text="*{mergedAccountTitleName}"></td>
+										<td class="p-0 text-end" th:text="*{amount}"></td>		              			
 			              			</tr>
 			              		</table>
 		              		</td>
-		              		<td th:text="*{totalAmount}"></td>
+		              		<td class="text-end" th:text="*{totalAmount}"></td>
+		              		<td class="text-end">
+		            			<a th:href="@{/entry/entry/__*{entryId}__}">詳細</a>
+		            		</td>
 		            	</tr>
 		          	</tbody>
 		        </table>

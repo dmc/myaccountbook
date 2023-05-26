@@ -37,19 +37,19 @@
         				</a>
         			</li>
         			<li class="nav-item">
-        				<a class="nav-link" id="link" th:href="@{#}">
+        				<a class="nav-link" id="entries" th:href="@{#}">
         					<i class="bi bi-file-text"></i>
         					月別仕訳一覧
         				</a>
         			</li>
         			<li class="nav-item">
-        				<a class="nav-link" th:href="@{/summary/pl}">
+        				<a class="nav-link" id="pl" th:href="@{#}">
         					<i class="bi bi-bar-chart-line"></i>
         					月別収支一覧
         				</a>
         			</li>
                 	<li class="nav-item">
-        				<a class="nav-link" th:href="@{/summary/bs}">
+        				<a class="nav-link" id="bs" th:href="@{#}">
         					<i class="bi bi-bar-chart-line"></i>
         					月別資産状況一覧
         				</a>
@@ -75,7 +75,7 @@
         		</ul>
         	</div>
 		</nav>
- 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+ 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-4">
       		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	        	<h1 class="h2">勘定科目詳細</h1>
 	        </div>
@@ -89,7 +89,7 @@
 		    	</div>
 		    </div>
 		    <div class="table-responsive">
-		        <table class="table table-striped table-sm" th:object="${accountTitle}">
+		        <table class="table table-striped" th:object="${accountTitle}">
 		        	<thead>
 		            	<tr>
 		            		<th>勘定科目名</th>
@@ -167,7 +167,8 @@
 									<input type="hidden" name="parentId" th:value="${accountTitle.id}">
 									<input type="text" class="form-control" name="appendSubAccountTitleName">
 									<p class="text-secondary">
-										※補助科目が追加されていない状態で補助科目を新規作成すると、「その他」という名前の補助科目が自動で追加されます。<br>
+										※補助科目が追加されていない状態で補助科目を新規作成すると、<br>
+										「その他」という名前の補助科目が自動で追加されます。<br>
 										<span class="text-danger">※一度作成した補助科目は削除できません。</span>
 									</p>
 								</div>
