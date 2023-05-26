@@ -60,12 +60,12 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	 */
 	@Override
 	public SubAccountTitles findCollectionByParentId(AccountTitleId parentId, UserId userId) {
-		Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new LinkedHashMap<>();
 		Result<Record> result = jooq.select()
 									.from(SUB_ACCOUNTTITLES)
 									.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
 									.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 									.fetch();
+		Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new LinkedHashMap<>();
 		if (result.isEmpty()) {
 			return new SubAccountTitles(subAccountTitles, parentId); //補助科目が存在しない場合は、要素数0のコレクションを返す
 		}

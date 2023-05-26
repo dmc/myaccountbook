@@ -93,11 +93,11 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * IDに一致する仕訳明細を全て取得する
 	 */
 	private EntryDetails findEntryDetailsById(EntryId entryId) {
-		List<EntryDetail> elements = new ArrayList<>();
 		Result<Record> result = jooq.select()
 									.from(ENTRY_DETAILS)
 									.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
 									.fetch();
+		List<EntryDetail> elements = new ArrayList<>();
 		for (Record each : result) {
 			EntryDetail entryDetail = new EntryDetail(
 				AccountTitleId.valueOf(each.get(ENTRY_DETAILS.ACCOUNTTITLE_ID)), 

@@ -64,7 +64,6 @@ public class AccountJooqRepository implements AccountRepository {
 	 */
 	@Override
 	public Account find(AccountTitle accountTitle, SubAccountTitleId subId, UserId userId, YearMonth fiscalYearMonth) {
-		List<AccountingTransaction> transactionHistory = new ArrayList<>();
 		Result<Record> result = jooq.select()
 									.from(JOURNAL_ENTRIES, ENTRY_DETAILS)
 									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(ENTRY_DETAILS.ENTRY_ID))
@@ -73,6 +72,7 @@ public class AccountJooqRepository implements AccountRepository {
 										.and(JOURNAL_ENTRIES.USER_ID.eq(userId.value()))
 										.and(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(fiscalYearMonth.toString()))
 									.fetch();
+		List<AccountingTransaction> transactionHistory = new ArrayList<>();		
 		for (Record each : result) {
 			AccountingTransaction accountingTransaction = new AccountingTransaction(
 				LoanType.valueOf(each.get(ENTRY_DETAILS.LOAN_TYPE)), 

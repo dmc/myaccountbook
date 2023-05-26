@@ -27,7 +27,6 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 	 */
 	@Override
 	public List<AccountTitleAndSubAccountTitleDto> findAll(UserId userId) {
-		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
 		Result<Record> result = jooq.select()
 									.from(ACCOUNTTITLES)
 									.leftOuterJoin(SUB_ACCOUNTTITLES)
@@ -38,6 +37,7 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 		if (result.isEmpty()) {
 			throw new RecordNotFoundException("勘定科目と補助科目のデータの取得ができませんでした。");
 		}
+		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
 		for (Record each : result) {
 			data.add(mapRecordToDto(each));
 		}
