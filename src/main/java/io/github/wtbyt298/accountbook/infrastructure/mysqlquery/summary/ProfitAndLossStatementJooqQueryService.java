@@ -13,7 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.application.query.model.summary.MonthlyBalanceDto;
-import io.github.wtbyt298.accountbook.application.query.model.summary.ProfitAndLossStatementQueryService;
+import io.github.wtbyt298.accountbook.application.query.service.summary.ProfitAndLossStatementQueryService;
 import io.github.wtbyt298.accountbook.application.query.model.summary.FinancialStatement;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
