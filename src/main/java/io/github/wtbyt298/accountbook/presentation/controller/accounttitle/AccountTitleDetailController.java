@@ -14,9 +14,9 @@ import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepo
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleRepository;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitles;
-import io.github.wtbyt298.accountbook.presentation.response.accounttitle.AccountTitleViewModel;
-import io.github.wtbyt298.accountbook.presentation.response.accounttitle.SubAccountTitleViewModel;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
+import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.AccountTitleViewModel;
+import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.SubAccountTitleViewModel;
 
 /**
  * 勘定科目詳細画面のコントローラクラス

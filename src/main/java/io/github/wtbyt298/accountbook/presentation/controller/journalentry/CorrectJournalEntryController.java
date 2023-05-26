@@ -16,8 +16,8 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterE
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJournalEntryException;
-import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterEntryDetailParam;
-import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterJournalEntryParam;
+import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
+import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

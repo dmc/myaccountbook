@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserCommand;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserUseCase;
-import io.github.wtbyt298.accountbook.presentation.request.user.CreateUserParam;
+import io.github.wtbyt298.accountbook.presentation.params.user.CreateUserParam;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

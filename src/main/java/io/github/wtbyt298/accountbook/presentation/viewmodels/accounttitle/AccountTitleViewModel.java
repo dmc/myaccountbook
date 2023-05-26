@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.response.accounttitle;
+package io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle;
 
 import lombok.Getter;
 

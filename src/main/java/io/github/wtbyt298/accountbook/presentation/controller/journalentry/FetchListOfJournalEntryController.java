@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +16,8 @@ import io.github.wtbyt298.accountbook.application.query.service.journalentry.Fet
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
-import io.github.wtbyt298.accountbook.presentation.response.journalentry.JournalEntryViewModel;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
+import io.github.wtbyt298.accountbook.presentation.viewmodels.journalentry.JournalEntryViewModel;
 
 /**
  * 仕訳一覧取得処理のコントローラクラス
@@ -39,10 +38,15 @@ public class FetchListOfJournalEntryController {
 	public String load(@PathVariable String selectedYearMonth, @RequestParam(name = "orderKey", required = false) Optional<String> orderKey, Model model) {
 		//引数のselectedYearMonthには"yyyy-MM"形式の文字列を想定
 		model.addAttribute("selectedYearMonth", selectedYearMonth);
-		//デフォルトでは日付順で取得する
-		List<JournalEntryViewModel> viewModels = fetchJournalEntries(selectedYearMonth, orderKey);
-		model.addAttribute("entries", viewModels);
-		return "/entry/entries";
+		try {
+			//デフォルトでは日付順で取得する
+			List<JournalEntryViewModel> viewModels = fetchJournalEntries(selectedYearMonth, orderKey);
+			model.addAttribute("entries", viewModels);
+			return "/entry/entries";
+		} catch (RecordNotFoundException exception) {
+			model.addAttribute("errorMessage", exception.getMessage());
+			return "/entry/entries";
+		}
 	}
 	
 	/**
@@ -66,12 +70,6 @@ public class FetchListOfJournalEntryController {
 			viewModels.add(new JournalEntryViewModel(dto));
 		}
 		return viewModels;
-	}
-	
-	@ExceptionHandler(RecordNotFoundException.class)
-	public String handleException(RecordNotFoundException exception, Model model) {
-		model.addAttribute("errorMessage", exception.getMessage());
-		return "/entry/entries";
 	}
 	
 }

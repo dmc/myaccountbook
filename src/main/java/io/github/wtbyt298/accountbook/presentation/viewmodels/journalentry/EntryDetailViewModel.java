@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.response.journalentry;
+package io.github.wtbyt298.accountbook.presentation.viewmodels.journalentry;
 
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.EntryDetailDto;
 import io.github.wtbyt298.accountbook.presentation.shared.util.AmountPresentationFormatter;

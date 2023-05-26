@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import io.github.wtbyt298.accountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
-import io.github.wtbyt298.accountbook.presentation.response.accounttitle.MergedAccountTitleViewModel;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
+import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.MergedAccountTitleViewModel;
 
 /**
  * 全ての画面で共有するModelAttributeを生成するコントローラクラス

@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.response.journalentry;
+package io.github.wtbyt298.accountbook.presentation.viewmodels.journalentry;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,13 +36,6 @@ public class JournalEntryViewModel {
 				this.creditDetails.add(new EntryDetailViewModel(detailDto));
 			}
 		}
-	}
-	
-	/**
-	 * 一覧画面表示用のID
-	 */
-	public String idForView() {
-		return entryId.substring(0, 7) + "...";
 	}
 	
 }

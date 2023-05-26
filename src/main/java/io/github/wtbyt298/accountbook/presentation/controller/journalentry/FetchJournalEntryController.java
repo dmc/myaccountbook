@@ -9,8 +9,8 @@ import io.github.wtbyt298.accountbook.application.query.model.journalentry.Entry
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
-import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterEntryDetailParam;
-import io.github.wtbyt298.accountbook.presentation.request.journalentry.RegisterJournalEntryParam;
+import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
+import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
 
 /**
  * 単一の仕訳の取得処理のコントローラクラス

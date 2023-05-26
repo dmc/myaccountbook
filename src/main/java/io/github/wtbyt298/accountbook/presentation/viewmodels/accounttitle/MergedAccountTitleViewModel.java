@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.response.accounttitle;
+package io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle;
 
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import lombok.Getter;

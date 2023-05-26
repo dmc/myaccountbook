@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
-import io.github.wtbyt298.accountbook.presentation.response.accounttitle.AccountTitleViewModel;
+import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.AccountTitleViewModel;
 
 /**
  * 勘定科目一覧取得処理のコントローラクラス

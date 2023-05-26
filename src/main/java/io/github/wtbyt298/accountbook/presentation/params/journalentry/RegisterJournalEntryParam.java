@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.request.journalentry;
+package io.github.wtbyt298.accountbook.presentation.params.journalentry;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.Valid;
