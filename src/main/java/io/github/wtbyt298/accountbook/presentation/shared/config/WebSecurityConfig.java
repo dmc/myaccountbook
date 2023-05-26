@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.shared.usersession;
+package io.github.wtbyt298.accountbook.presentation.shared.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
