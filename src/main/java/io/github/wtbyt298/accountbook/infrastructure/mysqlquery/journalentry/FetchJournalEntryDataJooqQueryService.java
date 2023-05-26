@@ -1,11 +1,9 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlquery.journalentry;
 
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static generated.tables.JournalEntries.*;
 import static generated.tables.EntryDetails.*;
 import static generated.tables.Accounttitles.*;
@@ -63,13 +61,11 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 	 */
 	@Override
 	public List<JournalEntryDto> fetchAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
-		//WHERE句で絞り込むための文字列（yyyyMM形式の年月）
-		String yyyyMm = yearMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
 		//ORDER BY句で並べ替えるフィールドを取得
 		SortField<?> orderColumn = buildOrderColumn(orderKey);
 		Result<Record> result = jooq.select()
 									.from(JOURNAL_ENTRIES)
-									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yyyyMm))
+									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yearMonth.toString()))
 									.and(JOURNAL_ENTRIES.USER_ID.eq(userId.toString()))
 									.orderBy(orderColumn)
 									.fetch();
@@ -77,13 +73,13 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
 		List<JournalEntryDto> data = new ArrayList<>();
-		for (Record record : result) {
+		for (Record each : result) {
 			JournalEntryDto dto = new JournalEntryDto(
-				record.get(JOURNAL_ENTRIES.ENTRY_ID), 
-				record.get(JOURNAL_ENTRIES.DEAL_DATE), 
-				record.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
-				record.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
-				findEntryDetailById(record.get(JOURNAL_ENTRIES.ENTRY_ID))
+				each.get(JOURNAL_ENTRIES.ENTRY_ID), 
+				each.get(JOURNAL_ENTRIES.DEAL_DATE), 
+				each.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
+				each.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
+				findEntryDetailById(each.get(JOURNAL_ENTRIES.ENTRY_ID))
 			);
 			data.add(dto);
 		}
@@ -107,16 +103,16 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 		if (result.isEmpty()) {
 			throw new RuntimeException("該当する仕訳明細が見つかりませんでした。");
 		}
-		for (Record record : result) {
-			Optional<String> subAccountTitleId = Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
-			Optional<String> subAccountTitleName = Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME)); 
+		for (Record each : result) {
+			Optional<String> subAccountTitleId = Optional.ofNullable(each.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
+			Optional<String> subAccountTitleName = Optional.ofNullable(each.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME)); 
 			EntryDetailDto dto = new EntryDetailDto(
-				record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID),
-				record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
+				each.get(ACCOUNTTITLES.ACCOUNTTITLE_ID),
+				each.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
 				subAccountTitleId.orElse("0"), //補助科目IDがnullの場合は"0"を返す
 				subAccountTitleName.orElse(""), //補助科目名がnullの場合は空文字列を返す
-				record.get(ENTRY_DETAILS.LOAN_TYPE),
-				record.get(ENTRY_DETAILS.AMOUNT)
+				each.get(ENTRY_DETAILS.LOAN_TYPE),
+				each.get(ENTRY_DETAILS.AMOUNT)
 			);
 			resultList.add(dto);
 		}

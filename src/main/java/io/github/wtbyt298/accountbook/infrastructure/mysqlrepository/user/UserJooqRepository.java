@@ -57,8 +57,7 @@ class UserJooqRepository implements UserRepository {
 							.from(USERS)
 							.where(USERS.USER_ID.eq(userId.value()))
 							.fetchOne();
-		User user = mapRecordToEntity(result);
-		return user;
+		return mapRecordToEntity(result);
 	}
 
 	/**

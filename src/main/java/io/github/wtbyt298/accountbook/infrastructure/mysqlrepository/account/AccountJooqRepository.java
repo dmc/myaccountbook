@@ -53,9 +53,9 @@ public class AccountJooqRepository implements AccountRepository {
 	private void deleteRecord(Account account, UserId userId) {
 		jooq.deleteFrom(MONTHLY_BALANCES)
 			.where(MONTHLY_BALANCES.ACCOUNTTITLE_ID.eq(account.accountTitleId().value()))
-			.and(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID.eq(account.subAccountTitleId().value()))
-			.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
-			.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.eq(account.fiscalYearMonth().toString()))
+				.and(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID.eq(account.subAccountTitleId().value()))
+				.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
+				.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.eq(account.fiscalYearMonth().toString()))
 			.execute();
 	}
 	
@@ -68,10 +68,10 @@ public class AccountJooqRepository implements AccountRepository {
 		Result<Record> result = jooq.select()
 									.from(JOURNAL_ENTRIES, ENTRY_DETAILS)
 									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(ENTRY_DETAILS.ENTRY_ID))
-									.and(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(accountTitle.id().value()))
-									.and(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(subId.value()))
-									.and(JOURNAL_ENTRIES.USER_ID.eq(userId.value()))
-									.and(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(fiscalYearMonth.toString()))
+										.and(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(accountTitle.id().value()))
+										.and(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(subId.value()))
+										.and(JOURNAL_ENTRIES.USER_ID.eq(userId.value()))
+										.and(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(fiscalYearMonth.toString()))
 									.fetch();
 		for (Record each : result) {
 			AccountingTransaction accountingTransaction = new AccountingTransaction(

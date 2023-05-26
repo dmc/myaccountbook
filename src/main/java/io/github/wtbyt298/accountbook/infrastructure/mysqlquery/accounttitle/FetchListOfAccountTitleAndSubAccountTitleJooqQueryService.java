@@ -30,15 +30,16 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
 		Result<Record> result = jooq.select()
 									.from(ACCOUNTTITLES)
-									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID)
-									.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.toString())))
+									.leftOuterJoin(SUB_ACCOUNTTITLES)
+										.on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID)
+										.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.toString())))
 									.orderBy(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
 									.fetch();
 		if (result.isEmpty()) {
 			throw new RecordNotFoundException("勘定科目と補助科目のデータの取得ができませんでした。");
 		}
-		for (Record record : result) {
-			data.add(mapRecordToDto(record));
+		for (Record each : result) {
+			data.add(mapRecordToDto(each));
 		}
 		return data;
 	}

@@ -39,14 +39,14 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 			.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.execute();
 		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.elements().entrySet()) {
-			insertIntoTable(each.getValue(), subAccountTitles.parentId(), userId);
+			insertRecord(each.getValue(), subAccountTitles.parentId(), userId);
 		}
 	}
 	
 	/**
 	 * 補助科目テーブルにデータを挿入する
 	 */
-	private void insertIntoTable(SubAccountTitle subAccountTitle, AccountTitleId parentId, UserId userId) {
+	private void insertRecord(SubAccountTitle subAccountTitle, AccountTitleId parentId, UserId userId) {
 		jooq.insertInto(SUB_ACCOUNTTITLES)
 			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID, subAccountTitle.id().value())
 			.set(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID, parentId.value())
@@ -95,8 +95,8 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 		Record result = jooq.select()
 							.from(SUB_ACCOUNTTITLES)
 							.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
-							.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
-							.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+								.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
+								.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 							.fetchOne();
 		if (id.value().equals("0") && result == null) return true; //補助科目を持たない場合、「0：補助科目なし」を持っていると考える
 		if (result == null) return false; //補助科目を持っているが、該当のIDがテーブルに存在しない場合は単純にfalseを返す

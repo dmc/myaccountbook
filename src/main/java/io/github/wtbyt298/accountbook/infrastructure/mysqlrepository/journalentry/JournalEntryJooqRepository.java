@@ -38,14 +38,14 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	@Override
 	public void save(JournalEntry entry, UserId userId) {
-		insertIntoJournalEntries(entry, userId);
-		insertIntoEntryDetails(entry);
+		insertRecord(entry, userId);
+		insertRecordOfDetails(entry);
 	}
 	
 	/**
 	 * 仕訳テーブルにデータを挿入する
 	 */
-	private void insertIntoJournalEntries(JournalEntry entry, UserId userId) {
+	private void insertRecord(JournalEntry entry, UserId userId) {
 		jooq.insertInto(JOURNAL_ENTRIES)
 			.set(JOURNAL_ENTRIES.ENTRY_ID, entry.id().value())
 			.set(JOURNAL_ENTRIES.DEAL_DATE, entry.dealDate().value())
@@ -59,7 +59,7 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	/**
 	 * 仕訳明細テーブルにデータを挿入する
 	 */
-	private void insertIntoEntryDetails(JournalEntry entry) {
+	private void insertRecordOfDetails(JournalEntry entry) {
 		List<EntryDetail> entryDetails = entry.entryDetails();
 		for (EntryDetail detail : entryDetails) {
 			jooq.insertInto(ENTRY_DETAILS)
