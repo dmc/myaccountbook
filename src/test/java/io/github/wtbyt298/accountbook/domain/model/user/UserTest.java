@@ -29,7 +29,7 @@ class UserTest {
 		//when:
 		User user = User.reconstruct(
 			UserId.valueOf("TEST_USER"), 
-			EncodedUserPassword.valueOf("DBから取得したパスワードハッシュ"), 
+			EncodedUserPassword.fromHashedPassword("DBから取得したパスワードハッシュ"), 
 			"test@example.com",
 			UserStatus.ACTIVE
 		);

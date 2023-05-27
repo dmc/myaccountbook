@@ -31,7 +31,7 @@ public class EncodedUserPassword {
 	/**
 	 * 再構築用のファクトリメソッド
 	 */
-	public static EncodedUserPassword valueOf(String value) {
+	public static EncodedUserPassword fromHashedPassword(String value) {
 		return new EncodedUserPassword(value);
 	}
 	
