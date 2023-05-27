@@ -2,13 +2,14 @@ package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.subaccount
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static generated.Tables.SUB_ACCOUNTTITLES;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
@@ -36,7 +37,7 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 		//一旦DELETEして再度INSERTする実装とする
 		jooq.deleteFrom(SUB_ACCOUNTTITLES)
 			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(subAccountTitles.parentId().value()))
-			.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.execute();
 		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.elements().entrySet()) {
 			insertRecord(each.getValue(), subAccountTitles.parentId(), userId);
@@ -60,25 +61,23 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	 */
 	@Override
 	public SubAccountTitles findCollectionByParentId(AccountTitleId parentId, UserId userId) {
-		Result<Record> result = jooq.select()
-									.from(SUB_ACCOUNTTITLES)
-									.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
-									.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
-									.fetch();
-		Map<SubAccountTitleId, SubAccountTitle> subAccountTitles = new LinkedHashMap<>();
-		if (result.isEmpty()) {
-			return new SubAccountTitles(subAccountTitles, parentId); //補助科目が存在しない場合は、要素数0のコレクションを返す
+		List<SubAccountTitle> entities = jooq.select()
+			.from(SUB_ACCOUNTTITLES)
+			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
+			.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+			.fetch()
+			.map(record -> mapRecordToEntity(record));
+		if (entities.isEmpty()) {
+			return new SubAccountTitles(new LinkedHashMap<>(), parentId); //補助科目が存在しない場合は、要素数0のコレクションを返す
 		}
-		for (Record each : result) {
-			SubAccountTitleId id = SubAccountTitleId.valueOf(each.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
-			SubAccountTitle subAccountTitle = mapRecordToEntity(each);
-			subAccountTitles.put(id, subAccountTitle);
-		}
-		return new SubAccountTitles(subAccountTitles, parentId);
+		//補助科目の並び順を維持するためLinkedHashMapに変換する
+		Map<SubAccountTitleId, SubAccountTitle> mapOfEntity = entities.stream()
+			.collect(Collectors.toMap(each -> each.id(), each -> each, (e1, e2) -> e1, LinkedHashMap::new));
+		return new SubAccountTitles(mapOfEntity, parentId);
 	}
 	
 	/**
-	 * 補助科目のインスタンスを組み立てる
+	 * レコードをエンティティに詰め替える
 	 */
 	private SubAccountTitle mapRecordToEntity(Record record) {
 		return new SubAccountTitle(
@@ -93,11 +92,11 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	@Override
 	public boolean exists(AccountTitleId parentId, SubAccountTitleId id, UserId userId) {
 		Record result = jooq.select()
-							.from(SUB_ACCOUNTTITLES)
-							.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
-								.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
-								.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
-							.fetchOne();
+			.from(SUB_ACCOUNTTITLES)
+			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
+				.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
+				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+			.fetchOne();
 		if (id.value().equals("0") && result == null) return true; //補助科目を持たない場合、「0：補助科目なし」を持っていると考える
 		if (result == null) return false; //補助科目を持っているが、該当のIDがテーブルに存在しない場合は単純にfalseを返す
 		return true;

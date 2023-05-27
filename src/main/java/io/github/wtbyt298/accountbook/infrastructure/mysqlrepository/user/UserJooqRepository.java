@@ -53,40 +53,36 @@ class UserJooqRepository implements UserRepository {
 	 */
 	@Override
 	public User findById(UserId userId) {
-		Record result = jooq.select()
-							.from(USERS)
-							.where(USERS.USER_ID.eq(userId.value()))
-							.fetchOne();
-		return mapRecordToEntity(result);
+		return jooq.select()
+			.from(USERS)
+			.where(USERS.USER_ID.eq(userId.value()))
+			.fetchOne()
+			.map(record -> mapRecordToEntity(record));
 	}
 
+	/**
+	 * レコードをエンティティに詰め替える
+	 */
+	private User mapRecordToEntity(Record record) {
+		return User.reconstruct(
+			UserId.valueOf(record.get(USERS.USER_ID)),
+			EncodedUserPassword.fromHashedPassword(record.get(USERS.HASHED_PASSWORD)),
+			record.get(USERS.MAIL_ADDRESS),
+			UserStatus.valueOf(record.get(USERS.USER_STATUS))
+		);
+	}
+	
 	/**
 	 * ユーザが存在するかどうかを判断する
 	 */
 	@Override
 	public boolean exists(UserId userId) {
 		final int resultCount = jooq.select()
-									.from(USERS)
-									.where(USERS.USER_ID.eq(userId.value()))
-									.execute();
+			.from(USERS)
+			.where(USERS.USER_ID.eq(userId.value()))
+			.execute();
 		if (resultCount >= 1) return true;
 		return false;
-	}
-	
-	/**
-	 * ユーザのインスタンスを組み立てる
-	 */
-	private User mapRecordToEntity(Record record) {
-		UserId userId = UserId.valueOf(record.get(USERS.USER_ID));
-		EncodedUserPassword encodedUserPassword = EncodedUserPassword.valueOf(record.get(USERS.HASHED_PASSWORD));
-		String mailAddress = record.get(USERS.MAIL_ADDRESS);
-		UserStatus userStatus = UserStatus.valueOf(record.get(USERS.USER_STATUS));
-		return User.reconstruct(
-			userId,
-			encodedUserPassword,
-			mailAddress,
-			userStatus
-		);
 	}
 
 }

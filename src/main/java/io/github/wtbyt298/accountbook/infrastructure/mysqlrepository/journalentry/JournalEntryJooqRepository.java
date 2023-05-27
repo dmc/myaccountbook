@@ -1,11 +1,9 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.journalentry;
 
 import static generated.tables.JournalEntries.*;
-import java.util.ArrayList;
 import java.util.List;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static generated.tables.EntryDetails.*;
@@ -61,13 +59,13 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	private void insertRecordOfDetails(JournalEntry entry) {
 		List<EntryDetail> entryDetails = entry.entryDetails();
-		for (EntryDetail detail : entryDetails) {
+		for (EntryDetail each : entryDetails) {
 			jooq.insertInto(ENTRY_DETAILS)
 				.set(ENTRY_DETAILS.ENTRY_ID, entry.id().value())
-				.set(ENTRY_DETAILS.ACCOUNTTITLE_ID, detail.accountTitleId().value())
-				.set(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID, detail.subAccountTitleId().value())
-				.set(ENTRY_DETAILS.LOAN_TYPE, detail.detailLoanType().toString())
-				.set(ENTRY_DETAILS.AMOUNT, detail.amount().value())
+				.set(ENTRY_DETAILS.ACCOUNTTITLE_ID, each.accountTitleId().value())
+				.set(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID, each.subAccountTitleId().value())
+				.set(ENTRY_DETAILS.LOAN_TYPE, each.detailLoanType().toString())
+				.set(ENTRY_DETAILS.AMOUNT, each.amount().value())
 				.execute();
 		}
 	}
@@ -77,9 +75,9 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	public JournalEntry findById(EntryId entryId) {
 		Record result = jooq.select()
-							.from(JOURNAL_ENTRIES)
-							.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
-							.fetchOne();
+			.from(JOURNAL_ENTRIES)
+			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
+			.fetchOne();
 		EntryDetails entryDetails = findEntryDetailsById(entryId);
 		return JournalEntry.reconstruct(
 			EntryId.fromString(result.get(JOURNAL_ENTRIES.ENTRY_ID)), 
@@ -93,21 +91,24 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * IDに一致する仕訳明細を全て取得する
 	 */
 	private EntryDetails findEntryDetailsById(EntryId entryId) {
-		Result<Record> result = jooq.select()
-									.from(ENTRY_DETAILS)
-									.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
-									.fetch();
-		List<EntryDetail> elements = new ArrayList<>();
-		for (Record each : result) {
-			EntryDetail entryDetail = new EntryDetail(
-				AccountTitleId.valueOf(each.get(ENTRY_DETAILS.ACCOUNTTITLE_ID)), 
-				SubAccountTitleId.valueOf(each.get(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID)), 
-				LoanType.valueOf(each.get(ENTRY_DETAILS.LOAN_TYPE)), 
-				Amount.valueOf(each.get(ENTRY_DETAILS.AMOUNT))
-			);
-			elements.add(entryDetail);
-		}
+		List<EntryDetail> elements = jooq.select()
+			.from(ENTRY_DETAILS)
+			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
+			.fetch()
+			.map(record -> mapRecordToEntity(record));
 		return new EntryDetails(elements);
+	}
+	
+	/**
+	 * レコードをエンティティに詰め替える
+	 */
+	private EntryDetail mapRecordToEntity(Record record) {
+		return new EntryDetail(
+			AccountTitleId.valueOf(record.get(ENTRY_DETAILS.ACCOUNTTITLE_ID)), 
+			SubAccountTitleId.valueOf(record.get(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID)), 
+			LoanType.valueOf(record.get(ENTRY_DETAILS.LOAN_TYPE)), 
+			Amount.valueOf(record.get(ENTRY_DETAILS.AMOUNT))
+		);
 	}
 
 	/**
@@ -128,9 +129,10 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	@Override
 	public boolean exists(EntryId entryId) {
-		final int resultCount = jooq.selectFrom(JOURNAL_ENTRIES)
-									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
-									.execute();
+		final int resultCount = jooq.select()
+			.from(JOURNAL_ENTRIES)
+			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
+			.execute();
 		if (resultCount == 0) return false;
 		return true;
 	}

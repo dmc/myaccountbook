@@ -1,14 +1,12 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlrepository.account;
 
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 import static generated.tables.JournalEntries.*;
 import static generated.tables.EntryDetails.*;
 import static generated.tables.MonthlyBalances.*;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import io.github.wtbyt298.accountbook.domain.model.account.Account;
@@ -64,23 +62,26 @@ public class AccountJooqRepository implements AccountRepository {
 	 */
 	@Override
 	public Account find(AccountTitle accountTitle, SubAccountTitleId subId, UserId userId, YearMonth fiscalYearMonth) {
-		Result<Record> result = jooq.select()
-									.from(JOURNAL_ENTRIES, ENTRY_DETAILS)
-									.where(JOURNAL_ENTRIES.ENTRY_ID.eq(ENTRY_DETAILS.ENTRY_ID))
-										.and(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(accountTitle.id().value()))
-										.and(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(subId.value()))
-										.and(JOURNAL_ENTRIES.USER_ID.eq(userId.value()))
-										.and(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(fiscalYearMonth.toString()))
-									.fetch();
-		List<AccountingTransaction> transactionHistory = new ArrayList<>();		
-		for (Record each : result) {
-			AccountingTransaction accountingTransaction = new AccountingTransaction(
-				LoanType.valueOf(each.get(ENTRY_DETAILS.LOAN_TYPE)), 
-				Amount.valueOf(each.get(ENTRY_DETAILS.AMOUNT))
-			);
-			transactionHistory.add(accountingTransaction);
-		}
-		return new Account(accountTitle, subId, fiscalYearMonth, transactionHistory);
+		List<AccountingTransaction> elements = jooq.select()
+			.from(JOURNAL_ENTRIES, ENTRY_DETAILS)
+			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(ENTRY_DETAILS.ENTRY_ID))
+				.and(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(accountTitle.id().value()))
+				.and(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(subId.value()))
+				.and(JOURNAL_ENTRIES.USER_ID.eq(userId.value()))
+				.and(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(fiscalYearMonth.toString()))
+			.fetch()
+			.map(record -> mapRecordToEntity(record));
+		return new Account(accountTitle, subId, fiscalYearMonth, elements);
+	}
+	
+	/**
+	 * レコードをエンティティに詰め替える
+	 */
+	private AccountingTransaction mapRecordToEntity(Record record) {
+		return new AccountingTransaction(
+			LoanType.valueOf(record.get(ENTRY_DETAILS.LOAN_TYPE)), 
+			Amount.valueOf(record.get(ENTRY_DETAILS.AMOUNT))
+		);
 	}
 
 }
