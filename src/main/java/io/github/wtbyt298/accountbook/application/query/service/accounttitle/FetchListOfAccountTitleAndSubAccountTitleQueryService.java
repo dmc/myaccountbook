@@ -11,6 +11,6 @@ import io.github.wtbyt298.accountbook.domain.model.user.UserId;
  */
 public interface FetchListOfAccountTitleAndSubAccountTitleQueryService {
 
-	List<AccountTitleAndSubAccountTitleDto> findAll(UserId userId);
+	List<AccountTitleAndSubAccountTitleDto> fetchAll(UserId userId);
 	
 }

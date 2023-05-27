@@ -40,7 +40,7 @@ public class ModelAttributeUtilityController {
 	@ModelAttribute("selectBoxElements")
 	public List<MergedAccountTitleViewModel> selectBoxElements() {
 		UserSession userSession = userSessionProvider.getUserSession();
-		List<AccountTitleAndSubAccountTitleDto> data = fetchListQueryService.findAll(userSession.userId());
+		List<AccountTitleAndSubAccountTitleDto> data = fetchListQueryService.fetchAll(userSession.userId());
 		return mapDtoToViewModel(data);
 	}
 	
