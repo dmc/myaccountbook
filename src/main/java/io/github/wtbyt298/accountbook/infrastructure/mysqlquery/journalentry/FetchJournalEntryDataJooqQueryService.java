@@ -1,7 +1,6 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlquery.journalentry;
 
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static generated.tables.JournalEntries.*;
@@ -29,8 +28,6 @@ import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotF
 @Component
 class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQueryService {
 	
-	//TODO コードが読みにくくなっているのでリファクタリングする
-	
 	@Autowired
 	private DSLContext jooq;
 	
@@ -39,84 +36,85 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 	 */
 	@Override
 	public JournalEntryDto fetchOne(EntryId entryId) {
-		Record result = jooq.select()
-							.from(JOURNAL_ENTRIES)
-							.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
-							.fetchOne();
-		if (result == null) {
+		Record record = jooq.select()
+			.from(JOURNAL_ENTRIES)
+			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
+			.fetchOne();
+		if (record == null) {
 			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
-		return new JournalEntryDto(
-			result.get(JOURNAL_ENTRIES.ENTRY_ID), 
-			result.get(JOURNAL_ENTRIES.DEAL_DATE), 
-			result.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
-			result.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
-			findEntryDetailById(entryId.value())
-		);
+		return mapRecordToDto(record, entryId.value());
 	}
-
+	
 	/**
 	 * 仕訳の一覧を取得する
-	 * 年月を絞り込みの条件とする
 	 */
 	@Override
 	public List<JournalEntryDto> fetchAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
 		//ORDER BY句で並べ替えるフィールドを取得
 		SortField<?> orderColumn = buildOrderColumn(orderKey);
 		Result<Record> result = jooq.select()
-									.from(JOURNAL_ENTRIES)
-									.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yearMonth.toString()))
-									.and(JOURNAL_ENTRIES.USER_ID.eq(userId.toString()))
-									.orderBy(orderColumn)
-									.fetch();
+			.from(JOURNAL_ENTRIES)
+			.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yearMonth.toString()))
+				.and(JOURNAL_ENTRIES.USER_ID.eq(userId.toString()))
+			.orderBy(orderColumn)
+			.fetch();
 		if (result.isEmpty()) {
 			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
-		List<JournalEntryDto> data = new ArrayList<>();
-		for (Record each : result) {
-			JournalEntryDto dto = new JournalEntryDto(
-				each.get(JOURNAL_ENTRIES.ENTRY_ID), 
-				each.get(JOURNAL_ENTRIES.DEAL_DATE), 
-				each.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
-				each.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
-				findEntryDetailById(each.get(JOURNAL_ENTRIES.ENTRY_ID))
-			);
-			data.add(dto);
-		}
-		return data;
+		return result.stream()
+			.map(record -> mapRecordToDto(record, record.get(JOURNAL_ENTRIES.ENTRY_ID)))
+			.toList();
 	}
 	
 	/**
 	 * 仕訳IDに一致する仕訳明細を全て取得する
 	 */
-	private List<EntryDetailDto> findEntryDetailById(String entryId) {
-		List<EntryDetailDto> resultList = new ArrayList<>();
+	private List<EntryDetailDto> fetchEntryDetailDtoById(String entryId) {
 		Result<Record> result = jooq.select()
-									.from(ENTRY_DETAILS)
-									.join(JOURNAL_ENTRIES).on(ENTRY_DETAILS.ENTRY_ID.eq(JOURNAL_ENTRIES.ENTRY_ID))
-									.leftOuterJoin(ACCOUNTTITLES).on(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(ACCOUNTTITLES.ACCOUNTTITLE_ID))
-									.leftOuterJoin(SUB_ACCOUNTTITLES).on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
-									.and(SUB_ACCOUNTTITLES.USER_ID.eq(JOURNAL_ENTRIES.USER_ID))
-									.and(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID)))
-									.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId))
-									.fetch();
+			.from(ENTRY_DETAILS)
+			.join(JOURNAL_ENTRIES).on(ENTRY_DETAILS.ENTRY_ID.eq(JOURNAL_ENTRIES.ENTRY_ID))
+			.leftOuterJoin(ACCOUNTTITLES)
+				.on(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(ACCOUNTTITLES.ACCOUNTTITLE_ID))
+			.leftOuterJoin(SUB_ACCOUNTTITLES)
+				.on(ENTRY_DETAILS.SUB_ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
+				.and(SUB_ACCOUNTTITLES.USER_ID.eq(JOURNAL_ENTRIES.USER_ID))
+				.and(ENTRY_DETAILS.ACCOUNTTITLE_ID.eq(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID)))
+			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId))
+			.fetch();
 		if (result.isEmpty()) {
-			throw new RuntimeException("該当する仕訳明細が見つかりませんでした。");
+			throw new RuntimeException("該当するデータが見つかりませんでした。");
 		}
-		for (Record each : result) {
-			Optional<String> subAccountTitleId = Optional.ofNullable(each.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID));
-			Optional<String> subAccountTitleName = Optional.ofNullable(each.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME)); 
-			EntryDetailDto dto = new EntryDetailDto(
-				each.get(ACCOUNTTITLES.ACCOUNTTITLE_ID),
-				each.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
-				subAccountTitleId.orElse("0"), //補助科目IDがnullの場合は"0"を返す
-				subAccountTitleName.orElse(""), //補助科目名がnullの場合は空文字列を返す
-				each.get(ENTRY_DETAILS.LOAN_TYPE),
-				each.get(ENTRY_DETAILS.AMOUNT)
-			);
-			resultList.add(dto);
-		}
-		return resultList;
+		return result.stream()
+			.map(record -> mapRecordToDto(record))
+			.toList();
+	}
+	
+	/**
+	 * レコードをDTOに詰め替える（仕訳DTO）
+	 */
+	private JournalEntryDto mapRecordToDto(Record record, String entryId) {
+		return new JournalEntryDto(
+			record.get(JOURNAL_ENTRIES.ENTRY_ID), 
+			record.get(JOURNAL_ENTRIES.DEAL_DATE), 
+			record.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION), 
+			record.get(JOURNAL_ENTRIES.TOTAL_AMOUNT), 
+			fetchEntryDetailDtoById(entryId)
+		);
+	}
+	
+	/**
+	 * レコードをDTOに詰め替える（仕訳明細DTO）
+	 */
+	private EntryDetailDto mapRecordToDto(Record record) {
+		return new EntryDetailDto(
+			record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID),
+			record.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME),
+			Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)).orElse("0"),
+			Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME)).orElse(""),
+			record.get(ENTRY_DETAILS.LOAN_TYPE),
+			record.get(ENTRY_DETAILS.AMOUNT)
+		);
 	}
 	
 	/**

@@ -64,7 +64,7 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 		List<SubAccountTitle> entities = jooq.select()
 			.from(SUB_ACCOUNTTITLES)
 			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
-			.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.fetch()
 			.map(record -> mapRecordToEntity(record));
 		if (entities.isEmpty()) {
@@ -91,15 +91,14 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	 */
 	@Override
 	public boolean exists(AccountTitleId parentId, SubAccountTitleId id, UserId userId) {
-		Record result = jooq.select()
+		Record record = jooq.select()
 			.from(SUB_ACCOUNTTITLES)
 			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
 				.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
 				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.fetchOne();
-		if (id.value().equals("0") && result == null) return true; //補助科目を持たない場合、「0：補助科目なし」を持っていると考える
-		if (result == null) return false; //補助科目を持っているが、該当のIDがテーブルに存在しない場合は単純にfalseを返す
-		return true;
+		if (id.value().equals("0") && record == null) return true; //補助科目を持たない場合、「0：補助科目なし」を持っていると考える
+		return record != null;
 	}
 	
 }

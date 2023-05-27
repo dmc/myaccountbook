@@ -19,6 +19,7 @@ import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepo
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 
 /**
  * 仕訳のリポジトリクラス
@@ -74,15 +75,18 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * IDに一致する仕訳を取得する
 	 */
 	public JournalEntry findById(EntryId entryId) {
-		Record result = jooq.select()
+		Record record = jooq.select()
 			.from(JOURNAL_ENTRIES)
 			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 			.fetchOne();
+		if (record == null) {
+			throw new RecordNotFoundException("指定した仕訳は存在しません。");
+		}
 		EntryDetails entryDetails = findEntryDetailsById(entryId);
 		return JournalEntry.reconstruct(
-			EntryId.fromString(result.get(JOURNAL_ENTRIES.ENTRY_ID)), 
-			DealDate.valueOf(result.get(JOURNAL_ENTRIES.DEAL_DATE)), 
-			Description.valueOf(result.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION)), 
+			EntryId.fromString(record.get(JOURNAL_ENTRIES.ENTRY_ID)), 
+			DealDate.valueOf(record.get(JOURNAL_ENTRIES.DEAL_DATE)), 
+			Description.valueOf(record.get(JOURNAL_ENTRIES.ENTRY_DESCRIPTION)), 
 			entryDetails
 		);
 	}
@@ -91,12 +95,12 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * IDに一致する仕訳明細を全て取得する
 	 */
 	private EntryDetails findEntryDetailsById(EntryId entryId) {
-		List<EntryDetail> elements = jooq.select()
+		List<EntryDetail> entities = jooq.select()
 			.from(ENTRY_DETAILS)
 			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
 			.fetch()
 			.map(record -> mapRecordToEntity(record));
-		return new EntryDetails(elements);
+		return new EntryDetails(entities);
 	}
 	
 	/**

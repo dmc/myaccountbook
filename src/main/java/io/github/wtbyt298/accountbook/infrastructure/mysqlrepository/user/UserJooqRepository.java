@@ -10,6 +10,7 @@ import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
 import io.github.wtbyt298.accountbook.domain.model.user.UserStatus;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 
 /**
  * ユーザのリポジトリクラス
@@ -53,11 +54,14 @@ class UserJooqRepository implements UserRepository {
 	 */
 	@Override
 	public User findById(UserId userId) {
-		return jooq.select()
+		Record record = jooq.select()
 			.from(USERS)
 			.where(USERS.USER_ID.eq(userId.value()))
-			.fetchOne()
-			.map(record -> mapRecordToEntity(record));
+			.fetchOne();
+		if (record == null) {
+			throw new RecordNotFoundException("指定したユーザは存在しません。");
+		}
+		return mapRecordToEntity(record);
 	}
 
 	/**
@@ -81,8 +85,7 @@ class UserJooqRepository implements UserRepository {
 			.from(USERS)
 			.where(USERS.USER_ID.eq(userId.value()))
 			.execute();
-		if (resultCount >= 1) return true;
-		return false;
+		return resultCount > 0;
 	}
 
 }

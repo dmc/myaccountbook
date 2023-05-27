@@ -28,14 +28,14 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 	 */
 	@Override
 	public AccountTitle findById(AccountTitleId id) {
-		Record result = jooq.select()
-							.from(ACCOUNTTITLES)
-						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
-						    .fetchOne();
-		if (result == null) {
+		Record record = jooq.select()
+			.from(ACCOUNTTITLES)
+		    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
+		    .fetchOne();
+		if (record == null) {
 			throw new RecordNotFoundException("指定した勘定科目は存在しません。");
 		}
-		return mapRecordToEntity(result);
+		return mapRecordToEntity(record);
 	}
 	
 	/**
@@ -43,14 +43,10 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 	 */
 	@Override
 	public List<AccountTitle> findAll() {
-		List<AccountTitle> entities = jooq.select()
+		return jooq.select()
 			.from(ACCOUNTTITLES)
 			.fetch()
 			.map(record -> mapRecordToEntity(record));
-		if (entities.isEmpty()) {
-			throw new RecordNotFoundException("勘定科目が存在しません。");
-		}
-		return entities;
 	}
 	
 	/**
@@ -69,12 +65,11 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 	 */
 	@Override
 	public boolean exists(AccountTitleId id) {
-		Record result = jooq.select()
-							.from(ACCOUNTTITLES)
-						    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
-						    .fetchOne();
-		if (result == null) return false;
-		return true;
+		final int resultCount = jooq.select()
+			.from(ACCOUNTTITLES)
+		    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
+		    .execute();
+		return resultCount > 0;
 	}
 	
 }
