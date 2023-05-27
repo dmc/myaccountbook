@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
+import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
 import io.github.wtbyt298.accountbook.domain.model.user.UserStatus;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.UserTestDataCreator;
@@ -62,6 +63,18 @@ class UserJooqRepositoryTest {
 		
 		//then:存在チェックメソッドがtrueを返す
 		assertTrue(userRepository.exists(user.id()));
+	}
+	
+	@Test
+	void 存在しないユーザを取得しようとすると例外発生() {
+		//given:ユーザID「TEST_USER」は存在しない
+		
+		//when:ユーザID「TEST_USER」を指定してfindByIdメソッドを呼び出す
+		UserId userId = UserId.valueOf("TEST_USER");
+		Exception exception = assertThrows(RuntimeException.class, () -> userRepository.findById(userId));
+		
+		//then:想定した例外が発生している
+		assertEquals("指定したユーザは存在しません。", exception.getMessage());
 	}
 	
 }

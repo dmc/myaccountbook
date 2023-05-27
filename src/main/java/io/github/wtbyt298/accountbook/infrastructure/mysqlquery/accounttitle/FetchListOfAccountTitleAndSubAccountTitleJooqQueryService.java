@@ -35,7 +35,7 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryService implements Fetch
 			.fetch()
 			.map(record -> mapRecordToDto(record));
 		if (data.isEmpty()) {
-			throw new RecordNotFoundException("勘定科目と補助科目のデータの取得ができませんでした。");
+			throw new RecordNotFoundException("勘定科目と補助科目のデータを取得できませんでした。");
 		}
 		return data;
 	}

@@ -43,7 +43,7 @@ class AccountTitleJooqRepositoryTest {
 	}
 
 	@Test
-	void IDに一致する勘定科目が存在しない場合は例外発生() {
+	void 存在しない勘定科目を取得しようとすると例外発生() {
 		//given:勘定科目ID"999"に該当するデータは存在しない
 		AccountTitleId id = AccountTitleId.valueOf("999");
 		assertFalse(accountTitleRepository.exists(id));

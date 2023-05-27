@@ -43,7 +43,7 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryServiceTest {
 		subAccountTitleTestDataCreator.create(foodExpenses.id(), "1", "食料品", user.id());
 
 		//when:クエリサービスのメソッドを実行してリストを取得する
-		List<AccountTitleAndSubAccountTitleDto> list = fetchListQueryService.findAll(user.id());
+		List<AccountTitleAndSubAccountTitleDto> list = fetchListQueryService.fetchAll(user.id());
 		
 		//then:保存してある勘定科目、補助科目を取得できる
 		AccountTitleAndSubAccountTitleDto cashDto = list.get(0);
@@ -80,7 +80,7 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryServiceTest {
 		
 		//when:クエリサービスのメソッドを実行してリストを取得する
 		//ユーザID「BEGINNER」を指定する
-		List<AccountTitleAndSubAccountTitleDto> list = fetchListQueryService.findAll(beginner.id());
+		List<AccountTitleAndSubAccountTitleDto> list = fetchListQueryService.fetchAll(beginner.id());
 		
 		//then:勘定科目のみが取り出されている
 		//補助科目は取り出されないので、listの要素数は2である
@@ -93,6 +93,19 @@ class FetchListOfAccountTitleAndSubAccountTitleJooqQueryServiceTest {
 		assertEquals("食費", list.get(1).getAccountTitleName());
 		assertEquals("0", list.get(1).getSubAccountTitleId());
 		assertEquals("", list.get(1).getSubAccountTitleName());
+	}
+	
+	@Test
+	void 勘定科目と補助科目が作成されていない場合は例外発生() {
+		//given:勘定科目と補助科目が作成されていない
+		//ユーザは作成されている
+		User user = userTestDataCreator.create("TEST_USER");
+		
+		//when:fetchAllメソッドを呼び出す
+		Exception exception = assertThrows(RuntimeException.class, () -> fetchListQueryService.fetchAll(user.id()));
+		
+		//then:想定した例外が発生している
+		assertEquals("勘定科目と補助科目のデータを取得できませんでした。", exception.getMessage());
 	}
 
 }

@@ -79,7 +79,7 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 	}
 	
 	@Test
-	void IDに該当する仕訳が存在しない場合は例外発生() {
+	void 存在しない仕訳を取得しようとすると例外発生() {
 		//given:仕訳は作成されていない
 		
 		//when:仕訳IDを指定してテスト対象メソッドを実行する

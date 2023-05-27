@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
+import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntryRepository;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
@@ -81,6 +82,18 @@ class JournalEntryJooqRepositoryTest {
 		
 		//then:DBから該当するレコードが削除されている
 		assertFalse(journalEntryRepository.exists(entry.id()));
+	}
+	
+	@Test
+	void 存在しない仕訳を取得しようとすると例外発生() {
+		//given:仕訳は作成されていない
+		
+		//when:存在しない仕訳IDを指定してfindByIdメソッドを呼び出す
+		EntryId entryId = EntryId.fromString("TEST_ID");
+		Exception exception = assertThrows(RuntimeException.class, () -> journalEntryRepository.findById(entryId));
+		
+		//then:想定した例外が発生している
+		assertEquals("指定した仕訳は存在しません。", exception.getMessage());
 	}
 
 }
