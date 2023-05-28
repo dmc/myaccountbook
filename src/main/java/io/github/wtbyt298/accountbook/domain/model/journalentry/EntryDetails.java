@@ -28,34 +28,31 @@ public class EntryDetails {
 	 * @return 借方合計金額
 	 */
     Amount debitSum() {
-		Amount total = Amount.valueOf(0);
-		for (EntryDetail each : elements) {
-			if (each.isCredit()) continue;
-			total = total.plus(each.amount);
-		}
-		return total;
+    	final int total = elements.stream()
+    		.filter(each -> each.isDebit())
+    		.mapToInt(each -> each.amount.value)
+    		.sum();
+		return Amount.valueOf(total);
 	}
 	
 	/**
 	 * @return 貸方合計金額
 	 */
 	Amount creditSum() {
-		Amount total = Amount.valueOf(0);
-		for (EntryDetail each : elements) {
-			if (each.isDebit()) continue;
-			total = total.plus(each.amount);
-		}
-		return total;
+    	final int total = elements.stream()
+    		.filter(each -> each.isCredit())
+    		.mapToInt(each -> each.amount.value)
+    		.sum();
+		return Amount.valueOf(total);
 	}
 	
 	/**
 	 * 仕訳明細の貸借区分を反転させる
 	 */
 	EntryDetails transpose() {
-		List<EntryDetail> transposed = new ArrayList<>();
-		for (EntryDetail each : elements) {
-			transposed.add(each.transposeLoanType());
-		}
+		List<EntryDetail> transposed = elements.stream()
+			.map(each -> each.transposeLoanType())
+			.toList();
 		return new EntryDetails(transposed);
 	}
 	
