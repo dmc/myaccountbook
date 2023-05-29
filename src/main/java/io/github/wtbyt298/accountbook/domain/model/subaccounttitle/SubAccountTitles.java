@@ -2,7 +2,6 @@ package io.github.wtbyt298.accountbook.domain.model.subaccounttitle;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
@@ -48,10 +47,8 @@ public class SubAccountTitles {
 	 * 補助科目名の重複があるかどうかを判断する
 	 */
 	private boolean exists(SubAccountTitleName newName) {
-		for (Entry<SubAccountTitleId, SubAccountTitle> each : elements.entrySet()) {
-			if (each.getValue().name().equals(newName)) return true;
-		}
-		return false;
+		return elements.entrySet().stream()
+			.anyMatch(each -> each.getValue().name().equals(newName));
 	}
 	
 	/**

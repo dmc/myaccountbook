@@ -30,7 +30,6 @@ public class RenameSubAccountTitleUseCase {
 		SubAccountTitles store = subAccountTitleRepository.findCollectionByParentId(parentId, userSession.userId());
 		SubAccountTitleId subId = SubAccountTitleId.valueOf(command.getSubId());
 		SubAccountTitleName newName = SubAccountTitleName.valueOf(command.getNewName());
-		
 		store.changeSubAccountTitleName(subId, newName);
 		subAccountTitleRepository.save(store, userSession.userId());
 	}

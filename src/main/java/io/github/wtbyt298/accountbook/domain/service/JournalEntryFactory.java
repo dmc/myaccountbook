@@ -31,28 +31,20 @@ public class JournalEntryFactory {
 	 * コマンドオブジェクトから仕訳を生成する
 	 */
 	public JournalEntry create(RegisterJournalEntryCommand command, UserId userId) {
+		List<EntryDetail> elements = command.getDetailCommands().stream()
+			.map(each -> mapCommandToEntity(each, userId))
+			.toList();
 		return JournalEntry.create(
 			DealDate.valueOf(command.getDealDate()), 
 			Description.valueOf(command.getDescription()), 
-			createEntryDetails(command.getDetailCommands(), userId)
+			new EntryDetails(elements)
 		);
 	}
 	
 	/**
-	 * 仕訳明細のコレクションオブジェクトを生成する
+	 * コマンドオブジェクトをエンティティに詰め替える
 	 */
-	private EntryDetails createEntryDetails(List<RegisterEntryDetailCommand> commands, UserId userId) {
-		List<EntryDetail> elements = new ArrayList<>();
-		for (RegisterEntryDetailCommand command : commands) {
-			elements.add(createEntryDetail(command, userId));
-		}
-		return new EntryDetails(elements);
-	}
-	
-	/**
-	 * コマンドオブジェクトから仕訳明細を作成する
-	 */
-	private EntryDetail createEntryDetail(RegisterEntryDetailCommand command, UserId userId) {
+	private EntryDetail mapCommandToEntity(RegisterEntryDetailCommand command, UserId userId) {
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
 		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		if (! accountTitleRepository.exists(accountTitleId)) {

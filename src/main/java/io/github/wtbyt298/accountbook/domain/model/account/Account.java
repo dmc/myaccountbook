@@ -54,24 +54,22 @@ public class Account {
 	 * 借方合計を計算する
 	 */
 	private Amount debitSum() {
-		Amount total = Amount.valueOf(0);
-		for (AccountingTransaction each : transactionHistory) {
-			if (each.isCredit()) continue;
-			total = total.plus(each.amount);
-		}
-		return total;
+		final int total = transactionHistory.stream()
+			.filter(each -> each.isDebit())
+			.mapToInt(each -> each.amount.value())
+			.sum();
+		return Amount.valueOf(total);
 	}
 	
 	/**
 	 * 貸方合計を計算する
 	 */
 	private Amount creditSum() {
-		Amount total = Amount.valueOf(0);
-		for (AccountingTransaction each : transactionHistory) {
-			if (each.isDebit()) continue;
-			total = total.plus(each.amount);
-		}
-		return total;
+		final int total = transactionHistory.stream()
+			.filter(each -> each.isCredit())
+			.mapToInt(each -> each.amount.value())
+			.sum();
+		return Amount.valueOf(total);
 	}
 	
 	/**
