@@ -2,8 +2,6 @@ package io.github.wtbyt298.accountbook.domain.model.account;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.Amount;
@@ -14,64 +12,41 @@ import io.github.wtbyt298.accountbook.helper.testfactory.AccountTitleTestFactory
 class AccountTest {
 
 	@Test
-	void 借方勘定の場合借方合計から貸方合計を引いた結果が残高となる() {
+	void 借方勘定の場合明細の貸借区分が借方であれば残高は増加する() {
 		//given:現金勘定
-		//借方勘定なので、残高は 1000 - 500 = 500 となるはず
-		List<AccountingTransaction> transactionHistory = new ArrayList<>();
-		transactionHistory.add(new AccountingTransaction(LoanType.DEBIT, Amount.valueOf(1000)));
-		transactionHistory.add(new AccountingTransaction(LoanType.CREDIT, Amount.valueOf(500)));
 		Account account = new Account(
 			AccountTitleTestFactory.create("101", "現金", AccountingType.ASSETS), 
 			SubAccountTitleId.valueOf("0"), 
 			YearMonth.of(2023, 4), 
-			transactionHistory
+			1000
 		);
 		
-		//when:
-		int balance = account.balance();
+		//when:残高を更新する
+		Account increased = account.updateBalance(LoanType.DEBIT, Amount.valueOf(500));
+		Account decreased = account.updateBalance(LoanType.CREDIT, Amount.valueOf(500));
 		
-		//then:
-		assertEquals(500, balance);
+		//then:残高が正しく計算されている
+		assertEquals(1500, increased.balance());
+		assertEquals(500, decreased.balance());
 	}
 	
 	@Test
-	void 貸方勘定の場合貸方合計から借方合計を引いた結果が残高となる() {
+	void 貸方勘定の場合明細の貸借区分が貸方であれば残高は増加する() {
 		//given:未払金勘定
-		//貸方勘定なので、残高は 500 - 1000 = -500 となるはず
-		List<AccountingTransaction> transactionHistory = new ArrayList<>();
-		transactionHistory.add(new AccountingTransaction(LoanType.DEBIT, Amount.valueOf(1000)));
-		transactionHistory.add(new AccountingTransaction(LoanType.CREDIT, Amount.valueOf(500)));
 		Account account = new Account(
 			AccountTitleTestFactory.create("201", "未払金", AccountingType.LIABILITIES), 
 			SubAccountTitleId.valueOf("0"), 
 			YearMonth.of(2023, 4), 
-			transactionHistory
+			1000
 		);
 		
-		//when:
-		int balance = account.balance();
+		//when:残高を更新する
+		Account increased = account.updateBalance(LoanType.CREDIT, Amount.valueOf(500));
+		Account decreased = account.updateBalance(LoanType.DEBIT, Amount.valueOf(500));
 		
-		//then:
-		assertEquals(-500, balance);
+		//then:残高が正しく計算されている
+		assertEquals(1500, increased.balance());
+		assertEquals(500, decreased.balance());
 	}
 	
-	@Test
-	void test() {
-		//given:取引履歴を持たない勘定
-		Account account = new Account(
-			AccountTitleTestFactory.create("101", "現金", AccountingType.ASSETS), 
-			SubAccountTitleId.valueOf("0"), 
-			YearMonth.of(2023, 4), 
-			new ArrayList<>()
-		);
-		assertEquals(0, account.balance());
-		
-		//when:取引履歴を追加する
-		Account updated = account.addTransaction(new AccountingTransaction(LoanType.DEBIT, Amount.valueOf(1000)));
-		
-		//then:残高が変化している
-		assertEquals(1000, updated.balance());
-		assertEquals(0, account.balance()); //追加前の勘定の残高は変化しない
-	}
-
 }

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,23 +45,23 @@ class AccountBalanceUpdatorTest {
 		AccountTitle expenses = AccountTitleTestFactory.create("401", "食費", AccountingType.EXPENSES);
 		when(accountTitleRepository.findById(expenses.id())).thenReturn(expenses);
 		when(accountRepository.find(eq(expenses), any(), any(), any()))
-			.thenReturn(new Account(expenses, SubAccountTitleId.valueOf("0"), YearMonth.now(), new ArrayList<>()));
+			.thenReturn(new Account(expenses, SubAccountTitleId.valueOf("0"), YearMonth.now(), 0));
 		AccountTitle assets = AccountTitleTestFactory.create("101", "現金", AccountingType.EXPENSES);
 		when(accountTitleRepository.findById(assets.id())).thenReturn(assets);
 		when(accountRepository.find(eq(assets), any(), any(), any()))
-			.thenReturn(new Account(assets, SubAccountTitleId.valueOf("0"), YearMonth.now(), new ArrayList<>()));
+			.thenReturn(new Account(assets, SubAccountTitleId.valueOf("0"), YearMonth.now(), 0));
 	}
 
 	@Test
 	void 仕訳を渡すと各勘定の残高が更新された状態でリポジトリに渡される() {
-		//given:
+		//given:ユーザが作成されている
+		User user = UserTestFactory.create();
+		//仕訳を作成する
 		ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
-		
 		JournalEntry entry = new JournalEntryTestFactory.Builder()
 			.addDetail("401", "0", LoanType.DEBIT, 1000)
 			.addDetail("101", "0", LoanType.CREDIT, 1000)
 			.build();
-		User user = UserTestFactory.create();
 		
 		//when:仕訳とユーザIDを渡してテスト対象メソッドを実行する
 		accountBalanceUpdator.execute(entry, user.id());

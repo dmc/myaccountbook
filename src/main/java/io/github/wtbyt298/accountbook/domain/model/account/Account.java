@@ -1,12 +1,11 @@
 package io.github.wtbyt298.accountbook.domain.model.account;
 
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.Amount;
 import io.github.wtbyt298.accountbook.domain.model.subaccounttitle.SubAccountTitleId;
+import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
  * 勘定クラス
@@ -16,60 +15,38 @@ public class Account {
 	private final AccountTitle accountTitle;
 	private final SubAccountTitleId subAccountTitleId;
 	private final YearMonth fiscalYearMonth;
-	private final List<AccountingTransaction> transactionHistory;
-
-	public Account(AccountTitle accountTitle, SubAccountTitleId subAccountTitleId, YearMonth fiscalYearMonth, List<AccountingTransaction> transactionHistory) {
+	private final int balance;
+	
+	public Account(AccountTitle accountTitle, SubAccountTitleId subAccountTitleId, YearMonth fiscalYearMonth, int balance) {
 		this.accountTitle = accountTitle;
 		this.subAccountTitleId = subAccountTitleId;
 		this.fiscalYearMonth = fiscalYearMonth;
-		this.transactionHistory = transactionHistory;
+		this.balance = balance;
 	}
 	
 	/**
-	 * 会計取引を追加する
-	 * @return 追加後の勘定
+	 * 残高を更新する
+	 * @param difference 増加額または減少額
+	 * @return 更新後の勘定
 	 */
-	public Account addTransaction(AccountingTransaction newTransaction) {
-		List<AccountingTransaction> adding = new ArrayList<>(transactionHistory);
-		adding.add(newTransaction);
-		return new Account(accountTitle, subAccountTitleId, fiscalYearMonth, adding);
+	public Account updateBalance(LoanType loanType, Amount difference) {
+		//勘定科目の貸借区分と仕訳明細の貸借区分が一致していれば、残高を増加させる
+		//そうでなければ、残高を減少させる
+		LoanType accountTitleLoanType = accountTitle.accountingType().loanType();
+		final int balanceAfterUpdated;
+		if (loanType.equals(accountTitleLoanType)) {
+			balanceAfterUpdated = balance + difference.value();
+		} else {
+			balanceAfterUpdated = balance - difference.value();
+		}
+		return new Account(accountTitle, subAccountTitleId, fiscalYearMonth, balanceAfterUpdated);
 	}
 	
 	/**
-	 * 残高を計算する
+	 * @return 残高
 	 */
 	public int balance() {
-		//借方勘定の場合、借方合計から貸方合計を引く
-		//貸方勘定の場合、貸方合計から借方合計を引く
-		//結果は負の数となることもある
-		if (accountTitle.isDebit()) {
-			return debitSum().value() - creditSum().value();
-		}
-		else {
-			return creditSum().value() - debitSum().value();
-		}
-	}
-	
-	/**
-	 * 借方合計を計算する
-	 */
-	private Amount debitSum() {
-		final int total = transactionHistory.stream()
-			.filter(each -> each.isDebit())
-			.mapToInt(each -> each.amount.value())
-			.sum();
-		return Amount.valueOf(total);
-	}
-	
-	/**
-	 * 貸方合計を計算する
-	 */
-	private Amount creditSum() {
-		final int total = transactionHistory.stream()
-			.filter(each -> each.isCredit())
-			.mapToInt(each -> each.amount.value())
-			.sum();
-		return Amount.valueOf(total);
+		return balance;
 	}
 	
 	/**

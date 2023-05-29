@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.github.wtbyt298.accountbook.domain.model.account.Account;
 import io.github.wtbyt298.accountbook.domain.model.account.AccountRepository;
-import io.github.wtbyt298.accountbook.domain.model.account.AccountingTransaction;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryDetail;
@@ -31,8 +30,7 @@ public class AccountBalanceUpdator {
 		//明細1件ごとに勘定を生成し、残高を更新して保存する
 		for (EntryDetail each : entry.entryDetails()) {
 			Account account = createAccountFrom(each, userId, entry.fiscalYearMonth());
-			AccountingTransaction adding = new AccountingTransaction(each.detailLoanType(), each.amount());
-			Account updated = account.addTransaction(adding);
+			Account updated = account.updateBalance(each.detailLoanType(), each.amount());
 			accountRepository.save(updated, userId);
 		}
 	}
