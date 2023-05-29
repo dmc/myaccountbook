@@ -20,6 +20,16 @@ public class RegisterEntryDetailParam {
 	@Min(value = 1, message = "金額は1以上で入力してください。")
 	private Integer amount;
 	
+	public RegisterEntryDetailParam() {
+		
+	}
+	
+	public RegisterEntryDetailParam(String detailLoanType, String mergedId, Integer amount) {
+		this.detailLoanType = detailLoanType;
+		this.mergedId = mergedId;
+		this.amount = amount;
+	}
+	
 	/**
 	 * "101-0"から"101"を取り出す
 	 * @return 勘定科目ID

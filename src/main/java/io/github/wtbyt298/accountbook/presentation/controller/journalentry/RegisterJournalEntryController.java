@@ -1,6 +1,5 @@
 package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +34,7 @@ public class RegisterJournalEntryController {
 	 */
 	@GetMapping("/entry/register")
 	public String load(@ModelAttribute("entryParam") RegisterJournalEntryParam param, Model model) {
+		//画面読み込み時に少なくとも1行の仕訳明細フォームを表示する
 		param.initList();
 		return "/entry/register";
 	}
@@ -48,7 +48,7 @@ public class RegisterJournalEntryController {
 			return "/entry/register";
 		}
 		try {
-			RegisterJournalEntryCommand command = mapRequestToCommand(param);
+			RegisterJournalEntryCommand command = mapParameterToCommand(param);
 			UserSession userSession = userSessionProvider.getUserSession();
 			registerJournalEntryUseCase.execute(command, userSession);
 			return "redirect:/entry/register";
@@ -59,24 +59,29 @@ public class RegisterJournalEntryController {
 	}
 	
 	/**
-	 * クライアントから受け取ったデータを登録用DTOに詰め替える
+	 * パラメータをコマンドオブジェクトに詰め替える（仕訳）
 	 */
-	private RegisterJournalEntryCommand mapRequestToCommand(RegisterJournalEntryParam param) {
-		List<RegisterEntryDetailCommand> detailCommands = new ArrayList<>();
+	private RegisterJournalEntryCommand mapParameterToCommand(RegisterJournalEntryParam param) {
 		//仕訳明細データを詰め替える
-		for (RegisterEntryDetailParam detailParam : param.getEntryDetailParams()) {
-			RegisterEntryDetailCommand detailCommand = new RegisterEntryDetailCommand(
-				detailParam.getAccountTitleId(),    //勘定科目ID
-				detailParam.getSubAccountTitleId(), //補助科目ID
-				detailParam.getDetailLoanType(),    //明細の貸借
-				detailParam.getAmount()             //仕訳金額
-			);
-			detailCommands.add(detailCommand);
-		}
+		List<RegisterEntryDetailCommand> detailCommands = param.getEntryDetailParams().stream()
+			.map(each -> mapParameterToCommand(each))
+			.toList();
 		return new RegisterJournalEntryCommand(
-			param.getDealDate(),    //取引日
-			param.getDescription(), //摘要
-			detailCommands          //仕訳明細のリスト
+			param.getDealDate(),   
+			param.getDescription(),
+			detailCommands
+		);
+	}
+	
+	/**
+	 * パラメータをコマンドオブジェクトに詰め替える（仕訳明細）
+	 */
+	private RegisterEntryDetailCommand mapParameterToCommand(RegisterEntryDetailParam param) {
+		return new RegisterEntryDetailCommand(
+			param.getAccountTitleId(),    
+			param.getSubAccountTitleId(), 
+			param.getDetailLoanType(),    
+			param.getAmount()
 		);
 	}
 	

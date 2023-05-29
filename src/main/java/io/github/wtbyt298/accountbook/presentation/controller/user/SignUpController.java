@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserCommand;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserUseCase;
 import io.github.wtbyt298.accountbook.presentation.params.user.CreateUserParam;
@@ -39,18 +41,22 @@ public class SignUpController {
 			return "/user/signup";
 		}
 		try {
-			CreateUserCommand command = new CreateUserCommand(
-				param.getId(), 
-				param.getPassword(), 
-				param.getMailAddress()
-			);
+			CreateUserCommand command = mapParameterToCommand(param);
 			createUserUseCase.execute(command);
+			//ユーザ作成に成功した場合、そのままログインする
 			autoLogin(param.getId(), param.getPassword(), request);
 			return "redirect:/user/home";
-		} catch (RuntimeException exception) {
+		} catch (UseCaseException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
 			return "/user/signup";
 		}
+	}
+	
+	/**
+	 * パラメータをコマンドオブジェクトに詰め替える
+	 */
+	private CreateUserCommand mapParameterToCommand(CreateUserParam param) {
+		return new CreateUserCommand(param.getId(), param.getPassword(), param.getMailAddress());
 	}
 	
 	/**
@@ -64,8 +70,8 @@ public class SignUpController {
 		}
 		try {
 			request.login(userId, password);
-		} catch (ServletException e) {
-			e.printStackTrace();
+		} catch (ServletException exception) {
+			exception.printStackTrace();
 		}
 	}
 	

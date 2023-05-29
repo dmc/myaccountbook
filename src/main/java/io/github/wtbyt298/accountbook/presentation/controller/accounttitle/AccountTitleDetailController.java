@@ -1,6 +1,5 @@
 package io.github.wtbyt298.accountbook.presentation.controller.accounttitle;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,11 +34,17 @@ public class AccountTitleDetailController {
 	@Autowired
 	private UserSessionProvider userSessionProvider;
 
+	/**
+	 * 勘定科目詳細画面を表示する
+	 */
 	@GetMapping("/accounttitle/detail/{id}")
 	public String load(@PathVariable String id, Model model) {
+		//勘定科目の表示用データを取得する
 		AccountTitleId parentId = AccountTitleId.valueOf(id);
 		AccountTitleViewModel parentViewModel = createAccountTitleViewModel(parentId);
 		model.addAttribute("accountTitle", parentViewModel);
+		//補助科目の表示用データを取得する
+		//補助科目が作成されていない場合は補助科目の表示はせず、メッセージを表示する
 		List<SubAccountTitleViewModel> subViewModels = createSubAccountTitleViewModels(parentId);
 		model.addAttribute("subAccountTitles", subViewModels);
 		if (subViewModels.isEmpty()) {
@@ -49,30 +54,42 @@ public class AccountTitleDetailController {
 	}
 	
 	/**
-	 * 勘定科目のビューモデルを取得する
+	 * 勘定科目のビューモデルを作成する
 	 */
 	private AccountTitleViewModel createAccountTitleViewModel(AccountTitleId parentId) {
 		AccountTitle accountTitle = accountTitleRepository.findById(parentId);
+		return mapEntityToViewModel(accountTitle);
+	}
+	
+	/**
+	 * エンティティをビューモデルに詰め替える（勘定科目）
+	 */
+	private AccountTitleViewModel mapEntityToViewModel(AccountTitle entity) {
 		return new AccountTitleViewModel(
-			accountTitle.id().value(), 
-			accountTitle.name().value(), 
-			accountTitle.accountingType().lavel(), 
-			accountTitle.accountingType().loanType().label(), 
-			accountTitle.accountingType().summaryType().label()
+			entity.id().value(), 
+			entity.name().value(), 
+			entity.accountingType().lavel(), 
+			entity.accountingType().loanType().label(), 
+			entity.accountingType().summaryType().label()
 		);
 	}
 	
 	/**
-	 * 補助科目名のリストを取得する
+	 * 補助科目のビューモデルのリストを取得する
 	 */
 	public List<SubAccountTitleViewModel> createSubAccountTitleViewModels(AccountTitleId parentId) {
 		UserSession userSession = userSessionProvider.getUserSession();
 		SubAccountTitles subAccountTitles = subAccountTitleRepository.findCollectionByParentId(parentId, userSession.userId());
-		List<SubAccountTitleViewModel> subNames = new ArrayList<>();
-		for (SubAccountTitle each : subAccountTitles.elements().values()) {
-			subNames.add(new SubAccountTitleViewModel(each.id().value(), each.name().value()));
-		}
-		return subNames;
+		return subAccountTitles.elements().values().stream()
+			.map(each -> mapEntityToViewModel(each))
+			.toList();
+	}
+	
+	/**
+	 * エンティティをビューモデルに詰め替える（補助科目）
+	 */
+	private SubAccountTitleViewModel mapEntityToViewModel(SubAccountTitle entity) {
+		return new SubAccountTitleViewModel(entity.id().value(), entity.name().value());
 	}
 	
 }

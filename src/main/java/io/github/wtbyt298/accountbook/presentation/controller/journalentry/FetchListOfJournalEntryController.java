@@ -2,13 +2,13 @@ package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
@@ -35,12 +35,10 @@ public class FetchListOfJournalEntryController {
 	 * 仕訳一覧画面を表示する
 	 */
 	@GetMapping("/entry/entries/{selectedYearMonth}")
-	public String load(@PathVariable String selectedYearMonth, @RequestParam(name = "orderKey", required = false) Optional<String> orderKey, Model model) {
-		//引数のselectedYearMonthには"yyyy-MM"形式の文字列を想定
-		model.addAttribute("selectedYearMonth", selectedYearMonth);
+	public String load(@PathVariable @ModelAttribute String selectedYearMonth, @RequestParam(name = "orderKey", required = false) Optional<String> orderKey, Model model) {
 		try {
-			//デフォルトでは日付順で取得する
-			List<JournalEntryViewModel> viewModels = fetchJournalEntries(selectedYearMonth, orderKey);
+			List<JournalEntryDto> data = fetchJournalEntries(selectedYearMonth, orderKey);
+			List<JournalEntryViewModel> viewModels = mapDtoToViewModel(data);
 			model.addAttribute("entries", viewModels);
 			return "/entry/entries";
 		} catch (RecordNotFoundException exception) {
@@ -50,26 +48,23 @@ public class FetchListOfJournalEntryController {
 	}
 	
 	/**
-	 * 年月を指定して仕訳の一覧を取得する
+	 * 年月とソート順を指定して仕訳データの一覧を取得する
 	 */
-	private List<JournalEntryViewModel> fetchJournalEntries(String selectedYearMonth, Optional<String> orderKey) {
+	private List<JournalEntryDto> fetchJournalEntries(String selectedYearMonth, Optional<String> orderKey) {
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		//デフォルトでは日付順で取得する
 		JournalEntryOrderKey journalEntryOrderKey = JournalEntryOrderKey.valueOf(orderKey.orElse("DEAL_DATE"));
 		UserSession userSession = userSessionProvider.getUserSession();
-		List<JournalEntryDto> data = fetchQueryService.fetchAll(yearMonth, journalEntryOrderKey, userSession.userId());
-		return mapDtoToViewModel(data);
+		return fetchQueryService.fetchAll(yearMonth, journalEntryOrderKey, userSession.userId());
 	}
 	
 	/**
-	 * DBから取得したデータをViewモデルに詰め替える
+	 * DTOをビューモデルに詰め替える
 	 */
 	private List<JournalEntryViewModel> mapDtoToViewModel(List<JournalEntryDto> data) {
-		List<JournalEntryViewModel> viewModels = new ArrayList<>();
-		for (JournalEntryDto dto : data) {
-			viewModels.add(new JournalEntryViewModel(dto));
-		}
-		return viewModels;
+		return data.stream()
+			.map(each -> new JournalEntryViewModel(each))
+			.toList();
 	}
 	
 }

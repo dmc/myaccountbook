@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 共通の例外処理用のコントローラクラス
@@ -26,7 +25,7 @@ public class ExceptionHandlerUtilityController {
 	}
 
 	@ExceptionHandler(Exception.class)
-	public String handleException(Exception exception, Model model, HttpServletRequest request) {
+	public String handleException(Exception exception, Model model) {
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		model.addAttribute("status", status.value());
 		model.addAttribute("error", status.name());

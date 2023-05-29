@@ -26,10 +26,17 @@ public class RegisterJournalEntryParam {
 	private String description;
 
 	@Valid
-	private List<RegisterEntryDetailParam> debitParams = new ArrayList<>();
+	private List<RegisterEntryDetailParam> debitParams;
 	
 	@Valid
-	private List<RegisterEntryDetailParam> creditParams = new ArrayList<>();
+	private List<RegisterEntryDetailParam> creditParams;
+	
+	public RegisterJournalEntryParam(LocalDate dealDate, String description, List<RegisterEntryDetailParam> debitParams, List<RegisterEntryDetailParam> creditParams) {
+		this.dealDate = dealDate;
+		this.description = description;
+		this.debitParams = debitParams;
+		this.creditParams = creditParams;
+	}
 	
 	public List<RegisterEntryDetailParam> getEntryDetailParams() {
 		List<RegisterEntryDetailParam> list = new ArrayList<>(debitParams);
@@ -41,6 +48,8 @@ public class RegisterJournalEntryParam {
 	 * 仕訳明細パラメータを初期化する
 	 */
 	public void initList() {
+		debitParams = new ArrayList<>();
+		creditParams = new ArrayList<>();
 		debitParams.add(new RegisterEntryDetailParam());
 		creditParams.add(new RegisterEntryDetailParam());
 	}

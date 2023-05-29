@@ -1,6 +1,5 @@
 package io.github.wtbyt298.accountbook.presentation.controller.accounttitle;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,8 @@ import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.Accou
 @Controller
 public class FetchListOfAccountTitleController {
 
+	//例外的にコントローラからリポジトリへの参照を許容している
+	
 	@Autowired
 	private AccountTitleRepository accountTitleRepository;
 	
@@ -33,17 +34,22 @@ public class FetchListOfAccountTitleController {
 	@ModelAttribute("accountTitles")
 	public List<AccountTitleViewModel> accountTitles() {
 		List<AccountTitle> entities = accountTitleRepository.findAll();
-		List<AccountTitleViewModel> viewModels = new ArrayList<>();
-		for (AccountTitle each : entities) {
-			viewModels.add(new AccountTitleViewModel(
-				each.id().value(), 
-				each.name().value(), 
-				each.accountingType().lavel(), 
-				each.accountingType().loanType().label(), 
-				each.accountingType().summaryType().label()
-			));
-		}
-		return viewModels;
+		return entities.stream()
+			.map(each -> mapEntityToViewModel(each))
+			.toList();
+	}
+	
+	/**
+	 * エンティティをビューモデルに詰め替える
+	 */
+	private AccountTitleViewModel mapEntityToViewModel(AccountTitle entity) {
+		return new AccountTitleViewModel(
+			entity.id().value(), 
+			entity.name().value(), 
+			entity.accountingType().lavel(), 
+			entity.accountingType().loanType().label(), 
+			entity.accountingType().summaryType().label()
+		);
 	}
 	
 }

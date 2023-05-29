@@ -1,12 +1,9 @@
 package io.github.wtbyt298.accountbook.presentation.controller.shared;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import io.github.wtbyt298.accountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import io.github.wtbyt298.accountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
@@ -45,14 +42,12 @@ public class ModelAttributeUtilityController {
 	}
 	
 	/**
-	 * DBから取得した勘定科目データをViewモデルに詰め替える
+	 * DTOをビューモデルに詰め替える
 	 */
 	private List<MergedAccountTitleViewModel> mapDtoToViewModel(List<AccountTitleAndSubAccountTitleDto> data) {
-		List<MergedAccountTitleViewModel> viewModels = new ArrayList<>();
-		for (AccountTitleAndSubAccountTitleDto dto : data) {
-			viewModels.add(new MergedAccountTitleViewModel(dto));
-		}
-		return viewModels;
+		return data.stream()
+			.map(each -> new MergedAccountTitleViewModel(each))
+			.toList();
 	}
 	
 }

@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,41 +29,44 @@ public class FetchJournalEntryController {
 	 */
 	@GetMapping("/entry/entry/{id}")
 	public String load(@PathVariable String id, Model model) {
-		JournalEntryDto dto = fetchJournalEntry(id);
-		RegisterJournalEntryParam param = mapDtoToParam(dto);
-		model.addAttribute("entryId", dto.getEntryId());
+		EntryId entryId = EntryId.fromString(id);
+		JournalEntryDto dto =fetchQueryService.fetchOne(entryId);
+		RegisterJournalEntryParam param = mapDtoToParameter(dto);
+		model.addAttribute("entryId", entryId.value());
 		model.addAttribute("entryParam", param);
 		return "/entry/entry";
 	}
 	
 	/**
-	 * IDを指定して仕訳データを取得する
+	 * DTOをパラメータに詰め替える（仕訳）
 	 */
-	private JournalEntryDto fetchJournalEntry(String id) {
-		EntryId entryId = EntryId.fromString(id);
-		return fetchQueryService.fetchOne(entryId);
+	private RegisterJournalEntryParam mapDtoToParameter(JournalEntryDto dto) {
+		List<RegisterEntryDetailParam> debitParams = dto.getEntryDetails().stream()
+			.filter(each -> each.isDebit())
+			.map(each -> mapDtoToParameter(each))
+			.toList();
+		List<RegisterEntryDetailParam> creditParams = dto.getEntryDetails().stream()
+			.filter(each -> each.isCredit())
+			.map(each -> mapDtoToParameter(each))
+			.toList();
+		return new RegisterJournalEntryParam(
+			dto.getDealDate(), 
+			dto.getDescription(), 
+			debitParams,
+			creditParams
+		);
 	}
 	
 	/**
-	 * DTOをフォームクラスに詰め替える
+	 * DTOをパラメータに詰め替える（仕訳明細）
 	 */
-	private RegisterJournalEntryParam mapDtoToParam(JournalEntryDto dto) {
-		RegisterJournalEntryParam param = new RegisterJournalEntryParam();
-		param.setDealDate(dto.getDealDate());
-		param.setDescription(dto.getDescription());
-		for (EntryDetailDto each : dto.getEntryDetails()) {
-			RegisterEntryDetailParam detailParam = new RegisterEntryDetailParam();
-			detailParam.setMergedId(each.getAccountTitleId() + "-" + each.getSubAccountTitleId());
-			detailParam.setDetailLoanType(each.getDetailLoanType().toString());
-			detailParam.setAmount(each.getAmount());
-			if (each.isDebit()) {
-				param.getDebitParams().add(detailParam);
-			}
-			if (each.isCredit()) {
-				param.getCreditParams().add(detailParam);
-			}
-		}
-		return param;
+	private RegisterEntryDetailParam mapDtoToParameter(EntryDetailDto dto) {
+		final String mergedId =dto.getAccountTitleId() + "-" + dto.getSubAccountTitleId(); 
+		return new RegisterEntryDetailParam(
+			dto.getDetailLoanType().toString(), 
+			mergedId,
+			dto.getAmount()
+		);
 	}
 	
 }
