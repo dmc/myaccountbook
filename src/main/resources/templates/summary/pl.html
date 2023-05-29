@@ -116,7 +116,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'費用計：' + totalOfExpensesFormatted}" th:classappend="${totalOfExpenses} < 0 ? 'text-danger'"></h6>
+      			<h6 class="text-end" th:text="${'費用計：' + summary.totalOfExpensesFormatted()}" th:classappend="${summary.totalOfExpenses} < 0 ? 'text-danger'"></h6>
       		</div>
 			<div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 	        	<h5>収益の部</h5>
@@ -150,10 +150,10 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'収益計：' + totalOfRevenueFormatted}" th:classappend="${totalOfRevenue} < 0 ? 'text-danger'"></h6>
+      			<h6 class="text-end" th:text="${'収益計：' + summary.totalOfRevenueFormatted()}" th:classappend="${summary.totalOfRevenue} < 0 ? 'text-danger'"></h6>
       		</div>      
       		<hr>
-      		<h5 class="text-end">月次純利益：<span th:text="${netIncomeFormatted}" th:classappend="${netIncome} < 0 ? 'text-danger'"></span></h5>		
+      		<h5 class="text-end">月次純利益：<span th:text="${summary.netIncomeFormatted()}" th:classappend="${summary.netIncome()} < 0 ? 'text-danger'"></span></h5>		
 		</main>
 	</div>
 </div>

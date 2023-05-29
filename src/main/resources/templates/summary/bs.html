@@ -116,7 +116,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'資産計：' + totalOfAssetsFormatted}" th:classappend="${totalOfAssets} < 0 ? 'text-danger'"></h6>
+      			<h6 class="text-end" th:text="${'資産計：' + summary.totalOfAssetsFormatted()}" th:classappend="${summary.totalOfAssets} < 0 ? 'text-danger'"></h6>
       		</div>
       		<div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 	        	<h5>負債の部</h5>
@@ -150,7 +150,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'負債計：' + totalOfLiabilitiesFormatted}" th:classappend="${totalOfLiabilities} < 0 ? 'text-danger'"></h6>
+      			<h6 class="text-end" th:text="${'負債計：' + summary.totalOfLiabilitiesFormatted()}" th:classappend="${summary.totalOfLiabilities} < 0 ? 'text-danger'"></h6>
       		</div>	        
 			<div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 	        	<h5>純資産の部</h5>
@@ -188,7 +188,7 @@
 	      							<thead class="fw-bold">
 	      								<tr class="table-success border-top border-bottom border-dark">
 	      									<td>剰余金</td>
-	      									<td class="text-end" th:text="${surplusFormatted}" th:classappend="${surplus} < 0 ? 'text-danger'"></td> 
+	      									<td class="text-end" th:text="${summary.surplusFormatted()}" th:classappend="${summary.surplus()} < 0 ? 'text-danger'"></td> 
 	      								</tr>
 	      							</thead>
 	      						</table>
@@ -196,7 +196,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'純資産計：' + totalOfEquityFormatted}" th:classappend="${totalOfEquity} < 0 ? 'text-danger'"></h6>
+      			<h6 class="text-end" th:text="${'純資産計：' + summary.totalOfEquityFormatted()}" th:classappend="${summary.actualTotalOfEquity} < 0 ? 'text-danger'"></h6>
       		</div>	        
 		</main>
 	</div>
