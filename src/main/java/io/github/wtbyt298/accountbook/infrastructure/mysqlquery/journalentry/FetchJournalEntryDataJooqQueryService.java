@@ -83,7 +83,7 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId))
 			.fetch();
 		if (result.isEmpty()) {
-			throw new RuntimeException("該当するデータが見つかりませんでした。");
+			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
 		return result.stream()
 			.map(record -> mapRecordToDto(record))
