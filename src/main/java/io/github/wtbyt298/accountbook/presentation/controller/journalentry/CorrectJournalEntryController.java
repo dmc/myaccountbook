@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.CorrectJournalEntryUseCase;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
@@ -18,7 +17,6 @@ import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJourna
 import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
 import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -83,32 +81,6 @@ public class CorrectJournalEntryController {
 			param.getDetailLoanType(),    
 			param.getAmount()
 		);
-	}
-	
-	/**
-	 * 仕訳明細の入力フォームを追加する
-	 * 上限は10
-	 */
-	@PostMapping(value = "/entry/correct", params = "add")
-	public String addForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryParam") RegisterJournalEntryParam param, @RequestParam("add") String value, Model model) {
-		final String ERROR_MESSAGE = "これ以上追加できません。";
-		if (param.isFull(value)) {
-			model.addAttribute("error_" + value, ERROR_MESSAGE);
-		}
-		param.addList(value);
-		return "/entry/entry";
-	}
-	
-	/**
-	 * 仕訳明細の入力フォームを削除する
-	 * 下限は1
-	 */
-	@PostMapping(value = "/entry/correct", params = "remove")
-	public String removeForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryParam") RegisterJournalEntryParam param, @RequestParam("remove") String value, HttpServletRequest request) {
-		final String type = value.substring(0, value.indexOf("-"));
-		final int index = Integer.valueOf(request.getParameter("remove").substring(value.indexOf("-") + 1));
-		param.removeList(type, index);
-		return "/entry/entry";
 	}
 	
 }

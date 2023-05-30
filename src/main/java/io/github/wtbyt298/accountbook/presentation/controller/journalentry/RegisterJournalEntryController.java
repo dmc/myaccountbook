@@ -14,7 +14,6 @@ import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJourna
 import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
 import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -83,32 +82,6 @@ public class RegisterJournalEntryController {
 			param.getDetailLoanType(),    
 			param.getAmount()
 		);
-	}
-	
-	/**
-	 * 仕訳明細の入力フォームを追加する
-	 * 上限は10
-	 */
-	@PostMapping(value = "/entry/register", params = "add")
-	public String addForm(@ModelAttribute("entryParam") RegisterJournalEntryParam param, @RequestParam("add") String value, Model model) {
-		final String ERROR_MESSAGE = "これ以上追加できません。";
-		if (param.isFull(value)) {
-			model.addAttribute("error_" + value, ERROR_MESSAGE);
-		}
-		param.addList(value);
-		return "/entry/register";
-	}
-	
-	/**
-	 * 仕訳明細の入力フォームを削除する
-	 * 下限は1
-	 */
-	@PostMapping(value = "/entry/register", params = "remove")
-	public String removeForm(@ModelAttribute("entryParam") RegisterJournalEntryParam param, @RequestParam("remove") String value, HttpServletRequest request) {
-		final String type = value.substring(0, value.indexOf("-"));
-		final int index = Integer.valueOf(request.getParameter("remove").substring(value.indexOf("-") + 1));
-		param.removeList(type, index);
-		return "/entry/register";
 	}
 	
 }
