@@ -90,12 +90,13 @@ class SignUpControllerTest {
 		//given:フォームの内容が正しく入力されている
 		CreateUserParam param = validUserParam();
 		//given:ユーザ登録処理を実行すると例外が発生する
-		doThrow(new UseCaseException("同一IDのユーザが既に存在しています。")).when(createUserUseCase).execute(any());
+		Exception exception = new UseCaseException("同一IDのユーザが既に存在しています。");
+		doThrow(exception).when(createUserUseCase).execute(any());
 				
 		//when:
 		mockMvc.perform(post("/signup").flashAttr("userParam", param).with(csrf()))
 			.andExpect(model().hasNoErrors())
-			.andExpect(model().attribute("errorMessage", "同一IDのユーザが既に存在しています。"))
+			.andExpect(model().attribute("errorMessage", exception.getMessage()))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/user/signup"));
 		
