@@ -61,6 +61,7 @@ public class SignUpController {
 	
 	/**
 	 * 自動でログイン処理を行う
+	 * TODO 別クラスに切り出すことを検討する
 	 */
 	private void autoLogin(String userId, String password, HttpServletRequest request) {
 		//既にユーザがログイン済みの場合は、一旦ログアウトさせる
