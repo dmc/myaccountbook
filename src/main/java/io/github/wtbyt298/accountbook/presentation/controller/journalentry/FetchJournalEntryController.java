@@ -21,7 +21,7 @@ import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJ
 public class FetchJournalEntryController {
 
 	@Autowired
-	private FetchJournalEntryDataQueryService fetchQueryService;
+	private FetchJournalEntryDataQueryService fetchJournalEntryDataQueryService;
 	
 	/**
 	 * 仕訳詳細画面を表示する
@@ -30,7 +30,7 @@ public class FetchJournalEntryController {
 	@GetMapping("/entry/entry/{id}")
 	public String load(@PathVariable String id, Model model) {
 		EntryId entryId = EntryId.fromString(id);
-		JournalEntryDto dto =fetchQueryService.fetchOne(entryId);
+		JournalEntryDto dto =fetchJournalEntryDataQueryService.fetchOne(entryId);
 		RegisterJournalEntryParam param = mapDtoToParameter(dto);
 		model.addAttribute("entryId", entryId.value());
 		model.addAttribute("entryParam", param);
