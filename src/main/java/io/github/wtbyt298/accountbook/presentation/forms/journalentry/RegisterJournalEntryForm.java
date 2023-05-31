@@ -31,6 +31,10 @@ public class RegisterJournalEntryForm {
 	@Valid
 	private List<RegisterEntryDetailForm> creditForms;
 	
+	public RegisterJournalEntryForm() {
+		
+	}
+	
 	public RegisterJournalEntryForm(LocalDate dealDate, String description, List<RegisterEntryDetailForm> debitForms, List<RegisterEntryDetailForm> creditForms) {
 		this.dealDate = dealDate;
 		this.description = description;
