@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
+import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
 
 /**
  * 共通の例外処理用のコントローラクラス
@@ -15,8 +18,20 @@ import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 public class ExceptionHandlerUtilityController {
 
 	@ExceptionHandler({DomainException.class, UseCaseException.class})
-	public String handleDomainException(DomainException exception, Model model) {
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public String handleDomainAndUseCaseException(RuntimeException exception, Model model) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
+		model.addAttribute("status", status.value());
+		model.addAttribute("error", status.name());
+		model.addAttribute("timestamp", new Date());
+		model.addAttribute("message", exception.getMessage());
+		return "error";
+	}
+	
+	@ExceptionHandler(RecordNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public String handleRecordNotFoundException(RecordNotFoundException exception, Model model) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
 		model.addAttribute("status", status.value());
 		model.addAttribute("error", status.name());
 		model.addAttribute("timestamp", new Date());
@@ -25,7 +40,9 @@ public class ExceptionHandlerUtilityController {
 	}
 
 	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String handleException(Exception exception, Model model) {
+		exception.printStackTrace();
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		model.addAttribute("status", status.value());
 		model.addAttribute("error", status.name());
