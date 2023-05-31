@@ -62,7 +62,7 @@ class SignUpControllerTest {
 		RegisterUserForm form = validRegisterUserForm();
 		
 		//when:
-		mockMvc.perform(post("/signup").flashAttr("userParam", form).with(csrf()))
+		mockMvc.perform(post("/signup").flashAttr("userForm", form).with(csrf()))
 			.andExpect(model().hasNoErrors())
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/user/home"));
@@ -78,9 +78,9 @@ class SignUpControllerTest {
 		form.setId("");
 		
 		//when:
-		mockMvc.perform(post("/signup").flashAttr("userParam", form).with(csrf()))
+		mockMvc.perform(post("/signup").flashAttr("userForm", form).with(csrf()))
 			.andExpect(model().hasErrors())
-			.andExpect(model().attribute("userParam", form))
+			.andExpect(model().attribute("userForm", form))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/user/signup"));
 	}
@@ -94,7 +94,7 @@ class SignUpControllerTest {
 		doThrow(exception).when(createUserUseCase).execute(any());
 				
 		//when:
-		mockMvc.perform(post("/signup").flashAttr("userParam", form).with(csrf()))
+		mockMvc.perform(post("/signup").flashAttr("userForm", form).with(csrf()))
 			.andExpect(model().hasNoErrors())
 			.andExpect(model().attribute("errorMessage", exception.getMessage()))
 			.andExpect(status().isOk())
