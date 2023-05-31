@@ -35,7 +35,9 @@ public class EditRegisterJournalEntryFormController {
 	 */
 	@PostMapping(value = {"/entry/register", "/entry/correct"}, params = "remove")
 	public String removeForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryForm") RegisterJournalEntryForm form, @RequestParam("remove") String value, HttpServletRequest request) {
+		//「DEBIT-0」から「DEBIT」を取り出す
 		final String type = value.substring(0, value.indexOf("-"));
+		//「DEBIT-0」から「0」を取り出す
 		final int index = Integer.valueOf(request.getParameter("remove").substring(value.indexOf("-") + 1));
 		form.removeList(type, index);
 		return returnPath(request);
