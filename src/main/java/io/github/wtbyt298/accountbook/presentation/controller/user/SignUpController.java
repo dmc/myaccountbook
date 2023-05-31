@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserCommand;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserUseCase;
-import io.github.wtbyt298.accountbook.presentation.params.user.CreateUserParam;
+import io.github.wtbyt298.accountbook.presentation.forms.user.RegisterUserForm;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class SignUpController {
 	private CreateUserUseCase createUserUseCase;
 
 	@GetMapping("/user/signup")
-	public String load(@ModelAttribute("userParam") CreateUserParam param) {
+	public String load(@ModelAttribute("userForm") RegisterUserForm form) {
 		return "/user/signup";
 	}
 	
@@ -36,15 +36,15 @@ public class SignUpController {
 	 * ユーザを作成する
 	 */
 	@PostMapping("/signup")
-	public String signUp(@Valid @ModelAttribute("userParam") CreateUserParam param, BindingResult result, Model model, HttpServletRequest request) {
+	public String signUp(@Valid @ModelAttribute("userForm") RegisterUserForm form, BindingResult result, Model model, HttpServletRequest request) {
 		if (result.hasErrors()) {
 			return "/user/signup";
 		}
 		try {
-			CreateUserCommand command = mapParameterToCommand(param);
+			CreateUserCommand command = mapParameterToCommand(form);
 			createUserUseCase.execute(command);
 			//ユーザ作成に成功した場合、そのままログインする
-			autoLogin(param.getId(), param.getPassword(), request);
+			autoLogin(form.getId(), form.getPassword(), request);
 			return "redirect:/user/home";
 		} catch (UseCaseException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
@@ -53,10 +53,10 @@ public class SignUpController {
 	}
 	
 	/**
-	 * パラメータをコマンドオブジェクトに詰め替える
+	 * フォームクラスをコマンドオブジェクトに詰め替える
 	 */
-	private CreateUserCommand mapParameterToCommand(CreateUserParam param) {
-		return new CreateUserCommand(param.getId(), param.getPassword(), param.getMailAddress());
+	private CreateUserCommand mapParameterToCommand(RegisterUserForm form) {
+		return new CreateUserCommand(form.getId(), form.getPassword(), form.getMailAddress());
 	}
 	
 	/**

@@ -89,7 +89,7 @@
 		    	</div>
 		    </div>  	        
 			<div>
-				<form id="form-register" th:action="@{/entry/correct}" method="post" th:object="${entryParam}">
+				<form id="form-register" th:action="@{/entry/correct}" method="post" th:object="${entryForm}">
 					<div class="form-group mb-3 w-50">
 						<label class="form-label">ID</label>
 						<input type="text" class="form-control" th:value="${entryId}" disabled>
@@ -121,19 +121,19 @@
 				          		<tr>
 				          			<td>
 				          				<table class="table table-sm">
-				          					<tr class="mb-3 w-50" th:each="debit, stat : *{debitParams}">
+				          					<tr class="mb-3 w-50" th:each="debit, stat : *{debitForms}">
 				          						<td class="col-7">
 				          							<label class="form-label">勘定科目</label>
-				          							<select class="form-select" th:field="*{debitParams[__${stat.index}__].mergedId}">
+				          							<select class="form-select" th:field="*{debitForms[__${stat.index}__].mergedId}">
 				          								<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 				          							</select>
-				          							<input type="hidden" value="DEBIT" th:name="debitParams[__${stat.index}__].detailLoanType">
+				          							<input type="hidden" value="DEBIT" th:name="debitForms[__${stat.index}__].detailLoanType">
 				          						</td>
 				          						<td class="col-3">
 				          							<label class="form-label">金額</label>
-				          							<input type="number" class="form-control debit-amount" th:field="*{debitParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('debitParams[__${stat.index}__].amount')} ? 'is-invalid'" onchange="showTotalAmount('debit')">
+				          							<input type="number" class="form-control debit-amount" th:field="*{debitForms[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('debitForms[__${stat.index}__].amount')} ? 'is-invalid'" onchange="showTotalAmount('debit')">
 				          							<div class="invalid-feedback">
-				          								<span th:if="${#fields.hasErrors('debitParams[__${stat.index}__].amount')}" th:errors="*{debitParams[__${stat.index}__].amount}"></span>
+				          								<span th:if="${#fields.hasErrors('debitForms[__${stat.index}__].amount')}" th:errors="*{debitForms[__${stat.index}__].amount}"></span>
 				          							</div>
 				          						</td> 
 				          						<td>
@@ -153,19 +153,19 @@
 				          			</td>
 				          			<td>
 				          				<table class="table table-sm">
-				          					<tr class="w-50" th:each="credit, stat : *{creditParams}">
+				          					<tr class="w-50" th:each="credit, stat : *{creditForms}">
 				          						<td class="col-7">
 				          							<label class="form-label">勘定科目</label>
-				          							<select class="form-select" th:field="*{creditParams[__${stat.index}__].mergedId}">
+				          							<select class="form-select" th:field="*{creditForms[__${stat.index}__].mergedId}">
 				          								<option th:each="element : ${selectBoxElements}" th:value="${element.mergedId}" th:text="${element.mergedName}"></option>
 				          							</select>
-				          							<input type="hidden" value="CREDIT" th:name="creditParams[__${stat.index}__].detailLoanType">
+				          							<input type="hidden" value="CREDIT" th:name="creditForms[__${stat.index}__].detailLoanType">
 				          						</td>
 				          						<td class="col-3">
 				          							<label class="form-label">金額</label>
-				          							<input type="number" class="form-control credit-amount" th:field="*{creditParams[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('creditParams[__${stat.index}__].amount')} ? 'is-invalid'" onchange="showTotalAmount('credit')">
+				          							<input type="number" class="form-control credit-amount" th:field="*{creditForms[__${stat.index}__].amount}" th:classappend="${#fields.hasErrors('creditForms[__${stat.index}__].amount')} ? 'is-invalid'" onchange="showTotalAmount('credit')">
 				          							<div class="invalid-feedback">
-				          								<span th:if="${#fields.hasErrors('creditParams[__${stat.index}__].amount')}" th:errors="*{creditParams[__${stat.index}__].amount}"></span>
+				          								<span th:if="${#fields.hasErrors('creditForms[__${stat.index}__].amount')}" th:errors="*{creditForms[__${stat.index}__].amount}"></span>
 				          							</div>
 				          						</td>
 				          						<td>
@@ -201,9 +201,6 @@
 <footer class="fixed-bottom">
 	<div class="container"></div>
 </footer>
-<script type="text/javascript">
-
-</script>
 <script type="text/javascript" th:src="@{/js/shared.js}"></script>
 <script type="text/javascript" th:src="@{/js/entry.js}"></script>
 </body>

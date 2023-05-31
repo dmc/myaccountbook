@@ -11,8 +11,8 @@ import io.github.wtbyt298.accountbook.application.query.model.journalentry.Entry
 import io.github.wtbyt298.accountbook.application.query.model.journalentry.JournalEntryDto;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterEntryDetailForm;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
 
 /**
  * 単一の仕訳の取得処理のコントローラクラス
@@ -31,25 +31,25 @@ public class FetchJournalEntryController {
 	public String load(@PathVariable String id, Model model) {
 		EntryId entryId = EntryId.fromString(id);
 		JournalEntryDto dto =fetchJournalEntryDataQueryService.fetchOne(entryId);
-		RegisterJournalEntryParam param = mapDtoToParameter(dto);
+		RegisterJournalEntryForm form = mapDtoToParameter(dto);
 		model.addAttribute("entryId", entryId.value());
-		model.addAttribute("entryParam", param);
+		model.addAttribute("entryForm", form);
 		return "/entry/entry";
 	}
 	
 	/**
-	 * DTOをパラメータに詰め替える（仕訳）
+	 * DTOをフォームクラスに詰め替える（仕訳）
 	 */
-	private RegisterJournalEntryParam mapDtoToParameter(JournalEntryDto dto) {
-		List<RegisterEntryDetailParam> debitParams = dto.getEntryDetails().stream()
+	private RegisterJournalEntryForm mapDtoToParameter(JournalEntryDto dto) {
+		List<RegisterEntryDetailForm> debitParams = dto.getEntryDetails().stream()
 			.filter(each -> each.isDebit())
 			.map(each -> mapDtoToParameter(each))
 			.toList();
-		List<RegisterEntryDetailParam> creditParams = dto.getEntryDetails().stream()
+		List<RegisterEntryDetailForm> creditParams = dto.getEntryDetails().stream()
 			.filter(each -> each.isCredit())
 			.map(each -> mapDtoToParameter(each))
 			.toList();
-		return new RegisterJournalEntryParam(
+		return new RegisterJournalEntryForm(
 			dto.getDealDate(), 
 			dto.getDescription(), 
 			debitParams,
@@ -58,11 +58,11 @@ public class FetchJournalEntryController {
 	}
 	
 	/**
-	 * DTOをパラメータに詰め替える（仕訳明細）
+	 * DTOをフォームクラスに詰め替える（仕訳明細）
 	 */
-	private RegisterEntryDetailParam mapDtoToParameter(EntryDetailDto dto) {
+	private RegisterEntryDetailForm mapDtoToParameter(EntryDetailDto dto) {
 		final String mergedId =dto.getAccountTitleId() + "-" + dto.getSubAccountTitleId(); 
-		return new RegisterEntryDetailParam(
+		return new RegisterEntryDetailForm(
 			dto.getDetailLoanType().toString(), 
 			mergedId,
 			dto.getAmount()

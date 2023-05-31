@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.params.user;
+package io.github.wtbyt298.accountbook.presentation.forms.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import lombok.Data;
  * ユーザ登録画面のフォームクラス
  */
 @Data
-public class CreateUserParam {
+public class RegisterUserForm {
 	
 	@NotBlank(message = "ユーザIDを入力してください。")
 	private String id;

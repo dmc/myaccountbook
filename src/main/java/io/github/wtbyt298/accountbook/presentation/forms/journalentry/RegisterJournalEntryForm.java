@@ -1,4 +1,4 @@
-package io.github.wtbyt298.accountbook.presentation.params.journalentry;
+package io.github.wtbyt298.accountbook.presentation.forms.journalentry;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.Valid;
@@ -12,7 +12,7 @@ import java.util.*;
  * 仕訳登録画面のフォームクラス
  */
 @Data
-public class RegisterJournalEntryParam {
+public class RegisterJournalEntryForm {
 	
 	private static int MIN_LIST_SIZE = 1;
 	private static int MAX_LIST_SIZE = 10;
@@ -26,21 +26,21 @@ public class RegisterJournalEntryParam {
 	private String description;
 
 	@Valid
-	private List<RegisterEntryDetailParam> debitParams;
+	private List<RegisterEntryDetailForm> debitForms;
 	
 	@Valid
-	private List<RegisterEntryDetailParam> creditParams;
+	private List<RegisterEntryDetailForm> creditForms;
 	
-	public RegisterJournalEntryParam(LocalDate dealDate, String description, List<RegisterEntryDetailParam> debitParams, List<RegisterEntryDetailParam> creditParams) {
+	public RegisterJournalEntryForm(LocalDate dealDate, String description, List<RegisterEntryDetailForm> debitForms, List<RegisterEntryDetailForm> creditForms) {
 		this.dealDate = dealDate;
 		this.description = description;
-		this.debitParams = debitParams;
-		this.creditParams = creditParams;
+		this.debitForms = debitForms;
+		this.creditForms = creditForms;
 	}
 	
-	public List<RegisterEntryDetailParam> getEntryDetailParams() {
-		List<RegisterEntryDetailParam> list = new ArrayList<>(debitParams);
-		list.addAll(creditParams);
+	public List<RegisterEntryDetailForm> getEntryDetailParams() {
+		List<RegisterEntryDetailForm> list = new ArrayList<>(debitForms);
+		list.addAll(creditForms);
 		return list;
 	}
 	
@@ -48,10 +48,10 @@ public class RegisterJournalEntryParam {
 	 * 仕訳明細パラメータを初期化する
 	 */
 	public void initList() {
-		debitParams = new ArrayList<>();
-		creditParams = new ArrayList<>();
-		debitParams.add(new RegisterEntryDetailParam());
-		creditParams.add(new RegisterEntryDetailParam());
+		debitForms = new ArrayList<>();
+		creditForms = new ArrayList<>();
+		debitForms.add(new RegisterEntryDetailForm());
+		creditForms.add(new RegisterEntryDetailForm());
 	}
 	
 	/**
@@ -59,12 +59,12 @@ public class RegisterJournalEntryParam {
 	 */
 	public void addList(String type) {
 		if (type.equals("DEBIT")) {
-			if (debitParams.size() >= MAX_LIST_SIZE) return;
-			debitParams.add(new RegisterEntryDetailParam());
+			if (debitForms.size() >= MAX_LIST_SIZE) return;
+			debitForms.add(new RegisterEntryDetailForm());
 		}
 		if (type.equals("CREDIT")) {
-			if (creditParams.size() >= MAX_LIST_SIZE) return;
-			creditParams.add(new RegisterEntryDetailParam());
+			if (creditForms.size() >= MAX_LIST_SIZE) return;
+			creditForms.add(new RegisterEntryDetailForm());
 		}
 	}
 	
@@ -73,12 +73,12 @@ public class RegisterJournalEntryParam {
 	 */
 	public void removeList(String type, int index) {
 		if (type.equals("DEBIT")) {
-			if (debitParams.size() <= MIN_LIST_SIZE) return;
-			debitParams.remove(index);
+			if (debitForms.size() <= MIN_LIST_SIZE) return;
+			debitForms.remove(index);
 		}
 		if (type.equals("CREDIT")) {
-			if (creditParams.size() <= MIN_LIST_SIZE) return;
-			creditParams.remove(index);
+			if (creditForms.size() <= MIN_LIST_SIZE) return;
+			creditForms.remove(index);
 		}
 	}
 	
@@ -87,8 +87,8 @@ public class RegisterJournalEntryParam {
 	 */
 	public boolean isFull(String type) {
 		Objects.requireNonNull(type);
-		if (type.equals("DEBIT")) return debitParams.size() >= MAX_LIST_SIZE;
-		if (type.equals("CREDIT")) return creditParams.size() >= MAX_LIST_SIZE;
+		if (type.equals("DEBIT")) return debitForms.size() >= MAX_LIST_SIZE;
+		if (type.equals("CREDIT")) return creditForms.size() >= MAX_LIST_SIZE;
 		return false;
 	}
 	

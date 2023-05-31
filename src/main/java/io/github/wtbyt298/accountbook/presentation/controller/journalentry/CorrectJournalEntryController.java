@@ -14,8 +14,8 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterE
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.domain.model.journalentry.EntryId;
 import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJournalEntryException;
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterEntryDetailForm;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 import jakarta.validation.Valid;
 
@@ -35,12 +35,12 @@ public class CorrectJournalEntryController {
 	 * 仕訳を訂正する
 	 */
 	@PostMapping("/entry/correct")
-	public String correct(@ModelAttribute("entryId") String id, @Valid @ModelAttribute("entryParam") RegisterJournalEntryParam param, BindingResult result, Model model) {
+	public String correct(@ModelAttribute("entryId") String id, @Valid @ModelAttribute("entryForm") RegisterJournalEntryForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "/entry/entry";
 		}
 		EntryId entryId = EntryId.fromString(id);
-		RegisterJournalEntryCommand command = mapParameterToCommand(param);
+		RegisterJournalEntryCommand command = mapParameterToCommand(form);
 		UserSession userSession = userSessionProvider.getUserSession();
 		try {
 			correctJournalEntryUseCase.execute(entryId, command, userSession);
@@ -57,29 +57,29 @@ public class CorrectJournalEntryController {
 	}
 	
 	/**
-	 * パラメータをコマンドオブジェクトに詰め替える（仕訳）
+	 * フォームクラスをコマンドオブジェクトに詰め替える（仕訳）
 	 */
-	private RegisterJournalEntryCommand mapParameterToCommand(RegisterJournalEntryParam param) {
+	private RegisterJournalEntryCommand mapParameterToCommand(RegisterJournalEntryForm form) {
 		//仕訳明細データを詰め替える
-		List<RegisterEntryDetailCommand> detailCommands = param.getEntryDetailParams().stream()
+		List<RegisterEntryDetailCommand> detailCommands = form.getEntryDetailParams().stream()
 			.map(each -> mapParameterToCommand(each))
 			.toList();
 		return new RegisterJournalEntryCommand(
-			param.getDealDate(),   
-			param.getDescription(),
+			form.getDealDate(),   
+			form.getDescription(),
 			detailCommands
 		);
 	}
 	
 	/**
-	 * パラメータをコマンドオブジェクトに詰め替える（仕訳明細）
+	 * フォームクラスをコマンドオブジェクトに詰め替える（仕訳明細）
 	 */
-	private RegisterEntryDetailCommand mapParameterToCommand(RegisterEntryDetailParam param) {
+	private RegisterEntryDetailCommand mapParameterToCommand(RegisterEntryDetailForm form) {
 		return new RegisterEntryDetailCommand(
-			param.getAccountTitleId(),    
-			param.getSubAccountTitleId(), 
-			param.getDetailLoanType(),    
-			param.getAmount()
+			form.getAccountTitleId(),    
+			form.getSubAccountTitleId(), 
+			form.getDetailLoanType(),    
+			form.getAmount()
 		);
 	}
 	

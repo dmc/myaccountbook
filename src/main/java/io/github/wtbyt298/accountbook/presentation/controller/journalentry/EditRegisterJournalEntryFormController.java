@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -20,12 +20,12 @@ public class EditRegisterJournalEntryFormController {
 	 * 上限は10
 	 */
 	@PostMapping(value = {"/entry/register", "/entry/correct"}, params = "add")
-	public String addForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryParam") RegisterJournalEntryParam param, @RequestParam("add") String value, Model model, HttpServletRequest request) {
+	public String addForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryForm") RegisterJournalEntryForm form, @RequestParam("add") String value, Model model, HttpServletRequest request) {
 		final String ERROR_MESSAGE = "これ以上追加できません。";
-		if (param.isFull(value)) {
+		if (form.isFull(value)) {
 			model.addAttribute("error_" + value, ERROR_MESSAGE);
 		}
-		param.addList(value);
+		form.addList(value);
 		return returnPath(request);
 	}
 	
@@ -34,10 +34,10 @@ public class EditRegisterJournalEntryFormController {
 	 * 下限は1
 	 */
 	@PostMapping(value = {"/entry/register", "/entry/correct"}, params = "remove")
-	public String removeForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryParam") RegisterJournalEntryParam param, @RequestParam("remove") String value, HttpServletRequest request) {
+	public String removeForm(@ModelAttribute("entryId") String id, @ModelAttribute("entryForm") RegisterJournalEntryForm form, @RequestParam("remove") String value, HttpServletRequest request) {
 		final String type = value.substring(0, value.indexOf("-"));
 		final int index = Integer.valueOf(request.getParameter("remove").substring(value.indexOf("-") + 1));
-		param.removeList(type, index);
+		form.removeList(type, index);
 		return returnPath(request);
 	}
 	

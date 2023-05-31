@@ -11,8 +11,8 @@ import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterE
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
 import io.github.wtbyt298.accountbook.application.usecase.journalentry.RegisterJournalEntryUseCase;
 import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJournalEntryException;
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterEntryDetailParam;
-import io.github.wtbyt298.accountbook.presentation.params.journalentry.RegisterJournalEntryParam;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterEntryDetailForm;
+import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 import jakarta.validation.Valid;
 
@@ -32,9 +32,9 @@ public class RegisterJournalEntryController {
 	 * 仕訳登録画面を表示する
 	 */
 	@GetMapping("/entry/register")
-	public String load(@ModelAttribute("entryParam") RegisterJournalEntryParam param, Model model) {
+	public String load(@ModelAttribute("entryForm") RegisterJournalEntryForm form, Model model) {
 		//画面読み込み時に少なくとも1行の仕訳明細フォームを表示する
-		param.initList();
+		form.initList();
 		return "/entry/register";
 	}
 	
@@ -42,12 +42,12 @@ public class RegisterJournalEntryController {
 	 * 仕訳を登録する
 	 */
 	@PostMapping("/entry/register")
-	public String register(@Valid @ModelAttribute("entryParam") RegisterJournalEntryParam param, BindingResult result, Model model) {
+	public String register(@Valid @ModelAttribute("entryForm") RegisterJournalEntryForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "/entry/register";
 		}
 		try {
-			RegisterJournalEntryCommand command = mapParameterToCommand(param);
+			RegisterJournalEntryCommand command = mapParameterToCommand(form);
 			UserSession userSession = userSessionProvider.getUserSession();
 			registerJournalEntryUseCase.execute(command, userSession);
 			return "redirect:/entry/register";
@@ -58,29 +58,29 @@ public class RegisterJournalEntryController {
 	}
 	
 	/**
-	 * パラメータをコマンドオブジェクトに詰め替える（仕訳）
+	 * フォームクラスをコマンドオブジェクトに詰め替える（仕訳）
 	 */
-	private RegisterJournalEntryCommand mapParameterToCommand(RegisterJournalEntryParam param) {
+	private RegisterJournalEntryCommand mapParameterToCommand(RegisterJournalEntryForm form) {
 		//仕訳明細データを詰め替える
-		List<RegisterEntryDetailCommand> detailCommands = param.getEntryDetailParams().stream()
+		List<RegisterEntryDetailCommand> detailCommands = form.getEntryDetailParams().stream()
 			.map(each -> mapParameterToCommand(each))
 			.toList();
 		return new RegisterJournalEntryCommand(
-			param.getDealDate(),   
-			param.getDescription(),
+			form.getDealDate(),   
+			form.getDescription(),
 			detailCommands
 		);
 	}
 	
 	/**
-	 * パラメータをコマンドオブジェクトに詰め替える（仕訳明細）
+	 * フォームクラスをコマンドオブジェクトに詰め替える（仕訳明細）
 	 */
-	private RegisterEntryDetailCommand mapParameterToCommand(RegisterEntryDetailParam param) {
+	private RegisterEntryDetailCommand mapParameterToCommand(RegisterEntryDetailForm form) {
 		return new RegisterEntryDetailCommand(
-			param.getAccountTitleId(),    
-			param.getSubAccountTitleId(), 
-			param.getDetailLoanType(),    
-			param.getAmount()
+			form.getAccountTitleId(),    
+			form.getSubAccountTitleId(), 
+			form.getDetailLoanType(),    
+			form.getAmount()
 		);
 	}
 	

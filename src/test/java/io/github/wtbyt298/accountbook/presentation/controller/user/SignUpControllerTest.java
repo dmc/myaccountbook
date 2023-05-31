@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.application.usecase.user.CreateUserUseCase;
-import io.github.wtbyt298.accountbook.presentation.params.user.CreateUserParam;
+import io.github.wtbyt298.accountbook.presentation.forms.user.RegisterUserForm;
 
 @SpringBootTest
 class SignUpControllerTest {
@@ -59,10 +59,10 @@ class SignUpControllerTest {
 	@Test
 	void POSTリクエストを送信してバリデーションエラーがなければユーザ登録を行いホーム画面へリダイレクトされる() throws Exception {
 		//given:フォームの内容が正しく入力されている
-		CreateUserParam param = validUserParam();
+		RegisterUserForm form = validRegisterUserForm();
 		
 		//when:
-		mockMvc.perform(post("/signup").flashAttr("userParam", param).with(csrf()))
+		mockMvc.perform(post("/signup").flashAttr("userParam", form).with(csrf()))
 			.andExpect(model().hasNoErrors())
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/user/home"));
@@ -74,13 +74,13 @@ class SignUpControllerTest {
 	@Test
 	void POSTリクエストを送信してバリデーションエラーがある場合ユーザ登録画面を再表示する() throws Exception {
 		//given:ユーザIDが空白である
-		CreateUserParam param = new CreateUserParam();
-		param.setId("");
+		RegisterUserForm form = new RegisterUserForm();
+		form.setId("");
 		
 		//when:
-		mockMvc.perform(post("/signup").flashAttr("userParam", param).with(csrf()))
+		mockMvc.perform(post("/signup").flashAttr("userParam", form).with(csrf()))
 			.andExpect(model().hasErrors())
-			.andExpect(model().attribute("userParam", param))
+			.andExpect(model().attribute("userParam", form))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/user/signup"));
 	}
@@ -88,13 +88,13 @@ class SignUpControllerTest {
 	@Test
 	void POSTリクエストを送信してUseCaseExceptionが発生した場合ユーザ登録画面を再表示する() throws Exception {
 		//given:フォームの内容が正しく入力されている
-		CreateUserParam param = validUserParam();
+		RegisterUserForm form = validRegisterUserForm();
 		//given:ユーザ登録処理を実行すると例外が発生する
 		Exception exception = new UseCaseException("同一IDのユーザが既に存在しています。");
 		doThrow(exception).when(createUserUseCase).execute(any());
 				
 		//when:
-		mockMvc.perform(post("/signup").flashAttr("userParam", param).with(csrf()))
+		mockMvc.perform(post("/signup").flashAttr("userParam", form).with(csrf()))
 			.andExpect(model().hasNoErrors())
 			.andExpect(model().attribute("errorMessage", exception.getMessage()))
 			.andExpect(status().isOk())
@@ -107,12 +107,12 @@ class SignUpControllerTest {
 	/**
 	 * バリデーションを満たしたユーザ登録パラメータを生成する
 	 */
-	private CreateUserParam validUserParam() {
-		CreateUserParam param = new CreateUserParam();
-		param.setId("TEST_USER");
-		param.setPassword("testpassword0123");
-		param.setMailAddress("test@example.com");
-		return param;
+	private RegisterUserForm validRegisterUserForm() {
+		RegisterUserForm form = new RegisterUserForm();
+		form.setId("TEST_USER");
+		form.setPassword("testpassword0123");
+		form.setMailAddress("test@example.com");
+		return form;
 	}
 
 }

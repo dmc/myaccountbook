@@ -1,14 +1,13 @@
-package io.github.wtbyt298.accountbook.presentation.params.journalentry;
+package io.github.wtbyt298.accountbook.presentation.forms.journalentry;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 /**
  * 仕訳登録画面のフォームクラス
- * RegisterjournalEntryParamの子要素
  */
 @Data
-public class RegisterEntryDetailParam {
+public class RegisterEntryDetailForm {
 
 	@NotBlank
 	private String detailLoanType;
@@ -20,11 +19,11 @@ public class RegisterEntryDetailParam {
 	@Min(value = 1, message = "金額は1以上で入力してください。")
 	private Integer amount;
 	
-	public RegisterEntryDetailParam() {
+	public RegisterEntryDetailForm() {
 		
 	}
 	
-	public RegisterEntryDetailParam(String detailLoanType, String mergedId, Integer amount) {
+	public RegisterEntryDetailForm(String detailLoanType, String mergedId, Integer amount) {
 		this.detailLoanType = detailLoanType;
 		this.mergedId = mergedId;
 		this.amount = amount;
