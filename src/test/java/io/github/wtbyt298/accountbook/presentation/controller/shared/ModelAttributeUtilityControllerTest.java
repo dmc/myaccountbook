@@ -82,7 +82,7 @@ class ModelAttributeUtilityControllerTest {
 			.andReturn();
 		List<MergedAccountTitleViewModel> viewModels = (List<MergedAccountTitleViewModel>) result.getModelAndView().getModel().get("selectBoxElements");
 		
-		//then:データ詰め替え処理が正しく実行されている
+		//then:ビューモデルへの詰め替え処理が正しく実行されている
 		assertAll(
 			() -> assertEquals(data.size(), viewModels.size()),
 			() -> assertEquals("101-0", viewModels.get(0).getMergedId()),
