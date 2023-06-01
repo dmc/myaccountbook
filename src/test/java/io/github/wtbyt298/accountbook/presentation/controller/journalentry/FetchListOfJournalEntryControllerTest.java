@@ -1,5 +1,7 @@
 package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -7,10 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import java.time.YearMonth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
-import io.github.wtbyt298.accountbook.application.query.service.journalentry.JournalEntryOrderKey;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
@@ -40,7 +39,6 @@ class FetchListOfJournalEntryControllerTest {
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
 	
-	@InjectMocks
 	@Autowired
 	private FetchListOfJournalEntryController fetchListOfJournalEntryController;
 	
@@ -75,10 +73,10 @@ class FetchListOfJournalEntryControllerTest {
 	
 	@Test
 	@WithMockUser
-	void RecordNotFoundExceptionが発生した場合はエラーメッセージを表示する() throws Exception {
+	void GETリクエストを送信してRecordNotFoundExceptionが発生した場合はエラーメッセージを表示する() throws Exception {
 		//given:クエリサービスのfetchAllメソッドを実行するとRecordNotFoundExceptionが発生する
 		Exception exception = new RecordNotFoundException("");
-		when(fetchJournalEntryDataQueryService.fetchAll(YearMonth.of(2023, 5), JournalEntryOrderKey.DEAL_DATE, userSessionProvider.getUserSession().userId())).thenThrow(exception);
+		doThrow(exception).when(fetchJournalEntryDataQueryService).fetchAll(any(), any(), any());
 		
 		//when:
 		mockMvc.perform(get("/entry/entries/2023-05").param("selectedYearMonth", "2023-05"))

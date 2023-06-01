@@ -72,7 +72,7 @@ class SignUpControllerTest {
 	}
 	
 	@Test
-	void POSTリクエストを送信してバリデーションエラーがある場合ユーザ登録画面を再表示する() throws Exception {
+	void POSTリクエストを送信してバリデーションエラーがある場合はユーザ登録画面を再表示する() throws Exception {
 		//given:ユーザIDが空白である
 		RegisterUserForm form = new RegisterUserForm();
 		form.setId("");
@@ -83,10 +83,13 @@ class SignUpControllerTest {
 			.andExpect(model().attribute("userForm", form))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/user/signup"));
+		
+		//then:ユーザ登録処理は実行されない
+		verify(createUserUseCase, times(0)).execute(any());
 	}
 	
 	@Test
-	void POSTリクエストを送信してUseCaseExceptionが発生した場合ユーザ登録画面を再表示する() throws Exception {
+	void POSTリクエストを送信してUseCaseExceptionが発生した場合はユーザ登録画面を再表示する() throws Exception {
 		//given:フォームの内容が正しく入力されている
 		RegisterUserForm form = validRegisterUserForm();
 		//given:ユーザ登録処理を実行すると例外が発生する
