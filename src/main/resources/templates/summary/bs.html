@@ -100,7 +100,7 @@
       						<td class="p-0 m-0" colspan="2">
 	      						<table class="table mb-0 pb-0">
 	      							<thead class="fw-bold">
-	      								<tr class="table-primary border-top border-bottom border-dark">
+	      								<tr class="table-primary border-bottom border-dark">
 	      									<td th:text="*{accountTitleName}"></td>
 	      									<td class="border-dark text-end" th:text="*{showTotal()}" th:classappend="*{total} < 0 ? 'text-danger'"></td> 
 	      								</tr>
@@ -134,7 +134,7 @@
       						<td class="p-0 m-0" colspan="2">
 	      						<table class="table mb-0 pb-0">
 	      							<thead class="fw-bold">
-	      								<tr class="table-danger border-top border-bottom border-dark">
+	      								<tr class="table-danger border-bottom border-dark">
 	      									<td th:text="*{accountTitleName}"></td>
 	      									<td class="border-dark text-end" th:text="*{showTotal()}" th:classappend="*{total} < 0 ? 'text-danger'"></td> 
 	      								</tr>
@@ -168,7 +168,7 @@
       						<td class="p-0 m-0" colspan="2">
 	      						<table class="table mb-0 pb-0">
 	      							<thead class="fw-bold">
-	      								<tr class="table-success border-top border-bottom border-dark">
+	      								<tr class="table-success border-bottom border-dark">
 	      									<td th:text="*{accountTitleName}"></td>
 	      									<td class="border-dark text-end" th:text="*{showTotal()}" th:classappend="*{total} < 0 ? 'text-danger'"></td> 
 	      								</tr>
@@ -186,7 +186,7 @@
       						<td class="p-0 m-0" colspan="2">
       							<table class="table mb-0 pb-0">
 	      							<thead class="fw-bold">
-	      								<tr class="table-success border-top border-bottom border-dark">
+	      								<tr class="table-success  border-bottom border-dark">
 	      									<td>剰余金</td>
 	      									<td class="text-end" th:text="${summary.surplusFormatted()}" th:classappend="${summary.surplus()} < 0 ? 'text-danger'"></td> 
 	      								</tr>
