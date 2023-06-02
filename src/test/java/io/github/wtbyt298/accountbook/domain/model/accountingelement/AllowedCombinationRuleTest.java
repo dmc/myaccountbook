@@ -28,13 +28,11 @@ class AllowedCombinationRuleTest {
 	}
 	
 	@Test
-	void 純資産は資産と純資産と組み合わせ可能() {
+	void 純資産は資産と負債と純資産と費用と組み合わせ可能() {
 		assertTrue(AllowedCombinationRule.ok(EQUITY, ASSETS));
 		assertTrue(AllowedCombinationRule.ok(EQUITY, EQUITY));
-		//純資産：負債　は不可
-		assertFalse(AllowedCombinationRule.ok(EQUITY, LIABILITIES));
-		//純資産：費用　は不可
-		assertFalse(AllowedCombinationRule.ok(EQUITY, EXPENSES));
+		assertTrue(AllowedCombinationRule.ok(EQUITY, LIABILITIES));
+		assertTrue(AllowedCombinationRule.ok(EQUITY, EXPENSES));
 		//純資産：収益　は不可
 		assertFalse(AllowedCombinationRule.ok(EQUITY, REVENUE));
 	}

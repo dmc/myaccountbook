@@ -17,7 +17,7 @@ public class AllowedCombinationRule {
 		allowed = new HashMap<>();
 		allowed.put(ASSETS, EnumSet.of(ASSETS, LIABILITIES, EQUITY, REVENUE));
 		allowed.put(LIABILITIES, EnumSet.of(ASSETS, LIABILITIES, REVENUE));
-		allowed.put(EQUITY, EnumSet.of(ASSETS, EQUITY));
+		allowed.put(EQUITY, EnumSet.of(ASSETS, LIABILITIES, EQUITY, EXPENSES));
 		allowed.put(EXPENSES, EnumSet.of(ASSETS, LIABILITIES, EQUITY, REVENUE));
 		allowed.put(REVENUE, EnumSet.noneOf(AccountingType.class)); //収益は貸方にのみ指定可能
 	}
