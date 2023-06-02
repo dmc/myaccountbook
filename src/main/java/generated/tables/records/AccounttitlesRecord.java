@@ -22,70 +22,70 @@ public class AccounttitlesRecord extends UpdatableRecordImpl<AccounttitlesRecord
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>accountbook_test.accounttitles.accounttitle_id</code>.
+     * Setter for <code>accountbook.accounttitles.accounttitle_id</code>.
      */
     public void setAccounttitleId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.accounttitles.accounttitle_id</code>.
+     * Getter for <code>accountbook.accounttitles.accounttitle_id</code>.
      */
     public String getAccounttitleId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>accountbook_test.accounttitles.accounttitle_name</code>.
+     * Setter for <code>accountbook.accounttitles.accounttitle_name</code>.
      */
     public void setAccounttitleName(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.accounttitles.accounttitle_name</code>.
+     * Getter for <code>accountbook.accounttitles.accounttitle_name</code>.
      */
     public String getAccounttitleName() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>accountbook_test.accounttitles.accounting_type</code>.
+     * Setter for <code>accountbook.accounttitles.accounting_type</code>.
      */
     public void setAccountingType(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.accounttitles.accounting_type</code>.
+     * Getter for <code>accountbook.accounttitles.accounting_type</code>.
      */
     public String getAccountingType() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>accountbook_test.accounttitles.loan_type</code>.
+     * Setter for <code>accountbook.accounttitles.loan_type</code>.
      */
     public void setLoanType(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.accounttitles.loan_type</code>.
+     * Getter for <code>accountbook.accounttitles.loan_type</code>.
      */
     public String getLoanType() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>accountbook_test.accounttitles.summary_type</code>.
+     * Setter for <code>accountbook.accounttitles.summary_type</code>.
      */
     public void setSummaryType(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.accounttitles.summary_type</code>.
+     * Getter for <code>accountbook.accounttitles.summary_type</code>.
      */
     public String getSummaryType() {
         return (String) get(4);

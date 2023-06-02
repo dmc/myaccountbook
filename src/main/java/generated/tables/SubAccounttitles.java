@@ -4,7 +4,7 @@
 package generated.tables;
 
 
-import generated.AccountbookTest;
+import generated.Accountbook;
 import generated.Indexes;
 import generated.Keys;
 import generated.tables.records.SubAccounttitlesRecord;
@@ -41,7 +41,7 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>accountbook_test.sub_accounttitles</code>
+     * The reference instance of <code>accountbook.sub_accounttitles</code>
      */
     public static final SubAccounttitles SUB_ACCOUNTTITLES = new SubAccounttitles();
 
@@ -55,24 +55,23 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
 
     /**
      * The column
-     * <code>accountbook_test.sub_accounttitles.sub_accounttitle_id</code>.
+     * <code>accountbook.sub_accounttitles.sub_accounttitle_id</code>.
      */
     public final TableField<SubAccounttitlesRecord, String> SUB_ACCOUNTTITLE_ID = createField(DSL.name("sub_accounttitle_id"), SQLDataType.VARCHAR(1).nullable(false), this, "");
 
     /**
-     * The column
-     * <code>accountbook_test.sub_accounttitles.accounttitle_id</code>.
+     * The column <code>accountbook.sub_accounttitles.accounttitle_id</code>.
      */
     public final TableField<SubAccounttitlesRecord, String> ACCOUNTTITLE_ID = createField(DSL.name("accounttitle_id"), SQLDataType.VARCHAR(3).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.sub_accounttitles.user_id</code>.
+     * The column <code>accountbook.sub_accounttitles.user_id</code>.
      */
     public final TableField<SubAccounttitlesRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
      * The column
-     * <code>accountbook_test.sub_accounttitles.sub_accounttitle_name</code>.
+     * <code>accountbook.sub_accounttitles.sub_accounttitle_name</code>.
      */
     public final TableField<SubAccounttitlesRecord, String> SUB_ACCOUNTTITLE_NAME = createField(DSL.name("sub_accounttitle_name"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
@@ -85,7 +84,7 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.sub_accounttitles</code> table
+     * Create an aliased <code>accountbook.sub_accounttitles</code> table
      * reference
      */
     public SubAccounttitles(String alias) {
@@ -93,7 +92,7 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.sub_accounttitles</code> table
+     * Create an aliased <code>accountbook.sub_accounttitles</code> table
      * reference
      */
     public SubAccounttitles(Name alias) {
@@ -101,7 +100,7 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
     }
 
     /**
-     * Create a <code>accountbook_test.sub_accounttitles</code> table reference
+     * Create a <code>accountbook.sub_accounttitles</code> table reference
      */
     public SubAccounttitles() {
         this(DSL.name("sub_accounttitles"), null);
@@ -113,7 +112,7 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : AccountbookTest.ACCOUNTBOOK_TEST;
+        return aliased() ? null : Accountbook.ACCOUNTBOOK;
     }
 
     @Override
@@ -135,8 +134,8 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
     private transient Users _users;
 
     /**
-     * Get the implicit join path to the
-     * <code>accountbook_test.accounttitles</code> table.
+     * Get the implicit join path to the <code>accountbook.accounttitles</code>
+     * table.
      */
     public Accounttitles accounttitles() {
         if (_accounttitles == null)
@@ -146,8 +145,7 @@ public class SubAccounttitles extends TableImpl<SubAccounttitlesRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>accountbook_test.users</code>
-     * table.
+     * Get the implicit join path to the <code>accountbook.users</code> table.
      */
     public Users users() {
         if (_users == null)

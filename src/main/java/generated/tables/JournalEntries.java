@@ -4,7 +4,7 @@
 package generated.tables;
 
 
-import generated.AccountbookTest;
+import generated.Accountbook;
 import generated.Indexes;
 import generated.Keys;
 import generated.tables.records.JournalEntriesRecord;
@@ -42,7 +42,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>accountbook_test.journal_entries</code>
+     * The reference instance of <code>accountbook.journal_entries</code>
      */
     public static final JournalEntries JOURNAL_ENTRIES = new JournalEntries();
 
@@ -55,34 +55,32 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     }
 
     /**
-     * The column <code>accountbook_test.journal_entries.entry_id</code>.
+     * The column <code>accountbook.journal_entries.entry_id</code>.
      */
     public final TableField<JournalEntriesRecord, String> ENTRY_ID = createField(DSL.name("entry_id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.journal_entries.deal_date</code>.
+     * The column <code>accountbook.journal_entries.deal_date</code>.
      */
     public final TableField<JournalEntriesRecord, LocalDate> DEAL_DATE = createField(DSL.name("deal_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
     /**
-     * The column
-     * <code>accountbook_test.journal_entries.entry_description</code>.
+     * The column <code>accountbook.journal_entries.entry_description</code>.
      */
     public final TableField<JournalEntriesRecord, String> ENTRY_DESCRIPTION = createField(DSL.name("entry_description"), SQLDataType.VARCHAR(64).nullable(false), this, "");
 
     /**
-     * The column
-     * <code>accountbook_test.journal_entries.fiscal_yearmonth</code>.
+     * The column <code>accountbook.journal_entries.fiscal_yearmonth</code>.
      */
     public final TableField<JournalEntriesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(7).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.journal_entries.total_amount</code>.
+     * The column <code>accountbook.journal_entries.total_amount</code>.
      */
     public final TableField<JournalEntriesRecord, Integer> TOTAL_AMOUNT = createField(DSL.name("total_amount"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.journal_entries.user_id</code>.
+     * The column <code>accountbook.journal_entries.user_id</code>.
      */
     public final TableField<JournalEntriesRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
@@ -95,7 +93,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.journal_entries</code> table
+     * Create an aliased <code>accountbook.journal_entries</code> table
      * reference
      */
     public JournalEntries(String alias) {
@@ -103,7 +101,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.journal_entries</code> table
+     * Create an aliased <code>accountbook.journal_entries</code> table
      * reference
      */
     public JournalEntries(Name alias) {
@@ -111,7 +109,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     }
 
     /**
-     * Create a <code>accountbook_test.journal_entries</code> table reference
+     * Create a <code>accountbook.journal_entries</code> table reference
      */
     public JournalEntries() {
         this(DSL.name("journal_entries"), null);
@@ -123,7 +121,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : AccountbookTest.ACCOUNTBOOK_TEST;
+        return aliased() ? null : Accountbook.ACCOUNTBOOK;
     }
 
     @Override
@@ -144,8 +142,7 @@ public class JournalEntries extends TableImpl<JournalEntriesRecord> {
     private transient Users _users;
 
     /**
-     * Get the implicit join path to the <code>accountbook_test.users</code>
-     * table.
+     * Get the implicit join path to the <code>accountbook.users</code> table.
      */
     public Users users() {
         if (_users == null)

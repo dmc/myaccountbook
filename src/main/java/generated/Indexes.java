@@ -16,7 +16,7 @@ import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling indexes of tables in accountbook_test.
+ * A class modelling indexes of tables in accountbook.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Indexes {

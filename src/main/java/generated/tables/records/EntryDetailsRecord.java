@@ -21,72 +21,70 @@ public class EntryDetailsRecord extends TableRecordImpl<EntryDetailsRecord> impl
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>accountbook_test.entry_details.entry_id</code>.
+     * Setter for <code>accountbook.entry_details.entry_id</code>.
      */
     public void setEntryId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.entry_details.entry_id</code>.
+     * Getter for <code>accountbook.entry_details.entry_id</code>.
      */
     public String getEntryId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>accountbook_test.entry_details.accounttitle_id</code>.
+     * Setter for <code>accountbook.entry_details.accounttitle_id</code>.
      */
     public void setAccounttitleId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.entry_details.accounttitle_id</code>.
+     * Getter for <code>accountbook.entry_details.accounttitle_id</code>.
      */
     public String getAccounttitleId() {
         return (String) get(1);
     }
 
     /**
-     * Setter for
-     * <code>accountbook_test.entry_details.sub_accounttitle_id</code>.
+     * Setter for <code>accountbook.entry_details.sub_accounttitle_id</code>.
      */
     public void setSubAccounttitleId(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.entry_details.sub_accounttitle_id</code>.
+     * Getter for <code>accountbook.entry_details.sub_accounttitle_id</code>.
      */
     public String getSubAccounttitleId() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>accountbook_test.entry_details.loan_type</code>.
+     * Setter for <code>accountbook.entry_details.loan_type</code>.
      */
     public void setLoanType(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.entry_details.loan_type</code>.
+     * Getter for <code>accountbook.entry_details.loan_type</code>.
      */
     public String getLoanType() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>accountbook_test.entry_details.amount</code>.
+     * Setter for <code>accountbook.entry_details.amount</code>.
      */
     public void setAmount(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.entry_details.amount</code>.
+     * Getter for <code>accountbook.entry_details.amount</code>.
      */
     public Integer getAmount() {
         return (Integer) get(4);

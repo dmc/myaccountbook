@@ -4,7 +4,7 @@
 package generated.tables;
 
 
-import generated.AccountbookTest;
+import generated.Accountbook;
 import generated.Keys;
 import generated.tables.records.AccounttitlesRecord;
 
@@ -37,7 +37,7 @@ public class Accounttitles extends TableImpl<AccounttitlesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>accountbook_test.accounttitles</code>
+     * The reference instance of <code>accountbook.accounttitles</code>
      */
     public static final Accounttitles ACCOUNTTITLES = new Accounttitles();
 
@@ -50,27 +50,27 @@ public class Accounttitles extends TableImpl<AccounttitlesRecord> {
     }
 
     /**
-     * The column <code>accountbook_test.accounttitles.accounttitle_id</code>.
+     * The column <code>accountbook.accounttitles.accounttitle_id</code>.
      */
     public final TableField<AccounttitlesRecord, String> ACCOUNTTITLE_ID = createField(DSL.name("accounttitle_id"), SQLDataType.VARCHAR(3).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.accounttitles.accounttitle_name</code>.
+     * The column <code>accountbook.accounttitles.accounttitle_name</code>.
      */
     public final TableField<AccounttitlesRecord, String> ACCOUNTTITLE_NAME = createField(DSL.name("accounttitle_name"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.accounttitles.accounting_type</code>.
+     * The column <code>accountbook.accounttitles.accounting_type</code>.
      */
     public final TableField<AccounttitlesRecord, String> ACCOUNTING_TYPE = createField(DSL.name("accounting_type"), SQLDataType.VARCHAR(16).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.accounttitles.loan_type</code>.
+     * The column <code>accountbook.accounttitles.loan_type</code>.
      */
     public final TableField<AccounttitlesRecord, String> LOAN_TYPE = createField(DSL.name("loan_type"), SQLDataType.VARCHAR(8).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.accounttitles.summary_type</code>.
+     * The column <code>accountbook.accounttitles.summary_type</code>.
      */
     public final TableField<AccounttitlesRecord, String> SUMMARY_TYPE = createField(DSL.name("summary_type"), SQLDataType.VARCHAR(8).nullable(false), this, "");
 
@@ -83,23 +83,21 @@ public class Accounttitles extends TableImpl<AccounttitlesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.accounttitles</code> table
-     * reference
+     * Create an aliased <code>accountbook.accounttitles</code> table reference
      */
     public Accounttitles(String alias) {
         this(DSL.name(alias), ACCOUNTTITLES);
     }
 
     /**
-     * Create an aliased <code>accountbook_test.accounttitles</code> table
-     * reference
+     * Create an aliased <code>accountbook.accounttitles</code> table reference
      */
     public Accounttitles(Name alias) {
         this(alias, ACCOUNTTITLES);
     }
 
     /**
-     * Create a <code>accountbook_test.accounttitles</code> table reference
+     * Create a <code>accountbook.accounttitles</code> table reference
      */
     public Accounttitles() {
         this(DSL.name("accounttitles"), null);
@@ -111,7 +109,7 @@ public class Accounttitles extends TableImpl<AccounttitlesRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : AccountbookTest.ACCOUNTBOOK_TEST;
+        return aliased() ? null : Accountbook.ACCOUNTBOOK;
     }
 
     @Override

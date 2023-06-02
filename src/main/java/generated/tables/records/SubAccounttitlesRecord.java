@@ -23,7 +23,7 @@ public class SubAccounttitlesRecord extends UpdatableRecordImpl<SubAccounttitles
 
     /**
      * Setter for
-     * <code>accountbook_test.sub_accounttitles.sub_accounttitle_id</code>.
+     * <code>accountbook.sub_accounttitles.sub_accounttitle_id</code>.
      */
     public void setSubAccounttitleId(String value) {
         set(0, value);
@@ -31,37 +31,35 @@ public class SubAccounttitlesRecord extends UpdatableRecordImpl<SubAccounttitles
 
     /**
      * Getter for
-     * <code>accountbook_test.sub_accounttitles.sub_accounttitle_id</code>.
+     * <code>accountbook.sub_accounttitles.sub_accounttitle_id</code>.
      */
     public String getSubAccounttitleId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for
-     * <code>accountbook_test.sub_accounttitles.accounttitle_id</code>.
+     * Setter for <code>accountbook.sub_accounttitles.accounttitle_id</code>.
      */
     public void setAccounttitleId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.sub_accounttitles.accounttitle_id</code>.
+     * Getter for <code>accountbook.sub_accounttitles.accounttitle_id</code>.
      */
     public String getAccounttitleId() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>accountbook_test.sub_accounttitles.user_id</code>.
+     * Setter for <code>accountbook.sub_accounttitles.user_id</code>.
      */
     public void setUserId(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.sub_accounttitles.user_id</code>.
+     * Getter for <code>accountbook.sub_accounttitles.user_id</code>.
      */
     public String getUserId() {
         return (String) get(2);
@@ -69,7 +67,7 @@ public class SubAccounttitlesRecord extends UpdatableRecordImpl<SubAccounttitles
 
     /**
      * Setter for
-     * <code>accountbook_test.sub_accounttitles.sub_accounttitle_name</code>.
+     * <code>accountbook.sub_accounttitles.sub_accounttitle_name</code>.
      */
     public void setSubAccounttitleName(String value) {
         set(3, value);
@@ -77,7 +75,7 @@ public class SubAccounttitlesRecord extends UpdatableRecordImpl<SubAccounttitles
 
     /**
      * Getter for
-     * <code>accountbook_test.sub_accounttitles.sub_accounttitle_name</code>.
+     * <code>accountbook.sub_accounttitles.sub_accounttitle_name</code>.
      */
     public String getSubAccounttitleName() {
         return (String) get(3);

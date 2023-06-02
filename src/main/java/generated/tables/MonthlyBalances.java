@@ -4,7 +4,7 @@
 package generated.tables;
 
 
-import generated.AccountbookTest;
+import generated.Accountbook;
 import generated.Indexes;
 import generated.Keys;
 import generated.tables.records.MonthlyBalancesRecord;
@@ -40,7 +40,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>accountbook_test.monthly_balances</code>
+     * The reference instance of <code>accountbook.monthly_balances</code>
      */
     public static final MonthlyBalances MONTHLY_BALANCES = new MonthlyBalances();
 
@@ -53,30 +53,27 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     }
 
     /**
-     * The column
-     * <code>accountbook_test.monthly_balances.accounttitle_id</code>.
+     * The column <code>accountbook.monthly_balances.accounttitle_id</code>.
      */
     public final TableField<MonthlyBalancesRecord, String> ACCOUNTTITLE_ID = createField(DSL.name("accounttitle_id"), SQLDataType.VARCHAR(3), this, "");
 
     /**
-     * The column
-     * <code>accountbook_test.monthly_balances.sub_accounttitle_id</code>.
+     * The column <code>accountbook.monthly_balances.sub_accounttitle_id</code>.
      */
     public final TableField<MonthlyBalancesRecord, String> SUB_ACCOUNTTITLE_ID = createField(DSL.name("sub_accounttitle_id"), SQLDataType.VARCHAR(1), this, "");
 
     /**
-     * The column
-     * <code>accountbook_test.monthly_balances.fiscal_yearmonth</code>.
+     * The column <code>accountbook.monthly_balances.fiscal_yearmonth</code>.
      */
     public final TableField<MonthlyBalancesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(7), this, "");
 
     /**
-     * The column <code>accountbook_test.monthly_balances.user_id</code>.
+     * The column <code>accountbook.monthly_balances.user_id</code>.
      */
     public final TableField<MonthlyBalancesRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(32), this, "");
 
     /**
-     * The column <code>accountbook_test.monthly_balances.balance</code>.
+     * The column <code>accountbook.monthly_balances.balance</code>.
      */
     public final TableField<MonthlyBalancesRecord, Integer> BALANCE = createField(DSL.name("balance"), SQLDataType.INTEGER, this, "");
 
@@ -89,7 +86,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.monthly_balances</code> table
+     * Create an aliased <code>accountbook.monthly_balances</code> table
      * reference
      */
     public MonthlyBalances(String alias) {
@@ -97,7 +94,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.monthly_balances</code> table
+     * Create an aliased <code>accountbook.monthly_balances</code> table
      * reference
      */
     public MonthlyBalances(Name alias) {
@@ -105,7 +102,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     }
 
     /**
-     * Create a <code>accountbook_test.monthly_balances</code> table reference
+     * Create a <code>accountbook.monthly_balances</code> table reference
      */
     public MonthlyBalances() {
         this(DSL.name("monthly_balances"), null);
@@ -117,7 +114,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : AccountbookTest.ACCOUNTBOOK_TEST;
+        return aliased() ? null : Accountbook.ACCOUNTBOOK;
     }
 
     @Override
@@ -134,8 +131,8 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     private transient Users _users;
 
     /**
-     * Get the implicit join path to the
-     * <code>accountbook_test.accounttitles</code> table.
+     * Get the implicit join path to the <code>accountbook.accounttitles</code>
+     * table.
      */
     public Accounttitles accounttitles() {
         if (_accounttitles == null)
@@ -145,8 +142,7 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>accountbook_test.users</code>
-     * table.
+     * Get the implicit join path to the <code>accountbook.users</code> table.
      */
     public Users users() {
         if (_users == null)

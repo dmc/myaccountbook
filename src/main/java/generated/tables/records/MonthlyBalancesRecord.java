@@ -21,76 +21,70 @@ public class MonthlyBalancesRecord extends TableRecordImpl<MonthlyBalancesRecord
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for
-     * <code>accountbook_test.monthly_balances.accounttitle_id</code>.
+     * Setter for <code>accountbook.monthly_balances.accounttitle_id</code>.
      */
     public void setAccounttitleId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.monthly_balances.accounttitle_id</code>.
+     * Getter for <code>accountbook.monthly_balances.accounttitle_id</code>.
      */
     public String getAccounttitleId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for
-     * <code>accountbook_test.monthly_balances.sub_accounttitle_id</code>.
+     * Setter for <code>accountbook.monthly_balances.sub_accounttitle_id</code>.
      */
     public void setSubAccounttitleId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.monthly_balances.sub_accounttitle_id</code>.
+     * Getter for <code>accountbook.monthly_balances.sub_accounttitle_id</code>.
      */
     public String getSubAccounttitleId() {
         return (String) get(1);
     }
 
     /**
-     * Setter for
-     * <code>accountbook_test.monthly_balances.fiscal_yearmonth</code>.
+     * Setter for <code>accountbook.monthly_balances.fiscal_yearmonth</code>.
      */
     public void setFiscalYearmonth(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.monthly_balances.fiscal_yearmonth</code>.
+     * Getter for <code>accountbook.monthly_balances.fiscal_yearmonth</code>.
      */
     public String getFiscalYearmonth() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>accountbook_test.monthly_balances.user_id</code>.
+     * Setter for <code>accountbook.monthly_balances.user_id</code>.
      */
     public void setUserId(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.monthly_balances.user_id</code>.
+     * Getter for <code>accountbook.monthly_balances.user_id</code>.
      */
     public String getUserId() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>accountbook_test.monthly_balances.balance</code>.
+     * Setter for <code>accountbook.monthly_balances.balance</code>.
      */
     public void setBalance(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.monthly_balances.balance</code>.
+     * Getter for <code>accountbook.monthly_balances.balance</code>.
      */
     public Integer getBalance() {
         return (Integer) get(4);

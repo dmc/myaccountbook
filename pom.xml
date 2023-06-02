@@ -118,7 +118,7 @@
 			    <configuration>
 			        <jdbc>
 			            <driver>com.mysql.cj.jdbc.Driver</driver>
-			            <url>jdbc:mysql://localhost:3306/accountbook_test</url>
+			            <url>jdbc:mysql://localhost:3306/accountbook</url>
 			            <user>admin</user>
 			            <password>acb00kapp</password>
 			        </jdbc>
@@ -127,7 +127,7 @@
 			               <name>org.jooq.meta.mysql.MySQLDatabase</name>
 			               <includes>.*</includes>
 			               <excludes>flyway_schema_history</excludes>
-			               <inputSchema>accountbook_test</inputSchema>
+			               <inputSchema>accountbook</inputSchema>
 			            </database>
 			            <target>
 			               <packageName>generated</packageName>

@@ -26,9 +26,9 @@ public class DefaultCatalog extends CatalogImpl {
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
     /**
-     * The schema <code>accountbook_test</code>.
+     * The schema <code>accountbook</code>.
      */
-    public final AccountbookTest ACCOUNTBOOK_TEST = AccountbookTest.ACCOUNTBOOK_TEST;
+    public final Accountbook ACCOUNTBOOK = Accountbook.ACCOUNTBOOK;
 
     /**
      * No further instances allowed
@@ -40,7 +40,7 @@ public class DefaultCatalog extends CatalogImpl {
     @Override
     public final List<Schema> getSchemas() {
         return Arrays.asList(
-            AccountbookTest.ACCOUNTBOOK_TEST
+            Accountbook.ACCOUNTBOOK
         );
     }
 

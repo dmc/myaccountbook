@@ -22,56 +22,56 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>accountbook_test.users.user_id</code>.
+     * Setter for <code>accountbook.users.user_id</code>.
      */
     public void setUserId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.users.user_id</code>.
+     * Getter for <code>accountbook.users.user_id</code>.
      */
     public String getUserId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>accountbook_test.users.hashed_password</code>.
+     * Setter for <code>accountbook.users.hashed_password</code>.
      */
     public void setHashedPassword(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.users.hashed_password</code>.
+     * Getter for <code>accountbook.users.hashed_password</code>.
      */
     public String getHashedPassword() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>accountbook_test.users.mail_address</code>.
+     * Setter for <code>accountbook.users.mail_address</code>.
      */
     public void setMailAddress(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.users.mail_address</code>.
+     * Getter for <code>accountbook.users.mail_address</code>.
      */
     public String getMailAddress() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>accountbook_test.users.user_status</code>.
+     * Setter for <code>accountbook.users.user_status</code>.
      */
     public void setUserStatus(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.users.user_status</code>.
+     * Getter for <code>accountbook.users.user_status</code>.
      */
     public String getUserStatus() {
         return (String) get(3);

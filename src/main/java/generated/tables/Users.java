@@ -4,7 +4,7 @@
 package generated.tables;
 
 
-import generated.AccountbookTest;
+import generated.Accountbook;
 import generated.Keys;
 import generated.tables.records.UsersRecord;
 
@@ -37,7 +37,7 @@ public class Users extends TableImpl<UsersRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>accountbook_test.users</code>
+     * The reference instance of <code>accountbook.users</code>
      */
     public static final Users USERS = new Users();
 
@@ -50,22 +50,22 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     /**
-     * The column <code>accountbook_test.users.user_id</code>.
+     * The column <code>accountbook.users.user_id</code>.
      */
     public final TableField<UsersRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.users.hashed_password</code>.
+     * The column <code>accountbook.users.hashed_password</code>.
      */
     public final TableField<UsersRecord, String> HASHED_PASSWORD = createField(DSL.name("hashed_password"), SQLDataType.VARCHAR(128).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.users.mail_address</code>.
+     * The column <code>accountbook.users.mail_address</code>.
      */
     public final TableField<UsersRecord, String> MAIL_ADDRESS = createField(DSL.name("mail_address"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.users.user_status</code>.
+     * The column <code>accountbook.users.user_status</code>.
      */
     public final TableField<UsersRecord, String> USER_STATUS = createField(DSL.name("user_status"), SQLDataType.VARCHAR(8).nullable(false), this, "");
 
@@ -78,21 +78,21 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.users</code> table reference
+     * Create an aliased <code>accountbook.users</code> table reference
      */
     public Users(String alias) {
         this(DSL.name(alias), USERS);
     }
 
     /**
-     * Create an aliased <code>accountbook_test.users</code> table reference
+     * Create an aliased <code>accountbook.users</code> table reference
      */
     public Users(Name alias) {
         this(alias, USERS);
     }
 
     /**
-     * Create a <code>accountbook_test.users</code> table reference
+     * Create a <code>accountbook.users</code> table reference
      */
     public Users() {
         this(DSL.name("users"), null);
@@ -104,7 +104,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : AccountbookTest.ACCOUNTBOOK_TEST;
+        return aliased() ? null : Accountbook.ACCOUNTBOOK;
     }
 
     @Override

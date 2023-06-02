@@ -24,88 +24,84 @@ public class JournalEntriesRecord extends UpdatableRecordImpl<JournalEntriesReco
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>accountbook_test.journal_entries.entry_id</code>.
+     * Setter for <code>accountbook.journal_entries.entry_id</code>.
      */
     public void setEntryId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.journal_entries.entry_id</code>.
+     * Getter for <code>accountbook.journal_entries.entry_id</code>.
      */
     public String getEntryId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>accountbook_test.journal_entries.deal_date</code>.
+     * Setter for <code>accountbook.journal_entries.deal_date</code>.
      */
     public void setDealDate(LocalDate value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.journal_entries.deal_date</code>.
+     * Getter for <code>accountbook.journal_entries.deal_date</code>.
      */
     public LocalDate getDealDate() {
         return (LocalDate) get(1);
     }
 
     /**
-     * Setter for
-     * <code>accountbook_test.journal_entries.entry_description</code>.
+     * Setter for <code>accountbook.journal_entries.entry_description</code>.
      */
     public void setEntryDescription(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.journal_entries.entry_description</code>.
+     * Getter for <code>accountbook.journal_entries.entry_description</code>.
      */
     public String getEntryDescription() {
         return (String) get(2);
     }
 
     /**
-     * Setter for
-     * <code>accountbook_test.journal_entries.fiscal_yearmonth</code>.
+     * Setter for <code>accountbook.journal_entries.fiscal_yearmonth</code>.
      */
     public void setFiscalYearmonth(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for
-     * <code>accountbook_test.journal_entries.fiscal_yearmonth</code>.
+     * Getter for <code>accountbook.journal_entries.fiscal_yearmonth</code>.
      */
     public String getFiscalYearmonth() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>accountbook_test.journal_entries.total_amount</code>.
+     * Setter for <code>accountbook.journal_entries.total_amount</code>.
      */
     public void setTotalAmount(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.journal_entries.total_amount</code>.
+     * Getter for <code>accountbook.journal_entries.total_amount</code>.
      */
     public Integer getTotalAmount() {
         return (Integer) get(4);
     }
 
     /**
-     * Setter for <code>accountbook_test.journal_entries.user_id</code>.
+     * Setter for <code>accountbook.journal_entries.user_id</code>.
      */
     public void setUserId(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>accountbook_test.journal_entries.user_id</code>.
+     * Getter for <code>accountbook.journal_entries.user_id</code>.
      */
     public String getUserId() {
         return (String) get(5);

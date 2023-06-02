@@ -4,7 +4,7 @@
 package generated.tables;
 
 
-import generated.AccountbookTest;
+import generated.Accountbook;
 import generated.Indexes;
 import generated.Keys;
 import generated.tables.records.EntryDetailsRecord;
@@ -40,7 +40,7 @@ public class EntryDetails extends TableImpl<EntryDetailsRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>accountbook_test.entry_details</code>
+     * The reference instance of <code>accountbook.entry_details</code>
      */
     public static final EntryDetails ENTRY_DETAILS = new EntryDetails();
 
@@ -53,28 +53,27 @@ public class EntryDetails extends TableImpl<EntryDetailsRecord> {
     }
 
     /**
-     * The column <code>accountbook_test.entry_details.entry_id</code>.
+     * The column <code>accountbook.entry_details.entry_id</code>.
      */
     public final TableField<EntryDetailsRecord, String> ENTRY_ID = createField(DSL.name("entry_id"), SQLDataType.VARCHAR(36), this, "");
 
     /**
-     * The column <code>accountbook_test.entry_details.accounttitle_id</code>.
+     * The column <code>accountbook.entry_details.accounttitle_id</code>.
      */
     public final TableField<EntryDetailsRecord, String> ACCOUNTTITLE_ID = createField(DSL.name("accounttitle_id"), SQLDataType.VARCHAR(3).nullable(false), this, "");
 
     /**
-     * The column
-     * <code>accountbook_test.entry_details.sub_accounttitle_id</code>.
+     * The column <code>accountbook.entry_details.sub_accounttitle_id</code>.
      */
     public final TableField<EntryDetailsRecord, String> SUB_ACCOUNTTITLE_ID = createField(DSL.name("sub_accounttitle_id"), SQLDataType.VARCHAR(1).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.entry_details.loan_type</code>.
+     * The column <code>accountbook.entry_details.loan_type</code>.
      */
     public final TableField<EntryDetailsRecord, String> LOAN_TYPE = createField(DSL.name("loan_type"), SQLDataType.VARCHAR(8).nullable(false), this, "");
 
     /**
-     * The column <code>accountbook_test.entry_details.amount</code>.
+     * The column <code>accountbook.entry_details.amount</code>.
      */
     public final TableField<EntryDetailsRecord, Integer> AMOUNT = createField(DSL.name("amount"), SQLDataType.INTEGER.nullable(false), this, "");
 
@@ -87,23 +86,21 @@ public class EntryDetails extends TableImpl<EntryDetailsRecord> {
     }
 
     /**
-     * Create an aliased <code>accountbook_test.entry_details</code> table
-     * reference
+     * Create an aliased <code>accountbook.entry_details</code> table reference
      */
     public EntryDetails(String alias) {
         this(DSL.name(alias), ENTRY_DETAILS);
     }
 
     /**
-     * Create an aliased <code>accountbook_test.entry_details</code> table
-     * reference
+     * Create an aliased <code>accountbook.entry_details</code> table reference
      */
     public EntryDetails(Name alias) {
         this(alias, ENTRY_DETAILS);
     }
 
     /**
-     * Create a <code>accountbook_test.entry_details</code> table reference
+     * Create a <code>accountbook.entry_details</code> table reference
      */
     public EntryDetails() {
         this(DSL.name("entry_details"), null);
@@ -115,7 +112,7 @@ public class EntryDetails extends TableImpl<EntryDetailsRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : AccountbookTest.ACCOUNTBOOK_TEST;
+        return aliased() ? null : Accountbook.ACCOUNTBOOK;
     }
 
     @Override
@@ -133,7 +130,7 @@ public class EntryDetails extends TableImpl<EntryDetailsRecord> {
 
     /**
      * Get the implicit join path to the
-     * <code>accountbook_test.journal_entries</code> table.
+     * <code>accountbook.journal_entries</code> table.
      */
     public JournalEntries journalEntries() {
         if (_journalEntries == null)
@@ -143,8 +140,8 @@ public class EntryDetails extends TableImpl<EntryDetailsRecord> {
     }
 
     /**
-     * Get the implicit join path to the
-     * <code>accountbook_test.accounttitles</code> table.
+     * Get the implicit join path to the <code>accountbook.accounttitles</code>
+     * table.
      */
     public Accounttitles accounttitles() {
         if (_accounttitles == null)
