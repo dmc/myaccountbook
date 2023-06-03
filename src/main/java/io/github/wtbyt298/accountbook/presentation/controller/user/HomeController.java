@@ -16,6 +16,7 @@ import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.presentation.controller.summary.ChartDataProcessor;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
+import io.github.wtbyt298.accountbook.presentation.shared.util.AmountPresentationFormatter;
 
 /**
  * ホーム画面のコントローラクラス
@@ -61,12 +62,14 @@ public class HomeController {
 		ChartDataProcessor expensesChart = new ChartDataProcessor(expensesData);
 		model.addAttribute("expensesLabels", expensesChart.labels());
 		model.addAttribute("expensesData", expensesChart.values());
+		model.addAttribute("totalOfExpenses", AmountPresentationFormatter.yen(expensesChart.total()));
 		
 		//収益の科目の集計値を取得する
 		List<Entry<String, BigDecimal>> revenueData = profitAndLossStatementQueryService.aggregateByAccountTitle(yearMonth, userSession.userId(), AccountingType.REVENUE);
 		ChartDataProcessor revenueChart = new ChartDataProcessor(revenueData);
 		model.addAttribute("revenueLavels", revenueChart.labels());
 		model.addAttribute("revenueData", revenueChart.values());
+		model.addAttribute("totalOfRevenue", AmountPresentationFormatter.yen(revenueChart.total()));
 		
 		model.addAttribute("selectedYearMonth", yearMonth.toString());
 		

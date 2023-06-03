@@ -78,7 +78,7 @@
     	</nav>
 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-4">
       		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        		<h1 class="h2">作成中</h1>
+        		<h1 class="h2"></h1>
         		<div class="btn-toolbar mb-2 mb-md-0">
         			<form class="form-group mx-2">
 						<input type="month" class="form-control" id="input-month" name="selectedYearMonth" th:value="${selectedYearMonth}" onchange="changeLocation()">
@@ -91,83 +91,119 @@
 					</script>
 				</div>
       		</div>
-      		<div class="d-flex">
-      		<canvas class="my-4 h-75 w-50" id="expensesChart"></canvas>
-			<!-- グラフ表示用 -->
-			<script type="text/javascript" th:inline="javascript">
-				var ctx = document.getElementById('expensesChart');
-				var expensesChart = new Chart(ctx, {
-					type: 'doughnut',
-					data: {
-						labels: /*[[${expensesLabels}]]*/ _,
-						datasets: [{
-							label: '金額',
-							data: /*[[${expensesData}]]*/ _
-						}]
-					},
-					options: {
-						plugins: {
-							responsive: true,
-							title: {
-								display: true,
-								text: '今月の支出',
-								font: {
-									size: 36
-								},
-								padding: {
-									top: 20,
-									bottom: 20
-								}
+      		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mx-auto w-75">
+      			<div class="w-50">
+		      		<canvas class="my-4" id="expensesChart"></canvas>
+		      		<div class="text-center fs-3" th:text="合計： + ${totalOfExpenses}"></div>
+					<script type="text/javascript" th:inline="javascript">
+						var ctx = document.getElementById('expensesChart');
+						var expensesChart = new Chart(ctx, {
+							type: 'doughnut',
+							data: {
+								labels: /*[[${expensesLabels}]]*/ _,
+								datasets: [{
+									label: '金額',
+									backgroundColor: [
+										'#dc143c',
+										'#ff69b4',
+										'#ff8c00',
+										'#ffd700',
+										'#00ff00',
+										'#6b8e23',
+										'#00ffff',
+										'#7fffd4',
+										'#e0ffff',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc'
+									],
+									data: /*[[${expensesData}]]*/ _
+								}]
 							},
-							legend: {
-								labels: {
-									font: {
-										size: 24
+							options: {
+								responsive: true,
+								plugins: {
+									title: {
+										display: true,
+										text: '今月の支出',
+										font: {
+											size: 36
+										},
+										padding: {
+											bottom: 20
+										}
+									},
+									legend: {
+										labels: {
+											font: {
+												size: 20
+											}
+										}
 									}
 								}
 							}
-						}
-					}
-				});
-			</script>
-			<canvas class="my-4 h-75 w-50" id="revenueChart"></canvas>
-			<!-- グラフ表示用 -->
-			<script type="text/javascript" th:inline="javascript">
-				var ctx = document.getElementById('revenueChart');
-				var expensesChart = new Chart(ctx, {
-					type: 'doughnut',
-					data: {
-						labels: /*[[${revenueLavels}]]*/ _,
-						datasets: [{
-							label: '金額',
-							data: /*[[${revenueData}]]*/ _
-						}]
-					},
-					options: {
-						plugins: {
-							responsive: true,
-							title: {
-								display: true,
-								text: '今月の収入',
-								font: {
-									size: 36
-								},
-								padding: {
-									top: 20,
-									bottom: 20
-								}
+						});
+					</script>
+				</div>
+				<div class="w-50">
+					<canvas class="my-4" id="revenueChart"></canvas>
+					<div class="text-center fs-3" th:text="合計： + ${totalOfRevenue}"></div>
+					<script type="text/javascript" th:inline="javascript">
+						var ctx = document.getElementById('revenueChart');
+						var expensesChart = new Chart(ctx, {
+							type: 'doughnut',
+							data: {
+								labels: /*[[${revenueLavels}]]*/ _,
+								datasets: [{
+									label: '金額',
+									backgroundColor: [
+										'#00bfff',
+										'#00ffff',
+										'#87cefa',
+										'#40e0d0',
+										'#00ff7f',
+										'#00fa9a',
+										'#9acd32',
+										'#ee82ee',
+										'#dda0dd',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc',
+										'#dcdcdc'
+									],									
+									data: /*[[${revenueData}]]*/ _
+								}]
 							},
-							legend: {
-								labels: {
-									font: {
-										size: 24
+							options: {
+								responsive: true,
+								plugins: {
+									title: {
+										display: true,
+										text: '今月の収入',
+										font: {
+											size: 36
+										},
+										padding: {
+											bottom: 20
+										}
+									},
+									legend: {
+										labels: {
+											font: {
+												size: 20
+											}
+										}
 									}
 								}
 							}
-						}
-					}
-				});
-			</script>
+						});
+					</script>
+				</div>
 			</div>
     	</main>
 	</div>

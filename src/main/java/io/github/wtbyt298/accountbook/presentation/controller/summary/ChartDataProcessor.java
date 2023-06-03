@@ -44,4 +44,14 @@ public class ChartDataProcessor {
 		return values.toArray(new BigDecimal[values.size()]);
 	}
 	
+	/**
+	 * @return 合計金額
+	 */
+	public int total() {
+		
+		return data.stream()
+			.mapToInt(each -> each.getValue().intValue())
+			.sum();
+	}
+	
 }
