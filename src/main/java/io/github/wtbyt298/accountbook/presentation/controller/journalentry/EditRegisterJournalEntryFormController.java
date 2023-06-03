@@ -48,7 +48,7 @@ public class EditRegisterJournalEntryFormController {
 	 */
 	private String returnPath(HttpServletRequest request) {
 		if (request.getRequestURI().equals("/entry/register")) return "/entry/register";
-		if (request.getRequestURI().equals("/entry/correct")) return "/entry/entry";
+		if (request.getRequestURI().equals("/entry/correct")) return "/entry/edit";
 		return "/error";
 	}
 	

@@ -24,17 +24,17 @@ public class FetchJournalEntryController {
 	private FetchJournalEntryDataQueryService fetchJournalEntryDataQueryService;
 	
 	/**
-	 * 仕訳詳細画面を表示する
+	 * 仕訳編集画面を表示する
 	 * フォームに取得したデータを表示する
 	 */
-	@GetMapping("/entry/entry/{id}")
+	@GetMapping("/entry/edit/{id}")
 	public String load(@PathVariable String id, Model model) {
 		EntryId entryId = EntryId.fromString(id);
 		JournalEntryDto dto =fetchJournalEntryDataQueryService.fetchOne(entryId);
 		RegisterJournalEntryForm form = mapDtoToParameter(dto);
 		model.addAttribute("entryId", entryId.value());
 		model.addAttribute("entryForm", form);
-		return "/entry/entry";
+		return "/entry/edit";
 	}
 	
 	/**

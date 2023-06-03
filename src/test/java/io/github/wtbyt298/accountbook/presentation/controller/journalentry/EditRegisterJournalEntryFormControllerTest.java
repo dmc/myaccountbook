@@ -52,7 +52,7 @@ class EditRegisterJournalEntryFormControllerTest {
 			.andExpect(view().name("/entry/register"));
 		mockMvc.perform(post("/entry/correct").param("add", "DEBIT").flashAttr("entryForm", form).with(csrf()))
 			.andExpect(status().isOk())
-			.andExpect(view().name("/entry/entry"));
+			.andExpect(view().name("/entry/edit"));
 	}
 	
 	@Test

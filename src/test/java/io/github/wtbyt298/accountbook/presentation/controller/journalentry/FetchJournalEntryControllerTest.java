@@ -51,7 +51,7 @@ class FetchJournalEntryControllerTest {
 	
 	@Test
 	@WithMockUser
-	void GETリクエストを送信すると仕訳詳細画面を表示する() throws Exception {
+	void GETリクエストを送信すると仕訳編集画面を表示する() throws Exception {
 		//given:クエリサービスのfetchOneメソッドは戻り値を返す
 		EntryId entryId = EntryId.fromString("TEST_ID");
 		JournalEntryDto dto = new JournalEntryDto(entryId.value(), LocalDate.now(), "テストです。", 1000, new ArrayList<>());
@@ -62,7 +62,7 @@ class FetchJournalEntryControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("entryForm"))
 			.andExpect(model().attribute("entryId", entryId.value()))
-			.andExpect(view().name("/entry/entry"));
+			.andExpect(view().name("/entry/edit"));
 		
 		//then:仕訳取得処理が1度だけ実行されている
 		verify(fetchJournalEntryDataQueryService, times(1)).fetchOne(entryId);

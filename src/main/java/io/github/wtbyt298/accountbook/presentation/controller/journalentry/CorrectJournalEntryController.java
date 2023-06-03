@@ -47,7 +47,7 @@ public class CorrectJournalEntryController {
 			return redirectPath();
 		} catch (CannotCreateJournalEntryException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
-			return "/entry/entry";
+			return "/entry/edit";
 		}
 	}
 	
