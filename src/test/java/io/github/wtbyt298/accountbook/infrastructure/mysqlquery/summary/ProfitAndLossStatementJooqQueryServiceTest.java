@@ -1,7 +1,6 @@
 package io.github.wtbyt298.accountbook.infrastructure.mysqlquery.summary;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,6 @@ import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingT
 import io.github.wtbyt298.accountbook.domain.model.journalentry.JournalEntry;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
-import io.github.wtbyt298.accountbook.domain.shared.types.SummaryType;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.AccountTitleTestDataCreator;
 import io.github.wtbyt298.accountbook.helper.testdatacreator.UserTestDataCreator;
 import io.github.wtbyt298.accountbook.helper.testfactory.JournalEntryTestFactory;
@@ -61,8 +59,8 @@ class ProfitAndLossStatementJooqQueryServiceTest {
 		accountBalanceUpdator.execute(entry2, user.id());
 		
 		//when:「2023年5月」、「2023年6月」を指定してクエリサービスのメソッドを呼び出す
-		FinancialStatement fs_2023_05 = profitAndLossStatementQueryService.fetch(YearMonth.of(2023, 5), user.id(), SummaryType.PL);
-		FinancialStatement fs_2023_06 = profitAndLossStatementQueryService.fetch(YearMonth.of(2023, 6), user.id(), SummaryType.PL);
+		FinancialStatement fs_2023_05 = profitAndLossStatementQueryService.aggregateIncludingSubAccountTitle(YearMonth.of(2023, 5), user.id());
+		FinancialStatement fs_2023_06 = profitAndLossStatementQueryService.aggregateIncludingSubAccountTitle(YearMonth.of(2023, 6), user.id());
 	
 		//then:月ごと、会計区分ごとの合計が正しく計算されている
 		assertEquals(3000, fs_2023_05.calculateTotalAmount(AccountingType.EXPENSES));

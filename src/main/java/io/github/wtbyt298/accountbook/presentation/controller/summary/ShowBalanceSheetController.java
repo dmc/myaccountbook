@@ -15,7 +15,6 @@ import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
-import io.github.wtbyt298.accountbook.domain.shared.types.SummaryType;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 import io.github.wtbyt298.accountbook.presentation.viewmodels.summary.FinancialStatementViewModel;
 import io.github.wtbyt298.accountbook.presentation.viewmodels.summary.SummaryOfBalanceSheetViewModel;
@@ -56,7 +55,7 @@ public class ShowBalanceSheetController {
 	private FinancialStatement fetchProfitAndLossStatement(String selectedYearMonth) {
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		UserSession userSession = userSessionProvider.getUserSession();
-		return balanceSheetQueryService.fetch(yearMonth, userSession.userId(), SummaryType.BS);
+		return balanceSheetQueryService.aggregateIncludingSubAccountTitle(yearMonth, userSession.userId());
 	}
 	
 	/**
