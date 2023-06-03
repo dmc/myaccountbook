@@ -91,11 +91,11 @@
 					</script>
 				</div>
       		</div>
-      		<h2>ここにグラフを表示したい</h2>
+      		<div class="d-flex">
       		<canvas class="my-4 h-75 w-50" id="expensesChart"></canvas>
 			<!-- グラフ表示用 -->
 			<script type="text/javascript" th:inline="javascript">
-				const ctx = document.getElementById('expensesChart');
+				var ctx = document.getElementById('expensesChart');
 				var expensesChart = new Chart(ctx, {
 					type: 'doughnut',
 					data: {
@@ -106,8 +106,19 @@
 						}]
 					},
 					options: {
-						responsive: true,
 						plugins: {
+							responsive: true,
+							title: {
+								display: true,
+								text: '今月の支出',
+								font: {
+									size: 36
+								},
+								padding: {
+									top: 20,
+									bottom: 20
+								}
+							},
 							legend: {
 								labels: {
 									font: {
@@ -119,6 +130,45 @@
 					}
 				});
 			</script>
+			<canvas class="my-4 h-75 w-50" id="revenueChart"></canvas>
+			<!-- グラフ表示用 -->
+			<script type="text/javascript" th:inline="javascript">
+				var ctx = document.getElementById('revenueChart');
+				var expensesChart = new Chart(ctx, {
+					type: 'doughnut',
+					data: {
+						labels: /*[[${revenueLavels}]]*/ _,
+						datasets: [{
+							label: '金額',
+							data: /*[[${revenueData}]]*/ _
+						}]
+					},
+					options: {
+						plugins: {
+							responsive: true,
+							title: {
+								display: true,
+								text: '今月の収入',
+								font: {
+									size: 36
+								},
+								padding: {
+									top: 20,
+									bottom: 20
+								}
+							},
+							legend: {
+								labels: {
+									font: {
+										size: 24
+									}
+								}
+							}
+						}
+					}
+				});
+			</script>
+			</div>
     	</main>
 	</div>
 </div>

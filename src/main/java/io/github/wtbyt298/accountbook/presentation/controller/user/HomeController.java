@@ -63,7 +63,7 @@ public class HomeController {
 		model.addAttribute("expensesData", expensesChart.values());
 		
 		//収益の科目の集計値を取得する
-		List<Entry<String, BigDecimal>> revenueData = profitAndLossStatementQueryService.aggregateByAccountTitle(yearMonth, userSession.userId(), AccountingType.EXPENSES);
+		List<Entry<String, BigDecimal>> revenueData = profitAndLossStatementQueryService.aggregateByAccountTitle(yearMonth, userSession.userId(), AccountingType.REVENUE);
 		ChartDataProcessor revenueChart = new ChartDataProcessor(revenueData);
 		model.addAttribute("revenueLavels", revenueChart.labels());
 		model.addAttribute("revenueData", revenueChart.values());
