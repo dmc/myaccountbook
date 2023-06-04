@@ -38,15 +38,18 @@ class CreateUserUseCaseTest {
 		String password = "Test0123OK";
 		String mailAddress = "test@example.com";
 		CreateUserCommand command = new CreateUserCommand(id, password, mailAddress);
+		
 		createUseCase.execute(command);
 		verify(userRepository).save(captor.capture()); //リポジトリのsaveメソッドに渡される値をキャプチャする
 		
 		//then:渡された値をもとにユーザが作成されている
 		User capturedUser = captor.getValue();
-		assertEquals(id, capturedUser.id().value());
-		assertTrue(capturedUser.acceptPassword(password));
-		assertEquals(mailAddress, capturedUser.mailAddress());
-		assertEquals(UserStatus.ACTIVE, capturedUser.userStatus());
+		assertAll(
+			() -> assertEquals(id, capturedUser.id().value()),
+			() -> assertTrue(capturedUser.acceptPassword(password)),
+			() -> assertEquals(mailAddress, capturedUser.mailAddress()),
+			() -> assertEquals(UserStatus.ACTIVE, capturedUser.userStatus())
+		);
 	}
 	
 	@Test
@@ -59,6 +62,7 @@ class CreateUserUseCaseTest {
 		String password = "Test0123OK";
 		String mailAddress = "test@example.com";
 		CreateUserCommand command = new CreateUserCommand(id, password, mailAddress);
+		
 		Exception exception = assertThrows(RuntimeException.class, () -> createUseCase.execute(command));
 		
 		//then:想定した例外が発生している

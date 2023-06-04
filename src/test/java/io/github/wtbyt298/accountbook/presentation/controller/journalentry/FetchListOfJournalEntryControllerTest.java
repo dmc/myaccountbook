@@ -46,6 +46,7 @@ class FetchListOfJournalEntryControllerTest {
 	void setUp() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
         mockMvc = MockMvcBuilders.standaloneSetup(fetchListOfJournalEntryController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -57,6 +58,7 @@ class FetchListOfJournalEntryControllerTest {
 				return UserId.valueOf("TEST_USER");
 			}
 		};
+		
 		when(userSessionProvider.getUserSession()).thenReturn(userSession);
 	}
 	

@@ -41,11 +41,13 @@ class AccountBalanceUpdatorTest {
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
+		
 		//依存オブジェクトの設定
 		AccountTitle expenses = AccountTitleTestFactory.create("401", "食費", AccountingType.EXPENSES);
 		when(accountTitleRepository.findById(expenses.id())).thenReturn(expenses);
 		when(accountRepository.find(eq(expenses), any(), any(), any()))
 			.thenReturn(new Account(expenses, SubAccountTitleId.valueOf("0"), YearMonth.now(), 0));
+		
 		AccountTitle assets = AccountTitleTestFactory.create("101", "現金", AccountingType.EXPENSES);
 		when(accountTitleRepository.findById(assets.id())).thenReturn(assets);
 		when(accountRepository.find(eq(assets), any(), any(), any()))
@@ -56,6 +58,7 @@ class AccountBalanceUpdatorTest {
 	void 仕訳を渡すと各勘定の残高が更新された状態でリポジトリに渡される() {
 		//given:ユーザが作成されている
 		User user = UserTestFactory.create();
+		
 		//仕訳を作成する
 		ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 		JournalEntry entry = new JournalEntryTestFactory.Builder()
@@ -70,10 +73,14 @@ class AccountBalanceUpdatorTest {
 		
 		//then:仕訳明細の金額が勘定の残高に反映されている
 		List<Account> capturedAccounts = captor.getAllValues();
-		assertEquals("401", capturedAccounts.get(0).accountTitleId().value());
-		assertEquals(1000, capturedAccounts.get(0).balance()); //費用が1000円発生しているので残高は「1000円」
-		assertEquals("101", capturedAccounts.get(1).accountTitleId().value());
-		assertEquals(-1000, capturedAccounts.get(1).balance()); //資産が1000円減少しているので残高は「-1000円」
+		assertAll(
+			() -> assertEquals("401", capturedAccounts.get(0).accountTitleId().value()),
+			//費用が1000円発生しているので残高は「1000円」
+			() -> assertEquals(1000, capturedAccounts.get(0).balance()), 
+			() -> assertEquals("101", capturedAccounts.get(1).accountTitleId().value()),
+			//資産が1000円減少しているので残高は「-1000円」
+			() -> assertEquals(-1000, capturedAccounts.get(1).balance()) 
+		);
 	}
 
 }

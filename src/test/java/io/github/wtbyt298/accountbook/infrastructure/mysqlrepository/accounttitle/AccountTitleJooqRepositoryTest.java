@@ -37,9 +37,11 @@ class AccountTitleJooqRepositoryTest {
 		AccountTitle foundAccountTitle = accountTitleRepository.findById(id);
 		
 		//then:保存した勘定科目をリポジトリ経由で取得できる
-		assertEquals(createdAccountTitle.id(), foundAccountTitle.id());
-		assertEquals(createdAccountTitle.name(), foundAccountTitle.name());
-		assertEquals(createdAccountTitle.accountingType(), foundAccountTitle.accountingType());
+		assertAll(
+			() -> assertEquals(createdAccountTitle.id(), foundAccountTitle.id()),
+			() -> assertEquals(createdAccountTitle.name(), foundAccountTitle.name()),
+			() -> assertEquals(createdAccountTitle.accountingType(), foundAccountTitle.accountingType())
+		);
 	}
 
 	@Test

@@ -41,6 +41,7 @@ class ExceptionHandlerUtilityControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(fetchJournalEntryController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)

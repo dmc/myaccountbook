@@ -17,9 +17,11 @@ class FinancialStatementTest {
 		//given:会計区分は複数存在している
 		AccountTitleId id = AccountTitleId.valueOf("101");
 		List<MonthlyBalanceDto> elements = new ArrayList<>();
+		
 		//資産の合計は3000
 		elements.add(createTestMonthlyBalanceDto(id, "", AccountingType.ASSETS, 1000));
 		elements.add(createTestMonthlyBalanceDto(id, "", AccountingType.ASSETS, 2000));
+		
 		//負債の合計は1500
 		elements.add(createTestMonthlyBalanceDto(id, "", AccountingType.LIABILITIES, 1000));
 		elements.add(createTestMonthlyBalanceDto(id, "", AccountingType.LIABILITIES, 500));

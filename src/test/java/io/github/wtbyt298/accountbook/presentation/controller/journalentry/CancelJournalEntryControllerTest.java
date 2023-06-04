@@ -43,6 +43,7 @@ class CancelJournalEntryControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(cancelJournalEntryController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -54,6 +55,7 @@ class CancelJournalEntryControllerTest {
 	void POSTリクエストを送信すると仕訳取消処理が実行される() throws Exception {
 		//given:コントローラ内で使用するオブジェクトを生成
 		EntryId entryId = EntryId.fromString("TEST_ID");
+		
 		//リダイレクト先のURL
 		//現在の年月のページにリダイレクトされる（例：/entry/entries/2023-05）
 		final String currentYearMonth = YearMonth.now().toString();

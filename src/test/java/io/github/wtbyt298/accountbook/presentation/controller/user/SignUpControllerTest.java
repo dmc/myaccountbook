@@ -42,6 +42,7 @@ class SignUpControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(signUpController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -92,7 +93,8 @@ class SignUpControllerTest {
 	void POSTリクエストを送信してUseCaseExceptionが発生した場合はユーザ登録画面を再表示する() throws Exception {
 		//given:フォームの内容が正しく入力されている
 		RegisterUserForm form = validRegisterUserForm();
-		//given:ユーザ登録処理を実行すると例外が発生する
+		
+		//ユーザ登録処理を実行すると例外が発生する
 		Exception exception = new UseCaseException("同一IDのユーザが既に存在しています。");
 		doThrow(exception).when(createUserUseCase).execute(any());
 				
@@ -115,6 +117,7 @@ class SignUpControllerTest {
 		form.setId("TEST_USER");
 		form.setPassword("testpassword0123");
 		form.setMailAddress("test@example.com");
+		
 		return form;
 	}
 

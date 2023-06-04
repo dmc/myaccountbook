@@ -15,6 +15,7 @@ class JournalEntryTest {
 		//given:生成に必要なドメインオブジェクトは正しく生成されている
 		DealDate dealDate = DealDate.valueOf(LocalDate.now());
 		Description description = Description.valueOf("テスト用の仕訳です。");
+		
 		List<EntryDetail> elements = new ArrayList<>();
 		elements.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
 		elements.add(EntryDetailTestFactory.create(LoanType.CREDIT, 100));
@@ -38,6 +39,7 @@ class JournalEntryTest {
 		//given:借方明細と貸方明細の金額が異なっている
 		DealDate dealDate = DealDate.valueOf(LocalDate.now());
 		Description description = Description.valueOf("テスト用の仕訳です。");
+		
 		List<EntryDetail> elements = new ArrayList<>();
 		elements.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
 		elements.add(EntryDetailTestFactory.create(LoanType.CREDIT, 9999));
@@ -58,6 +60,7 @@ class JournalEntryTest {
 		EntryId entryId = EntryId.fromString("DBから取得したID");
 		DealDate dealDate = DealDate.valueOf(LocalDate.now());
 		Description description = Description.valueOf("テスト用の仕訳です。");
+		
 		List<EntryDetail> elements = new ArrayList<>();
 		elements.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
 		elements.add(EntryDetailTestFactory.create(LoanType.CREDIT, 100));
@@ -105,6 +108,7 @@ class JournalEntryTest {
 		elements.add(EntryDetailTestFactory.create(LoanType.DEBIT, 1000));
 		elements.add(EntryDetailTestFactory.create(LoanType.CREDIT, 2000));
 		EntryDetails entryDetails = new EntryDetails(elements);
+		
 		JournalEntry journalEntry = JournalEntry.reconstruct(
 			EntryId.fromString("DBから取得したID"),
 			DealDate.valueOf(LocalDate.now()), 

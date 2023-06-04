@@ -42,6 +42,7 @@ class RenameSubAccountTitleControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(renameSubAccountTitleController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)

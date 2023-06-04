@@ -19,6 +19,7 @@ public class AccountTitleTestDataCreator {
 	
 	public AccountTitle create(String id, String name, AccountingType type) {
 		AccountTitle accountTitle = AccountTitleTestFactory.create(id, name, type);
+		
 		jooq.insertInto(ACCOUNTTITLES)
 			.set(ACCOUNTTITLES.ACCOUNTTITLE_ID, id)
 			.set(ACCOUNTTITLES.ACCOUNTTITLE_NAME, name)
@@ -26,6 +27,7 @@ public class AccountTitleTestDataCreator {
 			.set(ACCOUNTTITLES.LOAN_TYPE, type.loanType().toString())
 			.set(ACCOUNTTITLES.SUMMARY_TYPE, type.summaryType().toString())
 			.execute();
+		
 		return accountTitle;
 	}
 	

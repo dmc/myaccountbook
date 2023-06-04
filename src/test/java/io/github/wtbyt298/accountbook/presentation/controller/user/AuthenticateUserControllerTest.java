@@ -28,6 +28,7 @@ class AuthenticateUserControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(authenticateUserController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)

@@ -46,6 +46,7 @@ class RegisterJournalEntryControllerTest {
 	void setUp() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
         mockMvc = MockMvcBuilders.standaloneSetup(registerJournalEntryController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -55,6 +56,7 @@ class RegisterJournalEntryControllerTest {
 	@Test
 	@WithMockUser
 	void GETリクエストを送信すると仕訳登録画面を表示する() throws Exception {
+		//when:
 		mockMvc.perform(get("/entry/register"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/entry/register"));
@@ -108,6 +110,7 @@ class RegisterJournalEntryControllerTest {
 		//given:仕訳登録処理を実行するとCannotCreateJournalEntryExceptionが発生する
 		Exception exception = new CannotCreateJournalEntryException("");
 		doThrow(exception).when(registerJournalEntryUseCase).execute(any(), any());
+		
 		//入力フォームは正しく入力されている
 		RegisterJournalEntryForm form = validRegisterJournalEntryForm();
 		

@@ -33,6 +33,7 @@ class EditRegisterJournalEntryFormControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(editRegisterJournalEntryFormController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -50,6 +51,7 @@ class EditRegisterJournalEntryFormControllerTest {
 		mockMvc.perform(post("/entry/register").param("add", "DEBIT").flashAttr("entryForm", form).with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/entry/register"));
+		
 		mockMvc.perform(post("/entry/correct").param("add", "DEBIT").flashAttr("entryForm", form).with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/entry/edit"));
@@ -61,6 +63,7 @@ class EditRegisterJournalEntryFormControllerTest {
 		//given:フォームクラスが初期化されている
 		RegisterJournalEntryForm form = new RegisterJournalEntryForm();
 		form.initList();
+		
 		//要素数は1である
 		assertEquals(1, form.getDebitForms().size());
 		
@@ -101,6 +104,7 @@ class EditRegisterJournalEntryFormControllerTest {
 		RegisterJournalEntryForm form = new RegisterJournalEntryForm();
 		form.initList();
 		form.addList("DEBIT");
+		
 		//要素数は2である
 		assertEquals(2, form.getDebitForms().size());
 		
@@ -119,6 +123,7 @@ class EditRegisterJournalEntryFormControllerTest {
 		//given:フォームクラスが初期化されている
 		RegisterJournalEntryForm form = new RegisterJournalEntryForm();
 		form.initList();
+		
 		//要素数は1である
 		assertEquals(1, form.getDebitForms().size());
 		

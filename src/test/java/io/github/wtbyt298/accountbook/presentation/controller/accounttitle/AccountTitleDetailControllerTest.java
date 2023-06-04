@@ -40,6 +40,7 @@ class AccountTitleDetailControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(accountTitleDetailController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -57,7 +58,7 @@ class AccountTitleDetailControllerTest {
 		mockMvc.perform(get("/accounttitle/detail/101"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("empty"))
-			.andExpect(view().name("/accounttitle/detail"));
+			.andExpect(view().name("/accounttitle/edit"));
 	}
 	
 	@Test

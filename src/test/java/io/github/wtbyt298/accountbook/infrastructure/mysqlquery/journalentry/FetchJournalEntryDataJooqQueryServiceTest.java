@@ -49,8 +49,10 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 	
 	@Test
 	void IDを指定して該当する仕訳データを取得できる() {
-		//given:ユーザ、仕訳が作成されている
+		//given:ユーザが作成されている
 		User user =userTestDataCreator.create();
+		
+		//仕訳が作成されている
 		JournalEntry entry = new JournalEntryTestFactory.Builder()
 			.addDetail("401", "0", LoanType.DEBIT, 1000)
 			.addDetail("101", "0", LoanType.CREDIT, 1000)
@@ -61,21 +63,28 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		JournalEntryDto dto = fetchJournalEntryQueryService.fetchOne(entry.id());
 		
 		//then:DTOと仕訳の対応する属性が一致している
-		assertEquals(entry.id().value(), dto.getEntryId());
-		assertEquals(entry.dealDate().value(), dto.getDealDate());
-		assertEquals(entry.description().value(), dto.getDescription());
-		assertEquals(entry.totalAmount().value(), dto.getTotalAmount());
+		assertAll(
+			() -> assertEquals(entry.id().value(), dto.getEntryId()),
+			() -> assertEquals(entry.dealDate().value(), dto.getDealDate()),
+			() -> assertEquals(entry.description().value(), dto.getDescription()),
+			() -> assertEquals(entry.totalAmount().value(), dto.getTotalAmount())
+		);
 		//仕訳明細DTOのアサーションを行う
 		EntryDetailDto debitDto = dto.getEntryDetails().get(0);
-		assertEquals("食費", debitDto.getAccountTitleName());
-		assertEquals("", debitDto.getSubAccountTitleName());
-		assertEquals(LoanType.DEBIT, debitDto.getDetailLoanType());
-		assertEquals(1000, debitDto.getAmount());
+		assertAll(
+			() -> assertEquals("食費", debitDto.getAccountTitleName()),
+			() -> assertEquals("", debitDto.getSubAccountTitleName()),
+			() -> assertEquals(LoanType.DEBIT, debitDto.getDetailLoanType()),
+			() -> assertEquals(1000, debitDto.getAmount())
+		);
+		
 		EntryDetailDto creditDto = dto.getEntryDetails().get(1);
-		assertEquals("現金", creditDto.getAccountTitleName());
-		assertEquals("", creditDto.getSubAccountTitleName());
-		assertEquals(LoanType.CREDIT, creditDto.getDetailLoanType());
-		assertEquals(1000, creditDto.getAmount());
+		assertAll(
+			() -> assertEquals("現金", creditDto.getAccountTitleName()),
+			() -> assertEquals("", creditDto.getSubAccountTitleName()),
+			() -> assertEquals(LoanType.CREDIT, creditDto.getDetailLoanType()),
+			() -> assertEquals(1000, creditDto.getAmount())
+		);
 	}
 	
 	@Test
@@ -93,8 +102,9 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 	@Test
 	void 年月を指定して仕訳データの一覧を取得できる() {
 		//given:ユーザが作成されている
-		//仕訳が複数作成されている（単月ではなく、複数の月に渡るもの）
 		User user = userTestDataCreator.create();
+		
+		//仕訳が複数作成されている（単月ではなく、複数の月に渡るもの）
 		JournalEntry entry1 = new JournalEntryTestFactory.Builder()
 			.dealDate(LocalDate.of(2023, 4, 1))
 			.build();
@@ -104,6 +114,7 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		JournalEntry entry3 = new JournalEntryTestFactory.Builder()
 			.dealDate(LocalDate.of(2023, 5, 1))
 			.build();
+		
 		journalEntryRepository.save(entry1, user.id());
 		journalEntryRepository.save(entry2, user.id());
 		journalEntryRepository.save(entry3, user.id());
@@ -134,8 +145,10 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 	
 	@Test
 	void 仕訳を取引日順の昇順で並べ替えることができる() {
-		//given:ユーザと仕訳が作成されている
+		//given:ユーザが作成されている
 		User user = userTestDataCreator.create();
+		
+		//仕訳が作成されている
 		JournalEntry entry1 = new JournalEntryTestFactory.Builder()
 			.dealDate(LocalDate.of(2023, 4, 30))
 			.build();
@@ -145,6 +158,7 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		JournalEntry entry3 = new JournalEntryTestFactory.Builder()
 			.dealDate(LocalDate.of(2023, 4, 20))
 			.build();
+		
 		journalEntryRepository.save(entry1, user.id());
 		journalEntryRepository.save(entry2, user.id());
 		journalEntryRepository.save(entry3, user.id());
@@ -154,30 +168,35 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		
 		//then:取得結果が日付の昇順で並べ替えられている
 		//この場合、entry2 -> entry3 -> entry1 の順になっているはずである
-		assertEquals(entry2.dealDate().value(), data.get(0).getDealDate());
-		assertEquals(entry3.dealDate().value(), data.get(1).getDealDate());
-		assertEquals(entry1.dealDate().value(), data.get(2).getDealDate());
+		assertAll(
+			() -> assertEquals(entry2.dealDate().value(), data.get(0).getDealDate()),
+			() -> assertEquals(entry3.dealDate().value(), data.get(1).getDealDate()),
+			() -> assertEquals(entry1.dealDate().value(), data.get(2).getDealDate())
+		);
 	}
 	
 	@Test
 	void 仕訳を合計金額の降順で並べ替えることができる() {
-		//given:ユーザと仕訳が作成されている
+		//given:ユーザが作成されている
 		User user = userTestDataCreator.create();
+		
+		//仕訳が作成されている
 		JournalEntry entry1 = new JournalEntryTestFactory.Builder()
 			.dealDate(LocalDate.of(2023, 4, 1))
 			.addDetail("101", "0", LoanType.DEBIT, 1000)
 			.addDetail("101", "0", LoanType.CREDIT, 1000)
 			.build();
 		JournalEntry entry2 = new JournalEntryTestFactory.Builder()
-				.dealDate(LocalDate.of(2023, 4, 1))
-				.addDetail("101", "0", LoanType.DEBIT, 5000)
-				.addDetail("101", "0", LoanType.CREDIT, 5000)
-				.build();
+			.dealDate(LocalDate.of(2023, 4, 1))
+			.addDetail("101", "0", LoanType.DEBIT, 5000)
+			.addDetail("101", "0", LoanType.CREDIT, 5000)
+			.build();
 		JournalEntry entry3 = new JournalEntryTestFactory.Builder()
-				.dealDate(LocalDate.of(2023, 4, 1))
-				.addDetail("101", "0", LoanType.DEBIT, 3000)
-				.addDetail("101", "0", LoanType.CREDIT, 3000)
-				.build();
+			.dealDate(LocalDate.of(2023, 4, 1))
+			.addDetail("101", "0", LoanType.DEBIT, 3000)
+			.addDetail("101", "0", LoanType.CREDIT, 3000)
+			.build();
+
 		journalEntryRepository.save(entry1, user.id());
 		journalEntryRepository.save(entry2, user.id());
 		journalEntryRepository.save(entry3, user.id());
@@ -187,9 +206,11 @@ class FetchJournalEntryDataJooqQueryServiceTest {
 		
 		//then:取得結果が仕訳合計金額の降順で並べ替えられている
 		//この場合、entry2 -> entry3 -> entry1 の順になっているはずである
-		assertEquals(entry2.totalAmount().value(), data.get(0).getTotalAmount());
-		assertEquals(entry3.totalAmount().value(), data.get(1).getTotalAmount());
-		assertEquals(entry1.totalAmount().value(), data.get(2).getTotalAmount());
+		assertAll(
+			() -> assertEquals(entry2.totalAmount().value(), data.get(0).getTotalAmount()),
+			() -> assertEquals(entry3.totalAmount().value(), data.get(1).getTotalAmount()),
+			() -> assertEquals(entry1.totalAmount().value(), data.get(2).getTotalAmount())
+		);
 	}
 	
 }

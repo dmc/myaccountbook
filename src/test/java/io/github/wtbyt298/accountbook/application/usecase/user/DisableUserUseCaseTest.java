@@ -34,6 +34,7 @@ class DisableUserUseCaseTest {
 		//given:テスト用のユーザ
 		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 		User user = UserTestFactory.create("TEST_USER");
+		
 		//依存オブジェクトの設定
 		when(userRepository.exists(any())).thenReturn(true); //ユーザIDに該当するユーザは存在している
 		when(userRepository.findById(any())).thenReturn(user); 

@@ -33,9 +33,11 @@ class JournalEntryJooqRepositoryTest {
 	void リポジトリに保存した仕訳と再構築した仕訳の各属性が一致する() {
 		//given:ユーザと勘定科目が既に作成されている
 		User user = userTestDataCreator.create();
+		
 		accountTitleTestDataCreator.create("401", "食費", AccountingType.EXPENSES);
 		accountTitleTestDataCreator.create("402", "消耗品費", AccountingType.EXPENSES);
 		accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
+		
 		//仕訳を作成する
 		JournalEntry created = new JournalEntryTestFactory.Builder()
 			.addDetail("401", "0", LoanType.DEBIT, 1000)
@@ -49,19 +51,24 @@ class JournalEntryJooqRepositoryTest {
 		
 		//then:DBから取得したレコードと保存した仕訳の各項目が一致する
 		//仕訳のアサーションを行う
-		assertEquals(found.id(), created.id());                           //仕訳ID
-		assertEquals(found.dealDate(), created.dealDate());               //取引日
-		assertEquals(found.description(), created.description());         //摘要
-		assertEquals(found.fiscalYearMonth(), created.fiscalYearMonth()); //会計年月
-		assertEquals(found.totalAmount(), created.totalAmount());         //仕訳合計金額
+		assertAll(
+			() -> assertEquals(found.id(), created.id()),                           //仕訳ID
+			() -> assertEquals(found.dealDate(), created.dealDate()),               //取引日
+			() -> assertEquals(found.description(), created.description()),         //摘要
+			() -> assertEquals(found.fiscalYearMonth(), created.fiscalYearMonth()), //会計年月
+			() -> assertEquals(found.totalAmount(), created.totalAmount())          //仕訳合計金額
+		);
+		
 		//子要素である仕訳明細のアサーションを行う
 		for (int i = 0; i < found.entryDetails().size(); i++) {
 			EntryDetail createdElement = created.entryDetails().get(i);
 			EntryDetail foundElement = found.entryDetails().get(i);
-			assertEquals(foundElement.accountTitleId(), createdElement.accountTitleId());       //勘定科目ID
-			assertEquals(foundElement.subAccountTitleId(), createdElement.subAccountTitleId()); //補助科目ID
-			assertEquals(foundElement.detailLoanType(), createdElement.detailLoanType());       //明細貸借区分
-			assertEquals(foundElement.amount(), createdElement.amount());                       //金額
+			assertAll(
+				() -> assertEquals(foundElement.accountTitleId(), createdElement.accountTitleId()),       //勘定科目ID
+				() -> assertEquals(foundElement.subAccountTitleId(), createdElement.subAccountTitleId()), //補助科目ID
+				() -> assertEquals(foundElement.detailLoanType(), createdElement.detailLoanType()),       //明細貸借区分
+				() -> assertEquals(foundElement.amount(), createdElement.amount())                        //金額
+			);
 		}
 	}
 
@@ -69,11 +76,14 @@ class JournalEntryJooqRepositoryTest {
 	void 仕訳IDを指定してdropメソッドを呼び出すと該当する仕訳が削除される() {
 		//given:ユーザと勘定科目が既に作成されている
 		User user = userTestDataCreator.create();
+		
 		accountTitleTestDataCreator.create("401", "食費", AccountingType.EXPENSES);
 		accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
+		
 		//仕訳を作成して保存する
 		JournalEntry entry = new JournalEntryTestFactory.Builder().build();
 		journalEntryRepository.save(entry, user.id());
+		
 		//この時点ではレコードはDBに存在している
 		assertTrue(journalEntryRepository.exists(entry.id()));
 		

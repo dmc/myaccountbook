@@ -33,6 +33,7 @@ class SpringSecurityUserAuthenticatorTest {
 		//given:ユーザは存在している
 		UserId userId = UserId.valueOf("TEST_USER");
 		User user = UserTestFactory.create("TEST_USER");
+		
 		//依存オブジェクトの設定
 		when(userRepository.exists(any())).thenReturn(true);
 		when(userRepository.findById(userId)).thenReturn(user);

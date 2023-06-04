@@ -36,6 +36,7 @@ class AppendSubAccountTitleUseCaseTest {
 	void 引数に渡したDTOをもとに作成された補助科目が追加される() {
 		//given:
 		ArgumentCaptor<SubAccountTitles> captor = ArgumentCaptor.forClass(SubAccountTitles.class);
+	
 		//依存オブジェクトの設定
 		//既に「0：その他」「1：三菱UFJ銀行」という2つの補助科目が存在している
 		when(subAccountTitleRepository.findCollectionByParentId(any(), any())).thenReturn(SubAccountTitlesTestFactory.create());

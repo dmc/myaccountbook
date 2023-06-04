@@ -45,6 +45,7 @@ class CorrectJournalEntryControllerTest {
 	void setUp() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
         mockMvc = MockMvcBuilders.standaloneSetup(correctJournalEntryController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -76,7 +77,6 @@ class CorrectJournalEntryControllerTest {
 		RegisterJournalEntryForm form = new RegisterJournalEntryForm();
 		
 		//when:
-		
 		mockMvc.perform(post("/entry/correct").flashAttr("entryForm", form).with(csrf()))
 			.andExpect(model().hasErrors())
 			.andExpect(model().attribute("entryForm", form))
@@ -93,6 +93,7 @@ class CorrectJournalEntryControllerTest {
 		//given:仕訳訂正処理を実行するとCannotCreateJournalEntryExceptionが発生する
 		Exception exception = new CannotCreateJournalEntryException("");
 		doThrow(exception).when(correctJournalEntryUseCase).execute(any(), any(), any());
+		
 		//入力フォームは正しく入力されている
 		RegisterJournalEntryForm form = validRegisterJournalEntryForm();
 		

@@ -52,6 +52,7 @@ class AccountJooqRepositoryTest {
 		//given:ユーザと勘定科目が既に作成されている
 		User user = userTestDataCreator.create();
 		AccountTitle assets = accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
+		
 		//残高を設定して勘定を保存する
 		Account created = new Account(assets, SubAccountTitleId.valueOf("0"), YearMonth.of(2023, 4), 1000);
 		accountRepository.save(created, user.id());		
@@ -63,6 +64,7 @@ class AccountJooqRepositoryTest {
 		
 		//then:勘定の残高が正しく更新されている
 		assertEquals(updated.balance(), found.balance());
+		
 		//異なる会計年月の勘定を取得した場合、残高は0である
 		Account previousMonth = accountRepository.find(assets, SubAccountTitleId.valueOf("0"), user.id(), YearMonth.of(2023, 3)); //前月の現金勘定
 		assertEquals(0, previousMonth.balance());

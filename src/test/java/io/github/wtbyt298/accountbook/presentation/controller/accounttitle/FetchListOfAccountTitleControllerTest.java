@@ -47,6 +47,7 @@ class FetchListOfAccountTitleControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(fetchListOfAccountTitleController)
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
@@ -61,6 +62,7 @@ class FetchListOfAccountTitleControllerTest {
 		List<AccountTitle> accountTitles = new ArrayList<>();
 		accountTitles.add(AccountTitleTestFactory.create("101", "現金", AccountingType.ASSETS));
 		accountTitles.add(AccountTitleTestFactory.create("102", "普通預金", AccountingType.ASSETS));
+		
 		when(accountTitleRepository.findAll()).thenReturn(accountTitles);
 		
 		//when:
@@ -71,12 +73,13 @@ class FetchListOfAccountTitleControllerTest {
 			.andReturn();
 		
 		//then:ビューモデルへの詰め替えが正しく実行されている
-		verify(accountTitleRepository, times(1)).findAll();
 		List<AccountTitleViewModel> viewModels = (List<AccountTitleViewModel>) result.getModelAndView().getModel().get("accountTitles");
 		assertAll(
 			() -> assertEquals(viewModels.get(0).getId(), accountTitles.get(0).id().value()),
 			() -> assertEquals(viewModels.get(1).getId(), accountTitles.get(1).id().value())
 		);
+		
+		verify(accountTitleRepository, times(1)).findAll();
 	}
 	
 	@Test

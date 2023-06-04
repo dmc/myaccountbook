@@ -122,6 +122,7 @@ class SubAccountTitlesTest {
 	private SubAccountTitles hasNoElement() {
 		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();
 		AccountTitleId parentId = AccountTitleId.valueOf("401");
+		
 		return new SubAccountTitles(map, parentId);
 	}
 	
@@ -148,11 +149,13 @@ class SubAccountTitlesTest {
 		String [] names = {"その他" ,"食料品", "外食", "軽食", "科目5", "科目6", "科目7", "科目8", "科目9", "科目10"};
 		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();
 		AccountTitleId parentId = AccountTitleId.valueOf("401");
+		
 		for (int i = 0; i < names.length; i++) {
 			String index = String.valueOf(i);
 			SubAccountTitleId id = SubAccountTitleId.valueOf(index);
 			map.put(id, SubAccountTitleTestFactory.create(index, names[i]));
 		}
+		
 		return new SubAccountTitles(map, parentId);
 	}
 	

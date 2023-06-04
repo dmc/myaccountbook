@@ -47,6 +47,7 @@ class EntryDetailTest {
 			LoanType.DEBIT, 
 			Amount.valueOf(100)
 		);
+		
 		EntryDetail credit = new EntryDetail(
 			AccountTitleId.valueOf("101"), 
 			SubAccountTitleId.valueOf("0"), 

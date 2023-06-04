@@ -37,6 +37,7 @@ class SubAccountTitleJooqRepositoryTest {
 		//given:勘定科目とユーザが既に作成されている
 		AccountTitle parent = accountTitleTestDataCreator.create("000", "テスト用の勘定科目",AccountingType.ASSETS);
 		User user = userTestDataCreator.create();
+		
 		//保存するコレクションオブジェクトの設定（補助科目を2つ保持している）
 		Map<SubAccountTitleId, SubAccountTitle> map = new HashMap<>();		
 		map.put(SubAccountTitleId.valueOf("0"), SubAccountTitleTestFactory.create("0", "その他"));
@@ -49,10 +50,12 @@ class SubAccountTitleJooqRepositoryTest {
 		SubAccountTitles found = subAccountTitleRepository.findCollectionByParentId(parent.id(), user.id());
 		
 		//then:保存した補助科目のコレクションオブジェクトをリポジトリ経由で取得できる
-		assertEquals(2, found.elements().size());
-		assertEquals(parent.id(), found.parentId());
-		assertEquals(store.find(SubAccountTitleId.valueOf("0")).toString(), found.find(SubAccountTitleId.valueOf("0")).toString());
-		assertEquals(store.find(SubAccountTitleId.valueOf("1")).toString(), found.find(SubAccountTitleId.valueOf("1")).toString());
+		assertAll(
+			() -> assertEquals(2, found.elements().size()),
+			() -> assertEquals(parent.id(), found.parentId()),
+			() -> assertEquals(store.find(SubAccountTitleId.valueOf("0")).toString(), found.find(SubAccountTitleId.valueOf("0")).toString()),
+			() -> assertEquals(store.find(SubAccountTitleId.valueOf("1")).toString(), found.find(SubAccountTitleId.valueOf("1")).toString())
+		);
 	}
 	
 	@Test
@@ -93,6 +96,7 @@ class SubAccountTitleJooqRepositoryTest {
 		//given:勘定科目とユーザが既に作成されている
 		AccountTitle parent = accountTitleTestDataCreator.create("000", "テスト用の勘定科目",AccountingType.ASSETS);
 		User user = userTestDataCreator.create();
+		
 		//補助科目が追加されている
 		SubAccountTitles store = subAccountTitleRepository.findCollectionByParentId(parent.id(), user.id());
 		store.add(SubAccountTitleName.valueOf("テスト用の補助科目"));

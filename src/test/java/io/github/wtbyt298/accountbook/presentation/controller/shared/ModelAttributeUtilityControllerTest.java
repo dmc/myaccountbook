@@ -48,6 +48,7 @@ class ModelAttributeUtilityControllerTest {
 	void setUp() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".html");
+        
 		mockMvc = MockMvcBuilders.standaloneSetup(signUpController)
 			.setViewResolvers(viewResolver)
 			.setControllerAdvice(modelAttributeUtilityController)
@@ -71,18 +72,20 @@ class ModelAttributeUtilityControllerTest {
 	void Modelの属性に勘定科目の一覧が追加される() throws Exception {
 		//given:依存オブジェクトは戻り値を返す
 		when(userSessionProvider.getUserSession()).thenReturn(new SpringSecurityUserSessionProvider().getUserSession());
+		
 		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
 		data.add(new AccountTitleAndSubAccountTitleDto("101", "現金", "0", ""));
 		data.add(new AccountTitleAndSubAccountTitleDto("401", "食費", "0", "その他"));
+		
 		when(fetchListQueryService.fetchAll(any())).thenReturn(data);
 		
 		//when:
 		MvcResult result = mockMvc.perform(get("/user/signup"))
 			.andExpect(model().attributeExists("selectBoxElements"))
 			.andReturn();
-		List<MergedAccountTitleViewModel> viewModels = (List<MergedAccountTitleViewModel>) result.getModelAndView().getModel().get("selectBoxElements");
-		
+				
 		//then:ビューモデルへの詰め替え処理が正しく実行されている
+		List<MergedAccountTitleViewModel> viewModels = (List<MergedAccountTitleViewModel>) result.getModelAndView().getModel().get("selectBoxElements");
 		assertAll(
 			() -> assertEquals(data.size(), viewModels.size()),
 			() -> assertEquals("101-0", viewModels.get(0).getMergedId()),

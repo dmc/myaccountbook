@@ -25,6 +25,7 @@ public class SubAccountTitleTestDataCreator {
 			.set(SUB_ACCOUNTTITLES.USER_ID, userId.value())
 			.set(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME, name)
 			.execute();
+		
 		return SubAccountTitleTestFactory.create(id, name);
 	}
 	

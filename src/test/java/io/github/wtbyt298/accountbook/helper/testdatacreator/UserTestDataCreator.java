@@ -18,12 +18,14 @@ public class UserTestDataCreator {
 	public User create() {
 		User user = UserTestFactory.create();
 		userRepository.save(user);
+		
 		return user;
 	}
 	
 	public User create(String userId) {
 		User user = UserTestFactory.create(userId);
 		userRepository.save(user);
+		
 		return user;
 	}
 	

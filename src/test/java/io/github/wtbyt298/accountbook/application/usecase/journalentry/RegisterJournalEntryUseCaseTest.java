@@ -61,9 +61,11 @@ class RegisterJournalEntryUseCaseTest {
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
+		
 		//ユーザを作成する
 		User user = userTestDataCreator.create("TEST_USER");
 		when(userSession.userId()).thenReturn(user.id());
+		
 		//テストに必要な勘定科目を作成する
 		accountTitleTestDataCreator.create("101", "現金", AccountingType.ASSETS);
 		accountTitleTestDataCreator.create("102", "普通預金", AccountingType.ASSETS);
@@ -73,6 +75,7 @@ class RegisterJournalEntryUseCaseTest {
 	void コマンドオブジェクトを渡すと渡した値で仕訳が作成されリポジトリへと引き渡される() {
 		//given:
 		ArgumentCaptor<JournalEntry> captor = ArgumentCaptor.forClass(JournalEntry.class);
+		
 		//仕訳の整合性は満たしている
 		when(journalEntrySpecification.isSatisfied(any())).thenReturn(true);
 		RegisterJournalEntryCommand command = createTestCommand();
@@ -83,25 +86,34 @@ class RegisterJournalEntryUseCaseTest {
 		
 		//then:コマンドオブジェクトの値をもとに仕訳が生成され、リポジトリに渡されている
 		JournalEntry captured = captor.getValue();
+		
 		//仕訳のアサーションを行う
-		assertEquals(command.getDealDate(), captured.dealDate().value());
-		assertEquals(command.getDescription(), captured.description().value());
-		assertEquals(command.getDetailCommands().size(), captured.entryDetails().size());
+		assertAll(
+			() -> assertEquals(command.getDealDate(), captured.dealDate().value()),
+			() -> assertEquals(command.getDescription(), captured.description().value()),
+			() -> assertEquals(command.getDetailCommands().size(), captured.entryDetails().size())
+		);
+		
 		//子オブジェクトの仕訳明細のアサーションを行う
 		//借方明細　101　0　DEBIT 1000
 		RegisterEntryDetailCommand detailCommand1 = command.getDetailCommands().get(0);
 		EntryDetail entryDetail1 = captured.entryDetails().get(0);
-		assertEquals(detailCommand1.getAccountTitleId(), entryDetail1.accountTitleId().value());
-		assertEquals(detailCommand1.getSubAccountTitleId(), entryDetail1.subAccountTitleId().value());
-		assertEquals(detailCommand1.getDetailLoanType(), entryDetail1.detailLoanType().toString());
-		assertEquals(detailCommand1.getAmount(), entryDetail1.amount().value());
+		assertAll(
+			() -> assertEquals(detailCommand1.getAccountTitleId(), entryDetail1.accountTitleId().value()),
+			() -> assertEquals(detailCommand1.getSubAccountTitleId(), entryDetail1.subAccountTitleId().value()),
+			() -> assertEquals(detailCommand1.getDetailLoanType(), entryDetail1.detailLoanType().toString()),
+			() -> assertEquals(detailCommand1.getAmount(), entryDetail1.amount().value())
+		);
+		
 		//貸方明細　102　0　CREDIT 1000
 		RegisterEntryDetailCommand detailCommand2 = command.getDetailCommands().get(1);
 		EntryDetail entryDetail2 = captured.entryDetails().get(1);
-		assertEquals(detailCommand2.getAccountTitleId(), entryDetail2.accountTitleId().value());
-		assertEquals(detailCommand2.getSubAccountTitleId(), entryDetail2.subAccountTitleId().value());
-		assertEquals(detailCommand2.getDetailLoanType(), entryDetail2.detailLoanType().toString());
-		assertEquals(detailCommand2.getAmount(), entryDetail2.amount().value());
+		assertAll(
+			() -> assertEquals(detailCommand2.getAccountTitleId(), entryDetail2.accountTitleId().value()),
+			() -> assertEquals(detailCommand2.getSubAccountTitleId(), entryDetail2.subAccountTitleId().value()),
+			() -> assertEquals(detailCommand2.getDetailLoanType(), entryDetail2.detailLoanType().toString()),
+			() -> assertEquals(detailCommand2.getAmount(), entryDetail2.amount().value())
+		);
 	}
 	
 	@Test
@@ -121,6 +133,7 @@ class RegisterJournalEntryUseCaseTest {
 		List<RegisterEntryDetailCommand> elements = new ArrayList<>();
 		elements.add(new RegisterEntryDetailCommand("101", "0", "DEBIT", 1000));
 		elements.add(new RegisterEntryDetailCommand("102", "0", "CREDIT", 1000));
+		
 		return new RegisterJournalEntryCommand(
 			LocalDate.now(), 
 			"仕訳登録のユースケースのテストです。", 

@@ -22,6 +22,7 @@ public class JournalEntryTestFactory {
 	private JournalEntryTestFactory(Builder builder) {
 		this.dealDate = builder.dealDate;
 		this.description = builder.description;
+		
 		//デフォルトでは貸借それぞれ1件ずつの明細をセットする
 		//明細が追加されていれば、それを使う
 		if (builder.elements.isEmpty()) {

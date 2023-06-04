@@ -33,6 +33,7 @@ class JournalEntrySpecificationTest {
 		AccountTitleId equity = AccountTitleId.valueOf("301");
 		AccountTitleId expenses = AccountTitleId.valueOf("401");
 		AccountTitleId revenue = AccountTitleId.valueOf("501");
+		
 		when(accountTitleRepository.findById(assets))
 			.thenReturn(AccountTitleTestFactory.create("101", "現金", AccountingType.ASSETS));
 		when(accountTitleRepository.findById(liabilities))
