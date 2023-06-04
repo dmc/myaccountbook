@@ -28,7 +28,9 @@ public class AppendSubAccountTitleController {
 	public String append(@RequestParam String parentId, @RequestParam String subAccountTitleName) {
 		AppendSubAccountTitleCommand command = new AppendSubAccountTitleCommand(parentId, subAccountTitleName);
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		appendSubAccountTitleUseCase.execute(command, userSession);
+		
 		return "redirect:/accounttitle/detail/" + parentId;
 	}
 	

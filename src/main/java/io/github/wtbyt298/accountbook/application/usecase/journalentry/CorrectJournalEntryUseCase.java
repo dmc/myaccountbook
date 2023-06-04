@@ -52,10 +52,14 @@ public class CorrectJournalEntryUseCase {
 		if (! journalEntryRepository.exists(entryId)) {
 			throw new UseCaseException("指定した仕訳は存在しません。");
 		}
+		
+		//ドメインオブジェクトを生成
 		JournalEntry entry = journalEntryRepository.findById(entryId);
+		
 		//貸借を入れ替えた仕訳を生成し、残高更新サービスに引き渡す
 		JournalEntry reversingEntry = entry.toReversingJournalEntry();
 		accountBalanceUpdator.execute(reversingEntry, userId);
+		
 		//元の仕訳を削除する
 		journalEntryRepository.drop(entryId);
 	}
@@ -64,10 +68,14 @@ public class CorrectJournalEntryUseCase {
 	 * 仕訳を登録する
 	 */
 	private void register(RegisterJournalEntryCommand command, UserId userId) {
+		//ドメインオブジェクトを生成
 		JournalEntry entry = journalEntryFactory.create(command, userId);
+		
+		//仕訳の整合性チェック
 		if (! journalEntrySpecification.isSatisfied(entry)) {
 			throw new CannotCreateJournalEntryException("明細の貸借組み合わせが正しくありません。");
 		}
+		
 		//残高更新サービスに引き渡し、リポジトリに保存する
 		accountBalanceUpdator.execute(entry, userId);
 		journalEntryRepository.save(entry, userId);

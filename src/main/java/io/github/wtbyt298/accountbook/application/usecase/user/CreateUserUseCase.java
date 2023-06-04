@@ -28,7 +28,11 @@ public class CreateUserUseCase {
 		if (userRepository.exists(userId)) {
 			throw new UseCaseException("同一IDのユーザが既に存在しています。");
 		}
+		
+		//ドメインオブジェクトを生成
 		User user = mapCommandToEntity(command);
+		
+		//リポジトリに保存する
 		userRepository.save(user);
 	}
 	
@@ -39,6 +43,7 @@ public class CreateUserUseCase {
 		UserId userId = UserId.valueOf(command.getId());
 		EncodedUserPassword userPassword = EncodedUserPassword.fromRawPassword(command.getPassword());
 		String mailAddress = command.getMailAddress();
+		
 		return User.create(userId, userPassword, mailAddress);		
 	}
 	

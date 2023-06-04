@@ -39,6 +39,7 @@ public class Account {
 		} else {
 			balanceAfterUpdated = balance - difference.value();
 		}
+		
 		return new Account(accountTitle, subAccountTitleId, fiscalYearMonth, balanceAfterUpdated);
 	}
 	

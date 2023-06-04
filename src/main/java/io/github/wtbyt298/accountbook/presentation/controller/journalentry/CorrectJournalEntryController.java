@@ -39,9 +39,11 @@ public class CorrectJournalEntryController {
 		if (result.hasErrors()) {
 			return "/entry/entry";
 		}
+		
 		EntryId entryId = EntryId.fromString(id);
 		RegisterJournalEntryCommand command = mapParameterToCommand(form);
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		try {
 			correctJournalEntryUseCase.execute(entryId, command, userSession);
 			return redirectPath();
@@ -64,6 +66,7 @@ public class CorrectJournalEntryController {
 		List<RegisterEntryDetailCommand> detailCommands = form.getEntryDetailParams().stream()
 			.map(each -> mapParameterToCommand(each))
 			.toList();
+		
 		return new RegisterJournalEntryCommand(
 			form.getDealDate(),   
 			form.getDescription(),

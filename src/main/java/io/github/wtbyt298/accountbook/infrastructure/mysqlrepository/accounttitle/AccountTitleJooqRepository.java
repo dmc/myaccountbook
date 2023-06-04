@@ -32,9 +32,11 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 			.from(ACCOUNTTITLES)
 		    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
 		    .fetchOne();
+		
 		if (record == null) {
 			throw new RecordNotFoundException("指定した勘定科目は存在しません。");
 		}
+		
 		return mapRecordToEntity(record);
 	}
 	
@@ -69,6 +71,7 @@ class AccountTitleJooqRepository implements AccountTitleRepository {
 			.from(ACCOUNTTITLES)
 		    .where(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(id.value()))
 		    .execute();
+		
 		return resultCount > 0;
 	}
 	

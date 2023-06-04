@@ -46,9 +46,11 @@ public class RegisterJournalEntryController {
 		if (result.hasErrors()) {
 			return "/entry/register";
 		}
+		
+		RegisterJournalEntryCommand command = mapParameterToCommand(form);
+		UserSession userSession = userSessionProvider.getUserSession();
+		
 		try {
-			RegisterJournalEntryCommand command = mapParameterToCommand(form);
-			UserSession userSession = userSessionProvider.getUserSession();
 			registerJournalEntryUseCase.execute(command, userSession);
 			return "redirect:/entry/register";
 		} catch (CannotCreateJournalEntryException exception) {
@@ -65,6 +67,7 @@ public class RegisterJournalEntryController {
 		List<RegisterEntryDetailCommand> detailCommands = form.getEntryDetailParams().stream()
 			.map(each -> mapParameterToCommand(each))
 			.toList();
+		
 		return new RegisterJournalEntryCommand(
 			form.getDealDate(),   
 			form.getDescription(),

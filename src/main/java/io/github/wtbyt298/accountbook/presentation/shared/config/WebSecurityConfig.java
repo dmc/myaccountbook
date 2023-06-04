@@ -18,22 +18,27 @@ public class WebSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+		//ログイン時の設定
 		http.formLogin(login -> login
 				.loginProcessingUrl("/login")
 				.loginPage("/user/login")
 				.defaultSuccessUrl("/user/home")
 				.permitAll()
+			//ログアウト時の設定
 			).logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/")
+			//アクセス権の設定
 			).authorizeHttpRequests(auth -> auth
 				.requestMatchers("/").permitAll()
 				.requestMatchers(HttpMethod.GET, "/user/signup").permitAll()
 				.requestMatchers(HttpMethod.POST, "/signup").permitAll()
 				.requestMatchers("/css/**", "/js/**", "/lib/**").permitAll()
 				.anyRequest().authenticated()
+			//CSRF対策
 			).csrf(
 		);
+		
 		return http.build();
 	}
 	

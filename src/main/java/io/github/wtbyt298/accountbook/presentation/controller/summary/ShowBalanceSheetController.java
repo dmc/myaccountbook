@@ -43,9 +43,11 @@ public class ShowBalanceSheetController {
 		FinancialStatement bs = fetchProfitAndLossStatement(selectedYearMonth);
 		List<FinancialStatementViewModel> viewModels = mapDtoToViewModel(bs);
 		model.addAttribute("financialStatements", viewModels);
+		
 		//会計区分ごとの合計金額を保持するビューモデルを取得する
 		SummaryOfBalanceSheetViewModel summaryViewModel = createSummary(bs);
 		model.addAttribute("summary", summaryViewModel);
+		
 		return "/summary/bs";
 	}
 	
@@ -55,6 +57,7 @@ public class ShowBalanceSheetController {
 	private FinancialStatement fetchProfitAndLossStatement(String selectedYearMonth) {
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		return balanceSheetQueryService.aggregateIncludingSubAccountTitle(yearMonth, userSession.userId());
 	}
 	
@@ -65,6 +68,7 @@ public class ShowBalanceSheetController {
 		final int totalOfAssets = bs.calculateTotalAmount(AccountingType.ASSETS);
 		final int totalOfLiabilities = bs.calculateTotalAmount(AccountingType.LIABILITIES);
 		final int totalOfEquity = bs.calculateTotalAmount(AccountingType.EQUITY);
+		
 		return new SummaryOfBalanceSheetViewModel(totalOfAssets, totalOfLiabilities, totalOfEquity);
 	}
 	

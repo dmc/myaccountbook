@@ -35,7 +35,6 @@ public class HomeController {
 	 */
 	@GetMapping("/user/home")
 	public String load(Model model) {
-		
 		return showChart(YearMonth.now(), model);
 	}
 	
@@ -44,9 +43,7 @@ public class HomeController {
 	 */
 	@GetMapping("/user/home/{selectedYearMonth}")
 	public String load(@PathVariable @ModelAttribute String selectedYearMonth, Model model) {
-		
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
-		
 		return showChart(yearMonth, model);
 	}
 	
@@ -54,7 +51,6 @@ public class HomeController {
 	 * 収支のグラフを表示する
 	 */
 	private String showChart(YearMonth yearMonth, Model model) {
-		
 		UserSession userSession = userSessionProvider.getUserSession();
 		
 		//費用の科目の集計値を取得する

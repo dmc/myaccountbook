@@ -23,8 +23,6 @@ import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.SubAc
 @Controller
 public class AccountTitleDetailController {
 	
-	//例外的にコントローラからリポジトリへの参照を許容している
-	
 	@Autowired
 	private AccountTitleRepository accountTitleRepository;
 	
@@ -43,13 +41,16 @@ public class AccountTitleDetailController {
 		AccountTitleId parentId = AccountTitleId.valueOf(id);
 		AccountTitleViewModel parentViewModel = createAccountTitleViewModel(parentId);
 		model.addAttribute("accountTitle", parentViewModel);
+		
 		//補助科目の表示用データを取得する
-		//補助科目が作成されていない場合は補助科目の表示はせず、メッセージを表示する
 		List<SubAccountTitleViewModel> subViewModels = createSubAccountTitleViewModels(parentId);
 		model.addAttribute("subAccountTitles", subViewModels);
+		
+		//補助科目が作成されていない場合は補助科目の表示はせず、メッセージを表示する
 		if (subViewModels.isEmpty()) {
 			model.addAttribute("empty", "補助科目はまだ作成されていません。");
 		}
+		
 		return "/accounttitle/detail";
 	}
 	
@@ -80,6 +81,7 @@ public class AccountTitleDetailController {
 	public List<SubAccountTitleViewModel> createSubAccountTitleViewModels(AccountTitleId parentId) {
 		UserSession userSession = userSessionProvider.getUserSession();
 		SubAccountTitles subAccountTitles = subAccountTitleRepository.findCollectionByParentId(parentId, userSession.userId());
+		
 		return subAccountTitles.elements().values().stream()
 			.map(each -> mapEntityToViewModel(each))
 			.toList();

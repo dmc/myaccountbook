@@ -24,8 +24,14 @@ public class DisableUserUseCase {
 		if (! userRepository.exists(userId)) {
 			throw new UseCaseException("指定したユーザは存在しません。");
 		}
+		
+		//ドメインオブジェクトを生成
 		User user = userRepository.findById(userId);
+		
+		//ユーザを無効化する
 		user.disable();
+		
+		//リポジトリに保存する
 		userRepository.update(user);
 	}
 	

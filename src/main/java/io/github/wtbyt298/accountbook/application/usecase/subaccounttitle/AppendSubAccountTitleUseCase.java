@@ -24,10 +24,15 @@ public class AppendSubAccountTitleUseCase {
 	 */
 	@Transactional
 	public void execute(AppendSubAccountTitleCommand command, UserSession userSession) {
+		//ドメインオブジェクトを生成
 		AccountTitleId parentId = AccountTitleId.valueOf(command.getParentId());
 		SubAccountTitles store = subAccountTitleRepository.findCollectionByParentId(parentId, userSession.userId());
+		
+		//補助科目を追加する
 		SubAccountTitleName newName = SubAccountTitleName.valueOf(command.getNewName());
 		store.add(newName);
+		
+		//リポジトリに保存する
 		subAccountTitleRepository.save(store, userSession.userId());
 	}
 	

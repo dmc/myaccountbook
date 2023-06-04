@@ -40,11 +40,14 @@ public class SignUpController {
 		if (result.hasErrors()) {
 			return "/user/signup";
 		}
+		
 		try {
 			CreateUserCommand command = mapParameterToCommand(form);
 			createUserUseCase.execute(command);
+			
 			//ユーザ作成に成功した場合、そのままログインする
 			autoLogin(form.getId(), form.getPassword(), request);
+			
 			return "redirect:/user/home";
 		} catch (UseCaseException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
@@ -64,11 +67,12 @@ public class SignUpController {
 	 * TODO 別クラスに切り出すことを検討する
 	 */
 	private void autoLogin(String userId, String password, HttpServletRequest request) {
-		//既にユーザがログイン済みの場合は、一旦ログアウトさせる
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		//既にユーザがログイン済みの場合は、一旦ログアウトさせる
 		if (authentication.isAuthenticated()) {
 			SecurityContextHolder.clearContext();
 		}
+		
 		try {
 			request.login(userId, password);
 		} catch (ServletException exception) {

@@ -27,6 +27,7 @@ public class JournalEntryViewModel {
 		this.dealDate = dto.getDealDate().format(DateTimeFormatter.ofPattern("yyyy年M月d日"));
 		this.description = dto.getDescription();
 		this.totalAmount = AmountPresentationFormatter.yen(dto.getTotalAmount());
+		
 		//仕訳明細DTOを1件ずつViewモデルに詰め替える
 		for (EntryDetailDto detailDto : dto.getEntryDetails()) {
 			if (detailDto.isDebit()) {

@@ -7,15 +7,9 @@ package io.github.wtbyt298.accountbook.application.shared.exception;
 public class UseCaseException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private String errorMessage;
 	
 	public UseCaseException(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-	
-	@Override
-	public String getMessage() {
-		return errorMessage;
+		super(errorMessage);
 	}
 	
 }

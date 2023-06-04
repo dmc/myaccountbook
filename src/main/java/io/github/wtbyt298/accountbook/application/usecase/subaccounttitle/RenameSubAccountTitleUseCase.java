@@ -26,11 +26,16 @@ public class RenameSubAccountTitleUseCase {
 	 */
 	@Transactional
 	public void execute(RenameSubAccountTitleCommand command, UserSession userSession) {
+		//ドメインオブジェクトを生成
 		AccountTitleId parentId = AccountTitleId.valueOf(command.getParentId());
 		SubAccountTitles store = subAccountTitleRepository.findCollectionByParentId(parentId, userSession.userId());
 		SubAccountTitleId subId = SubAccountTitleId.valueOf(command.getSubId());
+		
+		//補助科目名を変更する
 		SubAccountTitleName newName = SubAccountTitleName.valueOf(command.getNewName());
 		store.changeSubAccountTitleName(subId, newName);
+		
+		//リポジトリに保存する
 		subAccountTitleRepository.save(store, userSession.userId());
 	}
 	

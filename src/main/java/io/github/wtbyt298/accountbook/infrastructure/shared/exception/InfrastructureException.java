@@ -7,15 +7,9 @@ package io.github.wtbyt298.accountbook.infrastructure.shared.exception;
 public class InfrastructureException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private final String errorMessage;
 
 	public InfrastructureException(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-	
-	@Override
-	public String getMessage() {
-		return errorMessage;
+		super(errorMessage);
 	}
 	
 }

@@ -12,7 +12,7 @@ public class EntryDetail {
 	private final AccountTitleId accountTitleId;
 	private final SubAccountTitleId subAccountTitleId;
 	private final LoanType detailLoanType;
-	final Amount amount;
+	private final Amount amount;
 	
 	public EntryDetail(AccountTitleId accountTitleId, SubAccountTitleId subAccountTitleId, LoanType detailLoanType, Amount amount) {
 		this.accountTitleId = accountTitleId;

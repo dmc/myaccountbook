@@ -25,7 +25,9 @@ public class EditRegisterJournalEntryFormController {
 		if (form.isFull(value)) {
 			model.addAttribute("error_" + value, ERROR_MESSAGE);
 		}
+		
 		form.addList(value);
+		
 		return returnPath(request);
 	}
 	
@@ -39,7 +41,9 @@ public class EditRegisterJournalEntryFormController {
 		final String type = value.substring(0, value.indexOf("-"));
 		//「DEBIT-0」から「0」を取り出す
 		final int index = Integer.valueOf(request.getParameter("remove").substring(value.indexOf("-") + 1));
+		
 		form.removeList(type, index);
+		
 		return returnPath(request);
 	}
 	

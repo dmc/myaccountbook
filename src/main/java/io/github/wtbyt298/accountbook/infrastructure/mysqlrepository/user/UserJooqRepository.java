@@ -58,9 +58,11 @@ class UserJooqRepository implements UserRepository {
 			.from(USERS)
 			.where(USERS.USER_ID.eq(userId.value()))
 			.fetchOne();
+		
 		if (record == null) {
 			throw new RecordNotFoundException("指定したユーザは存在しません。");
 		}
+		
 		return mapRecordToEntity(record);
 	}
 
@@ -85,6 +87,7 @@ class UserJooqRepository implements UserRepository {
 			.from(USERS)
 			.where(USERS.USER_ID.eq(userId.value()))
 			.execute();
+		
 		return resultCount > 0;
 	}
 

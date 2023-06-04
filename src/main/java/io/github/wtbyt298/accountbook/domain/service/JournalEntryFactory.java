@@ -34,6 +34,7 @@ public class JournalEntryFactory {
 		List<EntryDetail> elements = command.getDetailCommands().stream()
 			.map(each -> mapCommandToEntity(each, userId))
 			.toList();
+		
 		return JournalEntry.create(
 			DealDate.valueOf(command.getDealDate()), 
 			Description.valueOf(command.getDescription()), 
@@ -45,14 +46,18 @@ public class JournalEntryFactory {
 	 * コマンドオブジェクトをエンティティに詰め替える
 	 */
 	private EntryDetail mapCommandToEntity(RegisterEntryDetailCommand command, UserId userId) {
+		//勘定科目の存在チェック
 		AccountTitleId accountTitleId = AccountTitleId.valueOf(command.getAccountTitleId());
-		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		if (! accountTitleRepository.exists(accountTitleId)) {
 			throw new DomainException("指定した勘定科目が存在しないため仕訳を作成できません。");
 		}
+		
+		//補助科目の存在チェック
+		SubAccountTitleId subAccountTitleId = SubAccountTitleId.valueOf(command.getSubAccountTitleId());
 		if (! subAccountTitleRepository.exists(accountTitleId, subAccountTitleId, userId)) {
 			throw new DomainException("指定した補助科目が存在しないため仕訳を作成できません。");
 		}
+		
 		return new EntryDetail(
 			accountTitleId,
 			subAccountTitleId,

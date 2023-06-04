@@ -40,23 +40,29 @@ public class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 	 */
 	@Override
 	public List<Entry<String, BigDecimal>> aggregateByAccountTitle(YearMonth yearMonth, UserId userId, AccountingType accountingType) {
+		//勘定科目テーブルと月次残高テーブルをJOINする
 		Result<Record2<String, BigDecimal>> result = jooq.select(ACCOUNTTITLES.ACCOUNTTITLE_NAME, sum(MONTHLY_BALANCES.BALANCE))
-				.from(ACCOUNTTITLES)
-				.leftOuterJoin(MONTHLY_BALANCES)
-					.on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(MONTHLY_BALANCES.ACCOUNTTITLE_ID))
-					.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
-					.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.lessOrEqual(yearMonth.toString()))
-				.where(ACCOUNTTITLES.SUMMARY_TYPE.eq(SummaryType.BS.toString()))
-					.and(ACCOUNTTITLES.ACCOUNTING_TYPE.eq(accountingType.toString()))
-				.groupBy(ACCOUNTTITLES.ACCOUNTTITLE_ID)
-				.fetch();
-			Map<String, BigDecimal> data = new HashMap<>();
-			for (Record2<String, BigDecimal> each : result) {
-				String accountTitleName = each.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME);
-				Optional<BigDecimal> balance = Optional.ofNullable(each.get(each.field2()));
-				data.put(accountTitleName, balance.orElse(BigDecimal.ZERO));
-			}
-			return new ArrayList<>(data.entrySet());
+			.from(ACCOUNTTITLES)
+			.leftOuterJoin(MONTHLY_BALANCES)
+				.on(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(MONTHLY_BALANCES.ACCOUNTTITLE_ID))
+				.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
+				//BSの科目の場合、指定した年月より古いレコードを全て集計対象とする
+				.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.lessOrEqual(yearMonth.toString()))
+			.where(ACCOUNTTITLES.SUMMARY_TYPE.eq(SummaryType.BS.toString()))
+				.and(ACCOUNTTITLES.ACCOUNTING_TYPE.eq(accountingType.toString()))
+			.groupBy(ACCOUNTTITLES.ACCOUNTTITLE_ID)
+			.fetch();
+	
+		//取得結果をMapに詰め替える
+		Map<String, BigDecimal> data = new HashMap<>();
+		for (Record2<String, BigDecimal> each : result) {
+			//集計結果のカラムはnullの場合あり
+			String accountTitleName = each.get(ACCOUNTTITLES.ACCOUNTTITLE_NAME);
+			Optional<BigDecimal> balance = Optional.ofNullable(each.get(each.field2()));
+			data.put(accountTitleName, balance.orElse(BigDecimal.ZERO));
+		}
+		
+		return new ArrayList<>(data.entrySet());
 	}
 	
 	/**
@@ -64,7 +70,7 @@ public class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 	 */
 	@Override
 	public FinancialStatement aggregateIncludingSubAccountTitle(YearMonth yearMonth, UserId userId) {
-		//貸借対照表の場合、指定した年月以前の残高を全て足したものを当月の残高とする
+		//勘定科目テーブルと補助科目テーブルと月次残高テーブルをJOINする
 		List<MonthlyBalanceDto> data = jooq.select(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME, ACCOUNTTITLES.ACCOUNTING_TYPE, sum(MONTHLY_BALANCES.BALANCE))
 		   	.from(ACCOUNTTITLES)
 		   	.leftOuterJoin(SUB_ACCOUNTTITLES)
@@ -72,6 +78,7 @@ public class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.leftOuterJoin(MONTHLY_BALANCES)
 				.on(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
+				//BSの科目の場合、指定した年月より古いレコードを全て集計対象とする
 				.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.lessOrEqual(yearMonth.toString()))
 				.and(ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(MONTHLY_BALANCES.ACCOUNTTITLE_ID))
 				.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID)
@@ -80,6 +87,7 @@ public class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 			.groupBy(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
 			.fetch()
 			.map(record -> mapRecordToDto(record));
+		
 		return new FinancialStatement(data);
 	}
 	
@@ -90,6 +98,7 @@ public class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 		//sum関数で集計したフィールドの値を取り出す
 		Optional<BigDecimal> sum = Optional.ofNullable(record.getValue(record.field4()));
 		BigDecimal value = sum.orElse(BigDecimal.ZERO);
+		
 		return new MonthlyBalanceDto(
 			AccountTitleId.valueOf(record.get(ACCOUNTTITLES.ACCOUNTTITLE_ID)), 
 			Optional.ofNullable(record.get(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_NAME)).orElse(""), 

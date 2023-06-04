@@ -40,6 +40,7 @@ public class FetchListOfJournalEntryController {
 			List<JournalEntryDto> data = fetchJournalEntries(selectedYearMonth, orderKey);
 			List<JournalEntryViewModel> viewModels = mapDtoToViewModel(data);
 			model.addAttribute("entries", viewModels);
+			
 			return "/entry/entries";
 		} catch (RecordNotFoundException exception) {
 			model.addAttribute("errorMessage", exception.getMessage());
@@ -52,9 +53,11 @@ public class FetchListOfJournalEntryController {
 	 */
 	private List<JournalEntryDto> fetchJournalEntries(String selectedYearMonth, Optional<String> orderKey) {
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
+		
 		//デフォルトでは日付順で取得する
 		JournalEntryOrderKey journalEntryOrderKey = JournalEntryOrderKey.valueOf(orderKey.orElse("DEAL_DATE"));
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		return fetchQueryService.fetchAll(yearMonth, journalEntryOrderKey, userSession.userId());
 	}
 	

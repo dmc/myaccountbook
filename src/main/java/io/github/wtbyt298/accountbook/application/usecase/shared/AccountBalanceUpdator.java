@@ -27,9 +27,11 @@ public class AccountBalanceUpdator {
 	 * 仕訳を受け取って各勘定の残高を更新する
 	 */
 	public void execute(JournalEntry entry, UserId userId) {
-		//明細1件ごとに勘定を生成し、残高を更新して保存する
+		//仕訳明細1件ごとに勘定オブジェクトを生成し、残高更新を行う
 		for (EntryDetail each : entry.entryDetails()) {
 			Account account = createAccountFrom(each, userId, entry.fiscalYearMonth());
+			
+			//残高を更新し、リポジトリに保存する
 			Account updated = account.updateBalance(each.detailLoanType(), each.amount());
 			accountRepository.save(updated, userId);
 		}
@@ -40,6 +42,7 @@ public class AccountBalanceUpdator {
 	 */
 	private Account createAccountFrom(EntryDetail entryDetail, UserId userId, YearMonth fiscalYearMonth) {
 		AccountTitleId accountTitleId = entryDetail.accountTitleId();
+		
 		return accountRepository.find(
 			accountTitleRepository.findById(accountTitleId), 
 			entryDetail.subAccountTitleId(), 

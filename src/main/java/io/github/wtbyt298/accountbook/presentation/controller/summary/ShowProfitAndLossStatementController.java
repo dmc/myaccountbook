@@ -43,9 +43,11 @@ public class ShowProfitAndLossStatementController {
 		FinancialStatement pl = fetchProfitAndLossStatement(selectedYearMonth);
 		List<FinancialStatementViewModel> viewModels = mapDtoToViewModel(pl);
 		model.addAttribute("financialStatements", viewModels);
+		
 		//会計区分ごとの合計金額を保持するビューモデルを取得する
 		SummaryOfProfitAndLossStatementViewModel summaryViewModel = createSummary(pl);
 		model.addAttribute("summary", summaryViewModel);
+		
 		return "/summary/pl";
 	}
 	
@@ -55,6 +57,7 @@ public class ShowProfitAndLossStatementController {
 	private FinancialStatement fetchProfitAndLossStatement(String selectedYearMonth) {
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		return profitAndLossStatementQueryService.aggregateIncludingSubAccountTitle(yearMonth, userSession.userId());
 	}
 	
@@ -64,6 +67,7 @@ public class ShowProfitAndLossStatementController {
 	private SummaryOfProfitAndLossStatementViewModel createSummary(FinancialStatement pl) {
 		final int totalOfExpenses = pl.calculateTotalAmount(AccountingType.EXPENSES);
 		final int totalOfRevenue = pl.calculateTotalAmount(AccountingType.REVENUE);
+		
 		return new SummaryOfProfitAndLossStatementViewModel(totalOfExpenses, totalOfRevenue);
 	}
 	

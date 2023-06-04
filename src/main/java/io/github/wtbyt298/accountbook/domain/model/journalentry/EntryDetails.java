@@ -30,8 +30,9 @@ public class EntryDetails {
     Amount debitSum() {
     	final int total = elements.stream()
     		.filter(each -> each.isDebit())
-    		.mapToInt(each -> each.amount.value)
+    		.mapToInt(each -> each.amount().value())
     		.sum();
+    	
 		return Amount.valueOf(total);
 	}
 	
@@ -41,8 +42,9 @@ public class EntryDetails {
 	Amount creditSum() {
     	final int total = elements.stream()
     		.filter(each -> each.isCredit())
-    		.mapToInt(each -> each.amount.value)
+    		.mapToInt(each -> each.amount().value())
     		.sum();
+    	
 		return Amount.valueOf(total);
 	}
 	
@@ -53,6 +55,7 @@ public class EntryDetails {
 		List<EntryDetail> transposed = elements.stream()
 			.map(each -> each.transposeLoanType())
 			.toList();
+		
 		return new EntryDetails(transposed);
 	}
 	

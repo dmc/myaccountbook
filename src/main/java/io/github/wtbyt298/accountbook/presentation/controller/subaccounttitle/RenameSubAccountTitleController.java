@@ -28,7 +28,9 @@ public class RenameSubAccountTitleController {
 	public String rename(@RequestParam String parentId, @RequestParam String subId, @RequestParam String newName) {
 		RenameSubAccountTitleCommand command = new RenameSubAccountTitleCommand(parentId, subId, newName);
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		renameSubAccountTitleUseCase.execute(command, userSession);
+		
 		return "redirect:/accounttitle/detail/" + parentId;
 	}
 	

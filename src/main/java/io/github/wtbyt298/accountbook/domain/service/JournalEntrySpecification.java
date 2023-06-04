@@ -25,11 +25,17 @@ public class JournalEntrySpecification {
 	public boolean isSatisfied(JournalEntry entry) {
 		List<AccountTitle> debitAccountTitles = fetchDebitAccountTitles(entry.entryDetails());
 		List<AccountTitle> creditAccountTitles = fetchCreditAccountTitles(entry.entryDetails());
-		//借方の勘定科目に対して、貸方の勘定科目が組み合わせ可能かどうかを全て調べる
+		
 		return debitAccountTitles.stream()
 			.allMatch(each -> ok(each, creditAccountTitles));
 	}
 	
+	/**
+	 * 借方の勘定科目に対して、貸方の勘定科目が組み合わせ可能かどうかを全て調べる
+	 * @param debit 借方勘定科目
+	 * @param creditAccountTitles 貸方勘定科目のリスト
+	 * @return 全て組み合わせ可能な場合true
+	 */
 	private boolean ok(AccountTitle debit, List<AccountTitle> creditAccountTitles) {
 		return creditAccountTitles.stream().allMatch(each -> debit.canCombineWith(each));
 	}

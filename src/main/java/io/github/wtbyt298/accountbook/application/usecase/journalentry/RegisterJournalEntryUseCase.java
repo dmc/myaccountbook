@@ -35,11 +35,15 @@ public class RegisterJournalEntryUseCase {
 	 */
 	@Transactional
 	public void execute(RegisterJournalEntryCommand command, UserSession userSession) {
+		//ドメインオブジェクトを生成
 		UserId userId = userSession.userId();
 		JournalEntry entry = journalEntryFactory.create(command, userId);
+		
+		//仕訳の整合性チェック
 		if (! journalEntrySpecification.isSatisfied(entry)) {
 			throw new CannotCreateJournalEntryException("明細の貸借組み合わせが正しくありません。");
 		}
+		
 		//残高更新サービスに引き渡し、リポジトリに保存する
 		accountBalanceUpdator.execute(entry, userId);
 		journalEntryRepository.save(entry, userId);

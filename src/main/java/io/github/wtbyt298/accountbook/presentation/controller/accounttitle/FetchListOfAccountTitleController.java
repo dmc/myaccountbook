@@ -15,8 +15,6 @@ import io.github.wtbyt298.accountbook.presentation.viewmodels.accounttitle.Accou
 @Controller
 public class FetchListOfAccountTitleController {
 
-	//例外的にコントローラからリポジトリへの参照を許容している
-	
 	@Autowired
 	private AccountTitleRepository accountTitleRepository;
 	

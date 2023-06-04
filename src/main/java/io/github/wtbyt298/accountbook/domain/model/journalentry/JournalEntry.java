@@ -8,7 +8,6 @@ import io.github.wtbyt298.accountbook.domain.shared.exception.CannotCreateJourna
 
 /**
  * 仕訳伝票クラス
- * このクラスは仕訳集約の集約ルートとして機能する
  */
 public class JournalEntry {
 
@@ -42,7 +41,7 @@ public class JournalEntry {
 	}	
 	
 	/**
-	 * 明細の貸借を逆にした仕訳を生成する
+	 * 仕訳明細の貸借を逆にした仕訳を生成する
 	 */
 	public JournalEntry toReversingJournalEntry() {
 		return new JournalEntry(entryId, dealDate, description, entryDetails.transpose());

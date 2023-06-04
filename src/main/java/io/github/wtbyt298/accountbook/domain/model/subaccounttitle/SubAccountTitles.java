@@ -7,7 +7,6 @@ import io.github.wtbyt298.accountbook.domain.shared.exception.DomainException;
 
 /**
  * 補助科目のコレクションオブジェクト
- * このクラスは補助科目集約の集約ルートとして機能する
  */
 public class SubAccountTitles {
 
@@ -24,12 +23,13 @@ public class SubAccountTitles {
 	 * 補助科目を追加する
 	 */
 	public void add(SubAccountTitleName newName) {
-		if (elements.size() >= MAX_MEMBERS_COUNT) {
+		if (! canAdd()) {
 			throw new DomainException("これ以上補助科目を追加できません。");
 		}
 		if (exists(newName)) {
 			throw new DomainException("指定した補助科目は既に存在しています。");
 		}
+		
 		//補助科目を持っていない場合は、はじめに「その他」という補助科目を追加する
 		if (elements.isEmpty()) {
 			SubAccountTitle other = new SubAccountTitle(
@@ -38,9 +38,17 @@ public class SubAccountTitles {
 			);
 			elements.put(other.id(), other);
 		}
+		
 		SubAccountTitleId newId = nextIdentity();
 		SubAccountTitle adding = new SubAccountTitle(newId, newName);
 		elements.put(newId, adding);
+	}
+	
+	/**
+	 * 補助科目を追加可能かどうかを判断する
+	 */
+	private boolean canAdd() {
+		return elements.size() <= MAX_MEMBERS_COUNT;
 	}
 	
 	/**
@@ -48,23 +56,23 @@ public class SubAccountTitles {
 	 */
 	private boolean exists(SubAccountTitleName newName) {
 		return elements.entrySet().stream()
-			.anyMatch(each -> each.getValue().name().equals(newName));
+			.map(each -> each.getValue().name())
+			.anyMatch(newName::equals);
 	}
 	
 	/**
 	 * 新規追加する補助科目のIDを生成する
 	 */
 	private SubAccountTitleId nextIdentity() {
-		final int count = elements.size();
-		String nextIndex = String.valueOf(count);
+		String nextIndex = String.valueOf(elements.size());
 		return SubAccountTitleId.valueOf(nextIndex);
 	}
 	
 	/**
 	 * IDで検索して補助科目を取得する
-	 * 補助科目を持っていない場合はEMPTYを返す
 	 */
 	public SubAccountTitle find(SubAccountTitleId id) {
+		//補助科目を持っていない場合はEMPTYを返す
 		if (elements.isEmpty()) {
 			return SubAccountTitle.EMPTY;
 		}

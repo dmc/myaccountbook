@@ -33,10 +33,10 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	
 	/**
 	 * 仕訳を保存する
-	 * 仕訳テーブルと仕訳明細テーブルに別々にINSERTする
 	 */
 	@Override
 	public void save(JournalEntry entry, UserId userId) {
+		//仕訳テーブルと仕訳明細テーブルに別々にINSERTする
 		insertRecord(entry, userId);
 		insertRecordOfDetails(entry);
 	}
@@ -59,6 +59,7 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 * 仕訳明細テーブルにデータを挿入する
 	 */
 	private void insertRecordOfDetails(JournalEntry entry) {
+		//1件の仕訳から仕訳明細を取得し、仕訳明細の数だけINSERTを実行する
 		List<EntryDetail> entryDetails = entry.entryDetails();
 		for (EntryDetail each : entryDetails) {
 			jooq.insertInto(ENTRY_DETAILS)
@@ -79,10 +80,14 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 			.from(JOURNAL_ENTRIES)
 			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 			.fetchOne();
+		
 		if (record == null) {
 			throw new RecordNotFoundException("指定した仕訳は存在しません。");
 		}
+		
+		//仕訳明細を生成する
 		EntryDetails entryDetails = findEntryDetailsById(entryId);
+		
 		return JournalEntry.reconstruct(
 			EntryId.fromString(record.get(JOURNAL_ENTRIES.ENTRY_ID)), 
 			DealDate.valueOf(record.get(JOURNAL_ENTRIES.DEAL_DATE)), 
@@ -100,6 +105,7 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
 			.fetch()
 			.map(record -> mapRecordToEntity(record));
+		
 		return new EntryDetails(entities);
 	}
 	
@@ -120,9 +126,11 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 	 */
 	@Override
 	public void drop(EntryId entryId) {
+		//外部キーの関係で仕訳明細テーブルのレコードを先に削除する
 		jooq.deleteFrom(ENTRY_DETAILS)
 			.where(ENTRY_DETAILS.ENTRY_ID.eq(entryId.value()))
 			.execute();
+		
 		jooq.deleteFrom(JOURNAL_ENTRIES)
 			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 			.execute();
@@ -137,6 +145,7 @@ class JournalEntryJooqRepository implements JournalEntryRepository {
 			.from(JOURNAL_ENTRIES)
 			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 			.execute();
+		
 		if (resultCount == 0) return false;
 		return true;
 	}

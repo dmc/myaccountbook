@@ -45,6 +45,7 @@ public class RegisterJournalEntryForm {
 	public List<RegisterEntryDetailForm> getEntryDetailParams() {
 		List<RegisterEntryDetailForm> list = new ArrayList<>(debitForms);
 		list.addAll(creditForms);
+		
 		return list;
 	}
 	
@@ -62,6 +63,7 @@ public class RegisterJournalEntryForm {
 	 * 仕訳明細パラメータを追加する
 	 */
 	public void addList(String type) {
+		//既にリストの要素が最大数まで追加されている場合は何もしない
 		if (type.equals("DEBIT")) {
 			if (debitForms.size() >= MAX_LIST_SIZE) return;
 			debitForms.add(new RegisterEntryDetailForm());
@@ -76,6 +78,7 @@ public class RegisterJournalEntryForm {
 	 * 仕訳明細パラメータを削除する
 	 */
 	public void removeList(String type, int index) {
+		//既にリストの要素が1つだけの場合は何もしない
 		if (type.equals("DEBIT")) {
 			if (debitForms.size() <= MIN_LIST_SIZE) return;
 			debitForms.remove(index);

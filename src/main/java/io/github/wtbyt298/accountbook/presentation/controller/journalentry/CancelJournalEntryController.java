@@ -30,7 +30,9 @@ public class CancelJournalEntryController {
 	public String cancel(@RequestParam("entryId") String id) {
 		EntryId entryId = EntryId.fromString(id);
 		UserSession userSession = userSessionProvider.getUserSession();
+		
 		cancelJournalEntryUseCase.execute(entryId, userSession);
+		
 		return redirectPath();
 	}
 	

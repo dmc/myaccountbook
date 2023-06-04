@@ -22,17 +22,16 @@ public class FinancialStatementViewModel {
 		this.accountTitleName = accountTitleName;
 		this.accountingType = accountingType;
 		this.breakDowns = new ArrayList<>();
+		
 		for (MonthlyBalanceDto each : breakDowns) {
 			this.breakDowns.add(new MonthlyBalanceViewModel(each.getSubAccountTitleName(), each.getBalance()));
 		}
 	}
 	
 	public int total() {
-		int total = 0;
-		for (MonthlyBalanceViewModel each : breakDowns) {
-			total += each.getBalance();
-		}
-		return total;
+		return breakDowns.stream()
+			.mapToInt(each -> each.getBalance())
+			.sum();
 	}
 	
 	public boolean hasBreakDowns() {

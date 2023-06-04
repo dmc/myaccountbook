@@ -40,9 +40,11 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 			.from(JOURNAL_ENTRIES)
 			.where(JOURNAL_ENTRIES.ENTRY_ID.eq(entryId.value()))
 			.fetchOne();
+		
 		if (record == null) {
 			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
+		
 		return mapRecordToDto(record, entryId.value());
 	}
 	
@@ -53,15 +55,18 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 	public List<JournalEntryDto> fetchAll(YearMonth yearMonth, JournalEntryOrderKey orderKey, UserId userId) {
 		//ORDER BY句で並べ替えるフィールドを取得
 		SortField<?> orderColumn = buildOrderColumn(orderKey);
+		
 		Result<Record> result = jooq.select()
 			.from(JOURNAL_ENTRIES)
 			.where(JOURNAL_ENTRIES.FISCAL_YEARMONTH.eq(yearMonth.toString()))
 				.and(JOURNAL_ENTRIES.USER_ID.eq(userId.toString()))
 			.orderBy(orderColumn)
 			.fetch();
+		
 		if (result.isEmpty()) {
 			throw new RecordNotFoundException("該当するデータが見つかりませんでした。");
 		}
+		
 		return result.stream()
 			.map(record -> mapRecordToDto(record, record.get(JOURNAL_ENTRIES.ENTRY_ID)))
 			.toList();
@@ -123,8 +128,10 @@ class FetchJournalEntryDataJooqQueryService implements FetchJournalEntryDataQuer
 	private SortField<?> buildOrderColumn(JournalEntryOrderKey orderKey) {
 		switch (orderKey) {
 			case DEAL_DATE:
+				//日付昇順
 				return JOURNAL_ENTRIES.DEAL_DATE.asc();
 			case TOTAL_AMOUNT:
+				//金額降順
 				return JOURNAL_ENTRIES.TOTAL_AMOUNT.desc();
 			//ソート条件が追加された場合はここに書くこと
 			default:

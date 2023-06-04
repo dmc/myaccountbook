@@ -21,14 +21,18 @@ public class SpringSecurityUserAuthenticator implements UserDetailsService {
 	
 	/**
 	 * SpringSecurityの仕組みを利用して認証を行う
+	 * @param ユーザID
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		//ユーザが見つからない場合の処理はSpringSecurityの仕組みにより自動的に行われる
 		UserId userId = UserId.valueOf(username);
 		if (! userRepository.exists(userId)) {
 			throw new UsernameNotFoundException(username + "は存在しません。");
 		}
+		
 		User user = userRepository.findById(userId);
+		
 		return new org.springframework.security.core.userdetails.User(
 			user.id().value(), 
 			user.password().value(), 

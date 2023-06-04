@@ -5,7 +5,6 @@ import io.github.wtbyt298.accountbook.domain.shared.types.LoanType;
 
 /**
  * 勘定科目クラス
- * このクラスは勘定科目集約の集約ルートとして機能する
  */
 public class AccountTitle {
 

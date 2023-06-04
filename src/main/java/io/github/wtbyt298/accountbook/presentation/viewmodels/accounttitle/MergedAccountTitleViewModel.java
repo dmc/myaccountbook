@@ -14,9 +14,10 @@ public class MergedAccountTitleViewModel {
 	private final String mergedName; //"勘定科目名：補助科目名"　例："食費：その他"のような形式
 	
 	public MergedAccountTitleViewModel(AccountTitleAndSubAccountTitleDto dto) {
+		//補助科目が存在しない場合は勘定科目名を表示
 		if (dto.getSubAccountTitleName().isBlank()) {
 			this.mergedId = dto.getAccountTitleId() + "-" + dto.getSubAccountTitleId();
-			this.mergedName = dto.getAccountTitleName(); //補助科目が存在しない場合は勘定科目名を表示
+			this.mergedName = dto.getAccountTitleName();
 		} else {
 			this.mergedId = dto.getAccountTitleId() + "-" + dto.getSubAccountTitleId();
 			this.mergedName = dto.getAccountTitleName() + "：" + dto.getSubAccountTitleName();	

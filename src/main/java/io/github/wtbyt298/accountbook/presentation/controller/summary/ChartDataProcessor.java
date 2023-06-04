@@ -2,7 +2,6 @@ package io.github.wtbyt298.accountbook.presentation.controller.summary;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -15,12 +14,7 @@ public class ChartDataProcessor {
 	
 	public ChartDataProcessor(List<Entry<String, BigDecimal>> data) {
 		//金額の降順で並べ替えておく
-		Collections.sort(data, new Comparator<Entry<String, BigDecimal>>() {
-			@Override
-			public int compare(Entry<String, BigDecimal> obj, Entry<String, BigDecimal> other) {
-				return other.getValue().compareTo(obj.getValue());
-			}
-		});
+		Collections.sort(data, (o1, o2) -> (o2.getValue().compareTo(o1.getValue())));
 		this.data = data;
 	}
 	

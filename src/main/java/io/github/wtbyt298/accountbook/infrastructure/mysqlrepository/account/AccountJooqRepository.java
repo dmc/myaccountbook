@@ -24,14 +24,17 @@ public class AccountJooqRepository implements AccountRepository {
 
 	/**
 	 * 勘定の残高を保存する
-	 * 該当月のレコードを一旦削除し、再度INSERTする
 	 */
 	@Override
 	public void save(Account account, UserId userId) {
+		//該当月のレコードを一旦削除し、再度INSERTする
 		deleteRecord(account, userId);
 		insertRecord(account, userId);
 	}
 	
+	/**
+	 * 勘定のデータを保存する
+	 */
 	private void insertRecord(Account account, UserId userId) {
 		jooq.insertInto(MONTHLY_BALANCES)
 			.set(MONTHLY_BALANCES.ACCOUNTTITLE_ID, account.accountTitleId().value())
@@ -42,6 +45,9 @@ public class AccountJooqRepository implements AccountRepository {
 			.execute();
 	}
 	
+	/**
+	 * 勘定のデータを削除する
+	 */
 	private void deleteRecord(Account account, UserId userId) {
 		jooq.deleteFrom(MONTHLY_BALANCES)
 			.where(MONTHLY_BALANCES.ACCOUNTTITLE_ID.eq(account.accountTitleId().value()))
@@ -63,6 +69,7 @@ public class AccountJooqRepository implements AccountRepository {
 				.and(MONTHLY_BALANCES.USER_ID.eq(userId.value()))
 				.and(MONTHLY_BALANCES.FISCAL_YEARMONTH.eq(fiscalYearMonth.toString()))
 			.fetchOne();
+		
 		return mapRecordToEntity(accountTitle, subId, fiscalYearMonth, record);
 	}
 	
@@ -70,6 +77,7 @@ public class AccountJooqRepository implements AccountRepository {
 	 * レコードをエンティティに詰め替える
 	 */
 	private Account mapRecordToEntity(AccountTitle accountTitle, SubAccountTitleId subId, YearMonth fiscalYearMonth, Record record) {
+		//レコードが存在しない場合は、残高0の勘定を返す
 		if (record == null) {
 			return new Account(accountTitle, subId, fiscalYearMonth, 0);
 		}

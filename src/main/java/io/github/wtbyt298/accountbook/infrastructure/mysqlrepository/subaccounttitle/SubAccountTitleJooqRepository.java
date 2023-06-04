@@ -34,11 +34,10 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	@Override
 	public void save(SubAccountTitles subAccountTitles, UserId userId) {
 		//補助科目IDは外部キー参照されていない
-		//一旦DELETEして再度INSERTする実装とする
-		jooq.deleteFrom(SUB_ACCOUNTTITLES)
-			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(subAccountTitles.parentId().value()))
-				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
-			.execute();
+		//補助科目テーブルから一旦DELETEする
+		deleteRecord(subAccountTitles.parentId(), userId);
+		
+		//再度INSERTする
 		for (Entry<SubAccountTitleId, SubAccountTitle> each : subAccountTitles.elements().entrySet()) {
 			insertRecord(each.getValue(), subAccountTitles.parentId(), userId);
 		}
@@ -57,6 +56,16 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 	}
 	
 	/**
+	 * 補助科目テーブルからデータを削除する
+	 */
+	private void deleteRecord(AccountTitleId parentId, UserId userId) {
+		jooq.deleteFrom(SUB_ACCOUNTTITLES)
+			.where(SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID.eq(parentId.value()))
+				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
+			.execute();
+	}
+	
+	/**
 	 * 勘定科目IDに一致する補助科目のコレクションを取得する
 	 */
 	@Override
@@ -67,12 +76,16 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.fetch()
 			.map(record -> mapRecordToEntity(record));
+		
+		//補助科目が存在しない場合は、要素数0のコレクションを返す
 		if (entities.isEmpty()) {
-			return new SubAccountTitles(new LinkedHashMap<>(), parentId); //補助科目が存在しない場合は、要素数0のコレクションを返す
+			return new SubAccountTitles(new LinkedHashMap<>(), parentId);
 		}
+		
 		//補助科目の並び順を維持するためLinkedHashMapに変換する
 		Map<SubAccountTitleId, SubAccountTitle> mapOfEntity = entities.stream()
 			.collect(Collectors.toMap(each -> each.id(), each -> each, (e1, e2) -> e1, LinkedHashMap::new));
+		
 		return new SubAccountTitles(mapOfEntity, parentId);
 	}
 	
@@ -97,7 +110,9 @@ class SubAccountTitleJooqRepository implements SubAccountTitleRepository {
 				.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(id.value()))
 				.and(SUB_ACCOUNTTITLES.USER_ID.eq(userId.value()))
 			.fetchOne();
-		if (id.value().equals("0") && record == null) return true; //補助科目を持たない場合、「0：補助科目なし」を持っていると考える
+		
+		//補助科目を持たない場合、「0：補助科目なし」を持っていると考える
+		if (id.value().equals("0") && record == null) return true;
 		return record != null;
 	}
 	

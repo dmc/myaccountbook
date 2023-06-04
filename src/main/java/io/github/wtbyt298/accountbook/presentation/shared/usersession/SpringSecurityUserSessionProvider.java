@@ -16,6 +16,7 @@ public class SpringSecurityUserSessionProvider implements UserSessionProvider {
 	public UserSession getUserSession() {
 		String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserSession userSession = new SpringSecurityUserSession(currentUser);
+		
 		return userSession;
 	}
 	

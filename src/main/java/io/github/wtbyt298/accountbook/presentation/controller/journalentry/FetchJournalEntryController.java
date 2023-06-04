@@ -15,7 +15,7 @@ import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterEn
 import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
 
 /**
- * 単一の仕訳の取得処理のコントローラクラス
+ * 仕訳編集画面のコントローラクラス
  */
 @Controller
 public class FetchJournalEntryController {
@@ -30,10 +30,12 @@ public class FetchJournalEntryController {
 	@GetMapping("/entry/edit/{id}")
 	public String load(@PathVariable String id, Model model) {
 		EntryId entryId = EntryId.fromString(id);
+		model.addAttribute("entryId", entryId.value());
+		
 		JournalEntryDto dto =fetchJournalEntryDataQueryService.fetchOne(entryId);
 		RegisterJournalEntryForm form = mapDtoToParameter(dto);
-		model.addAttribute("entryId", entryId.value());
 		model.addAttribute("entryForm", form);
+		
 		return "/entry/edit";
 	}
 	
@@ -41,14 +43,18 @@ public class FetchJournalEntryController {
 	 * DTOをフォームクラスに詰め替える（仕訳）
 	 */
 	private RegisterJournalEntryForm mapDtoToParameter(JournalEntryDto dto) {
+		//借方仕訳明細
 		List<RegisterEntryDetailForm> debitParams = dto.getEntryDetails().stream()
 			.filter(each -> each.isDebit())
 			.map(each -> mapDtoToParameter(each))
 			.toList();
+		
+		//貸方仕訳明細
 		List<RegisterEntryDetailForm> creditParams = dto.getEntryDetails().stream()
 			.filter(each -> each.isCredit())
 			.map(each -> mapDtoToParameter(each))
 			.toList();
+		
 		return new RegisterJournalEntryForm(
 			dto.getDealDate(), 
 			dto.getDescription(), 
@@ -61,7 +67,9 @@ public class FetchJournalEntryController {
 	 * DTOをフォームクラスに詰め替える（仕訳明細）
 	 */
 	private RegisterEntryDetailForm mapDtoToParameter(EntryDetailDto dto) {
+		//勘定科目IDと補助科目IDを結合し、「101-0」の形式にする
 		final String mergedId =dto.getAccountTitleId() + "-" + dto.getSubAccountTitleId(); 
+		
 		return new RegisterEntryDetailForm(
 			dto.getDetailLoanType().toString(), 
 			mergedId,
