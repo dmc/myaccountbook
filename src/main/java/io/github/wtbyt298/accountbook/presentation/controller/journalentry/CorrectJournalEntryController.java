@@ -37,7 +37,7 @@ public class CorrectJournalEntryController {
 	@PostMapping("/entry/correct")
 	public String correct(@ModelAttribute("entryId") String id, @Valid @ModelAttribute("entryForm") RegisterJournalEntryForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return "/entry/entry";
+			return "/entry/edit";
 		}
 		
 		EntryId entryId = EntryId.fromString(id);
