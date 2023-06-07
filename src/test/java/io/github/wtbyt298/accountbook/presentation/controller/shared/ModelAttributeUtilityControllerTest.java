@@ -68,7 +68,7 @@ class ModelAttributeUtilityControllerTest {
 	
 	@Test
 	@WithMockUser("TEST_USER")
-	@SuppressWarnings("unchecked")
+	
 	void Modelの属性に勘定科目の一覧が追加される() throws Exception {
 		//given:依存オブジェクトは戻り値を返す
 		when(userSessionProvider.getUserSession()).thenReturn(new SpringSecurityUserSessionProvider().getUserSession());
@@ -85,6 +85,7 @@ class ModelAttributeUtilityControllerTest {
 			.andReturn();
 				
 		//then:ビューモデルへの詰め替え処理が正しく実行されている
+		@SuppressWarnings("unchecked")
 		List<MergedAccountTitleViewModel> viewModels = (List<MergedAccountTitleViewModel>) result.getModelAndView().getModel().get("selectBoxElements");
 		assertAll(
 			() -> assertEquals(data.size(), viewModels.size()),

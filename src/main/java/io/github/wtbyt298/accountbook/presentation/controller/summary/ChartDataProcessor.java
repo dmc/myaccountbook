@@ -23,7 +23,9 @@ public class ChartDataProcessor {
 	 */
 	public String[] labels() {
 		//Keyのみを取り出す
-		List<String> keys = data.stream().map(each -> each.getKey()).toList();
+		List<String> keys = data.stream()
+			.map(each -> each.getKey())
+			.toList();
 		
 		return keys.toArray(new String[keys.size()]);
 	}
@@ -33,7 +35,9 @@ public class ChartDataProcessor {
 	 */
 	public BigDecimal[] values() {
 		//Valueのみを取り出す
-		List<BigDecimal> values = data.stream().map(each -> each.getValue()).toList();
+		List<BigDecimal> values = data.stream()
+			.map(each -> each.getValue())
+			.toList();
 		
 		return values.toArray(new BigDecimal[values.size()]);
 	}

@@ -56,7 +56,6 @@ class FetchListOfAccountTitleControllerTest {
 	
 	@Test
 	@WithMockUser
-	@SuppressWarnings("unchecked")
 	void GETリクエストを送信すると勘定科目一覧画面を表示する() throws Exception {
 		//given:リポジトリのメソッドの戻り値の設定
 		List<AccountTitle> accountTitles = new ArrayList<>();
@@ -73,6 +72,7 @@ class FetchListOfAccountTitleControllerTest {
 			.andReturn();
 		
 		//then:ビューモデルへの詰め替えが正しく実行されている
+		@SuppressWarnings("unchecked")
 		List<AccountTitleViewModel> viewModels = (List<AccountTitleViewModel>) result.getModelAndView().getModel().get("accountTitles");
 		assertAll(
 			() -> assertEquals(viewModels.get(0).getId(), accountTitles.get(0).id().value()),
