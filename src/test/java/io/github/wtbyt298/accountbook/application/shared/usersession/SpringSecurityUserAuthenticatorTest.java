@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
-import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
 import io.github.wtbyt298.accountbook.helper.testfactory.UserTestFactory;
 
@@ -31,12 +30,13 @@ class SpringSecurityUserAuthenticatorTest {
 	@Test
 	void ユーザIDに該当するユーザが存在する場合認証が成功する() {
 		//given:ユーザは存在している
-		UserId userId = UserId.valueOf("TEST_USER");
+		//ユーザステータスは有効
 		User user = UserTestFactory.create("TEST_USER");
+		assertTrue(user.isActive());
 		
 		//依存オブジェクトの設定
-		when(userRepository.exists(any())).thenReturn(true);
-		when(userRepository.findById(userId)).thenReturn(user);
+		when(userRepository.exists(user.id())).thenReturn(true);
+		when(userRepository.findById(user.id())).thenReturn(user);
 		
 		//when:ユーザIDを指定してテスト対象メソッドを実行する
 		UserDetails userDetails = userAuthenticator.loadUserByUsername("TEST_USER");
@@ -55,6 +55,24 @@ class SpringSecurityUserAuthenticatorTest {
 		
 		//then:想定した例外が発生している
 		assertEquals("TEST_USERは存在しません。", exception.getMessage());
+	}
+	
+	@Test
+	void ユーザステータスが無効の場合は例外発生() {
+		//given:ユーザステータスは無効
+		User user = UserTestFactory.create("TEST_USER");
+		user.disable();
+		assertFalse(user.isActive());
+		
+		//ユーザは存在している
+		when(userRepository.exists(user.id())).thenReturn(true);
+		when(userRepository.findById(user.id())).thenReturn(user);
+		
+		//when:ユーザIDを指定してテスト対象メソッドを実行する
+		Exception exception = assertThrows(RuntimeException.class, () -> userAuthenticator.loadUserByUsername(user.id().value()));
+		
+		//then:想定した例外が発生している
+		assertEquals("ユーザが退会済みです。", exception.getMessage());
 	}
 
 }

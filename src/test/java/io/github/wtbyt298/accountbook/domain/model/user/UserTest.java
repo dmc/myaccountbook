@@ -47,12 +47,14 @@ class UserTest {
 		//この時点ではユーザステータスは有効になっている
 		User user = UserTestFactory.create();
 		assertEquals(UserStatus.ACTIVE, user.userStatus());
+		assertTrue(user.isActive());
 		
 		//when:ユーザを無効化する
 		user.disable();
 		
 		//then:ユーザステータスが無効になっている
 		assertEquals(UserStatus.INACTIVE, user.userStatus());
+		assertFalse(user.isActive());
 	}
 	
 	@Test

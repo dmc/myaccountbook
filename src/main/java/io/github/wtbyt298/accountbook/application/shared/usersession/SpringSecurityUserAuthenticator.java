@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
 import io.github.wtbyt298.accountbook.domain.model.user.User;
 import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.domain.model.user.UserRepository;
@@ -32,6 +34,9 @@ public class SpringSecurityUserAuthenticator implements UserDetailsService {
 		}
 		
 		User user = userRepository.findById(userId);
+		if (! user.isActive()) {
+			throw new UseCaseException("ユーザが退会済みです。");
+		}
 		
 		return new org.springframework.security.core.userdetails.User(
 			user.id().value(), 

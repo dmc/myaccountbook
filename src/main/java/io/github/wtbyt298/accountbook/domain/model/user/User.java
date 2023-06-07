@@ -49,6 +49,13 @@ public class User {
 	}
 	
 	/**
+	 * ユーザが有効かどうかを判断する
+	 */
+	public boolean isActive() {
+		return userStatus.equals(UserStatus.ACTIVE);
+	}
+	
+	/**
 	 * @return ユーザID
 	 */
 	public UserId id() {
