@@ -2,7 +2,6 @@ package io.github.wtbyt298.accountbook.presentation.controller.journalentry;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -21,9 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
-import io.github.wtbyt298.accountbook.domain.model.user.UserId;
 import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotFoundException;
-import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
 
 @SpringBootTest
 class FetchListOfJournalEntryControllerTest {
@@ -34,7 +31,7 @@ class FetchListOfJournalEntryControllerTest {
 	private FetchJournalEntryDataQueryService fetchJournalEntryDataQueryService;
 	
 	@MockBean
-	private UserSessionProvider userSessionProvider;
+	private UserSession userSession;
 	
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
@@ -51,15 +48,6 @@ class FetchListOfJournalEntryControllerTest {
 			.apply(springSecurity(springSecurityFilterChain))
 			.setViewResolvers(viewResolver)
 			.build();
-        
-		UserSession userSession = new UserSession() {
-			@Override
-			public UserId userId() {
-				return UserId.valueOf("TEST_USER");
-			}
-		};
-		
-		when(userSessionProvider.getUserSession()).thenReturn(userSession);
 	}
 	
 	@Test

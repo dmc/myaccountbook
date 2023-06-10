@@ -26,14 +26,21 @@ public class SpringSecurityUserSessionProvider implements UserSessionProvider {
 	@Getter
 	private class SpringSecurityUserSession implements UserSession {
 		
+		private static final String ANONYMOUS = "anonymousUser";
 		private final String value;
-
+		
 		public SpringSecurityUserSession(String value) {
 			this.value = value;
 		}
 		
+		@Override
 		public UserId userId() {
 			return UserId.valueOf(value);
+		}
+		
+		@Override
+		public boolean isEmpty() {
+			return value.equals(ANONYMOUS);
 		}
 		
 	}

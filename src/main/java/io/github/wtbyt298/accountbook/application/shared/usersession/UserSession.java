@@ -10,4 +10,6 @@ public interface UserSession {
 	
 	UserId userId();
 	
+	boolean isEmpty();
+	
 }
