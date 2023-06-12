@@ -44,7 +44,7 @@ public class SignUpController {
 		}
 		
 		try {
-			CreateUserCommand command = mapParameterToCommand(form);
+			CreateUserCommand command = mapFormToCommand(form);
 			createUserUseCase.execute(command);
 			
 			//ユーザ作成に成功した場合、そのままログインする
@@ -59,7 +59,7 @@ public class SignUpController {
 	/**
 	 * フォームクラスをコマンドオブジェクトに詰め替える
 	 */
-	private CreateUserCommand mapParameterToCommand(RegisterUserForm form) {
+	private CreateUserCommand mapFormToCommand(RegisterUserForm form) {
 		return new CreateUserCommand(form.getId(), form.getPassword(), form.getMailAddress());
 	}
 	

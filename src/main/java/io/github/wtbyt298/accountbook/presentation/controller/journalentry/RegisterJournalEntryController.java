@@ -47,7 +47,7 @@ public class RegisterJournalEntryController {
 			return "/entry/register";
 		}
 		
-		RegisterJournalEntryCommand command = mapParameterToCommand(form);
+		RegisterJournalEntryCommand command = mapFormToCommand(form);
 		UserSession userSession = userSessionProvider.getUserSession();
 		
 		try {
@@ -62,10 +62,10 @@ public class RegisterJournalEntryController {
 	/**
 	 * フォームクラスをコマンドオブジェクトに詰め替える（仕訳）
 	 */
-	private RegisterJournalEntryCommand mapParameterToCommand(RegisterJournalEntryForm form) {
+	private RegisterJournalEntryCommand mapFormToCommand(RegisterJournalEntryForm form) {
 		//仕訳明細データを詰め替える
 		List<RegisterEntryDetailCommand> detailCommands = form.getEntryDetailParams().stream()
-			.map(each -> mapParameterToCommand(each))
+			.map(each -> mapFormToCommand(each))
 			.toList();
 		
 		return new RegisterJournalEntryCommand(
@@ -78,7 +78,7 @@ public class RegisterJournalEntryController {
 	/**
 	 * フォームクラスをコマンドオブジェクトに詰め替える（仕訳明細）
 	 */
-	private RegisterEntryDetailCommand mapParameterToCommand(RegisterEntryDetailForm form) {
+	private RegisterEntryDetailCommand mapFormToCommand(RegisterEntryDetailForm form) {
 		return new RegisterEntryDetailCommand(
 			form.getAccountTitleId(),    
 			form.getSubAccountTitleId(), 
