@@ -70,7 +70,7 @@ public class SignUpController {
 	private void autoLogin(String userId, String password, HttpServletRequest request) {
 		UserSession userSession = userSessionProvider.getUserSession();
 		//既にユーザがログイン済みの場合は、一旦ログアウトさせる
-		if (! userSession.isEmpty()) {
+		if (userSession.isAuthenticated()) {
 			SecurityContextHolder.clearContext();
 		}
 		

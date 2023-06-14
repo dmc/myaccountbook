@@ -22,7 +22,7 @@ public class AuthenticateUserController {
 	public String load() {
 		//既にユーザがログイン済みの場合は、ホーム画面を表示する
 		UserSession userSession = userSessionProvider.getUserSession();
-		if (! userSession.isEmpty()) {
+		if (userSession.isAuthenticated()) {
 			return "redirect:/user/home";
 		}
 		
