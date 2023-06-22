@@ -59,7 +59,7 @@ class FetchJournalEntryControllerTest {
 		when(fetchJournalEntryDataQueryService.fetchOne(entryId)).thenReturn(dto);
 		
 		//when:
-		mockMvc.perform(get("/entry/entry/TEST_ID"))
+		mockMvc.perform(get("/entry/edit/TEST_ID"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("entryForm"))
 			.andExpect(model().attribute("entryId", entryId.value()))

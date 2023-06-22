@@ -58,7 +58,7 @@ class AccountTitleDetailControllerTest {
 		mockMvc.perform(get("/accounttitle/detail/101"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("empty"))
-			.andExpect(view().name("/accounttitle/edit"));
+			.andExpect(view().name("/accounttitle/detail"));
 	}
 	
 	@Test

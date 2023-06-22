@@ -44,7 +44,8 @@ class ShowProfitAndLossStatementControllerTest {
 		//when:
 		mockMvc.perform(get("/summary/pl/2023-05"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("financialStatements"))
+			.andExpect(model().attributeExists("expenses"))
+			.andExpect(model().attributeExists("revenues"))
 			.andExpect(model().attributeExists("summary"))
 			.andExpect(view().name("/summary/pl"));
 	}

@@ -16,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import io.github.wtbyt298.accountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
 import io.github.wtbyt298.accountbook.application.shared.exception.UseCaseException;
@@ -24,6 +25,7 @@ import io.github.wtbyt298.accountbook.infrastructure.shared.exception.RecordNotF
 import io.github.wtbyt298.accountbook.presentation.controller.journalentry.FetchJournalEntryController;
 
 @SpringBootTest
+@Transactional
 class ExceptionHandlerUtilityControllerTest {
 
 	private MockMvc mockMvc;
@@ -47,6 +49,8 @@ class ExceptionHandlerUtilityControllerTest {
 			.setViewResolvers(viewResolver)
 			.setControllerAdvice(new ExceptionHandlerUtilityController())
 			.build();
+		
+		
 	}
 	
 	@Test
@@ -57,7 +61,7 @@ class ExceptionHandlerUtilityControllerTest {
 		when(fetchJournalEntryDataQueryService.fetchOne(any())).thenThrow(exception);
 		
 		//when:
-		mockMvc.perform(get("/entry/entry/001"))
+		mockMvc.perform(get("/entry/edit/001"))
 			.andExpect(status().isBadRequest())
 			.andExpect(model().attribute("status", 400))
 			.andExpect(model().attribute("error", "BAD_REQUEST"))
@@ -73,7 +77,7 @@ class ExceptionHandlerUtilityControllerTest {
 		when(fetchJournalEntryDataQueryService.fetchOne(any())).thenThrow(exception);
 		
 		//when:
-		mockMvc.perform(get("/entry/entry/001"))
+		mockMvc.perform(get("/entry/edit/001"))
 			.andExpect(status().isBadRequest())
 			.andExpect(model().attribute("status", 400))
 			.andExpect(model().attribute("error", "BAD_REQUEST"))
@@ -89,7 +93,7 @@ class ExceptionHandlerUtilityControllerTest {
 		when(fetchJournalEntryDataQueryService.fetchOne(any())).thenThrow(exception);
 		
 		//when:
-		mockMvc.perform(get("/entry/entry/001"))
+		mockMvc.perform(get("/entry/edit/001"))
 			.andExpect(status().isNotFound())
 			.andExpect(model().attribute("status", 404))
 			.andExpect(model().attribute("error", "NOT_FOUND"))
@@ -105,7 +109,7 @@ class ExceptionHandlerUtilityControllerTest {
 		when(fetchJournalEntryDataQueryService.fetchOne(any())).thenThrow(exception);
 		
 		//when:
-		mockMvc.perform(get("/entry/entry/001"))
+		mockMvc.perform(get("/entry/edit/001"))
 			.andExpect(status().isInternalServerError())
 			.andExpect(model().attribute("status", 500))
 			.andExpect(model().attribute("error", "INTERNAL_SERVER_ERROR"))

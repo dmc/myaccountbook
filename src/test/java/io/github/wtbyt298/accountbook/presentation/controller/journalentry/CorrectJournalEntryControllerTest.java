@@ -81,7 +81,7 @@ class CorrectJournalEntryControllerTest {
 			.andExpect(model().hasErrors())
 			.andExpect(model().attribute("entryForm", form))
 			.andExpect(status().isOk())
-			.andExpect(view().name("/entry/entry"));
+			.andExpect(view().name("/entry/edit"));
 		
 		//then:仕訳訂正処理は実行されない
 		verify(correctJournalEntryUseCase, times(0)).execute(any(), any(), any());
@@ -103,7 +103,7 @@ class CorrectJournalEntryControllerTest {
 			.andExpect(model().hasNoErrors())
 			.andExpect(model().attribute("entryForm", form))
 			.andExpect(model().attribute("errorMessage", exception.getMessage()))
-			.andExpect(view().name("/entry/entry"));
+			.andExpect(view().name("/entry/edit"));
 	}
 	
 	/**
