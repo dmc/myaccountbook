@@ -39,7 +39,7 @@ class SubAccountTitlesTest {
 		
 		//then:想定した例外が発生している
 		assertEquals("これ以上補助科目を追加できません。", exception.getMessage());
-	}
+ 	}
 	
 	@Test
 	void 既に同名の補助科目が存在する場合は追加できない() {

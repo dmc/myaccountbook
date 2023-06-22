@@ -48,7 +48,7 @@ public class SubAccountTitles {
 	 * 補助科目を追加可能かどうかを判断する
 	 */
 	private boolean canAdd() {
-		return elements.size() <= MAX_MEMBERS_COUNT;
+		return elements.size() < MAX_MEMBERS_COUNT;
 	}
 	
 	/**
