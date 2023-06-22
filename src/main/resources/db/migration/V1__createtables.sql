@@ -50,11 +50,22 @@ CREATE TABLE entry_details (
 
 #月次残高テーブル
 CREATE TABLE monthly_balances (
-	accounttitle_id varchar(3),
-    sub_accounttitle_id varchar(1),
-    fiscal_yearmonth varchar(7),
-    user_id varchar(32),
-    balance int,
+	accounttitle_id varchar(3) NOT NULL,
+    sub_accounttitle_id varchar(1) NOT NULL,
+    fiscal_yearmonth varchar(7) NOT NULL,
+    user_id varchar(32) NOT NULL,
+    balance int NOT NULL,
+    PRIMARY KEY (accounttitle_id, sub_accounttitle_id, fiscal_yearmonth, user_id),
     FOREIGN KEY (accounttitle_id) REFERENCES accounttitles (accounttitle_id),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
+
+#予算テーブル
+CREATE TABLE budgets (
+	accounttitle_id varchar(3) NOT NULL,
+    user_id varchar(32) NOT NULL,
+    budget_amount int NOT NULL,
+    PRIMARY KEY (accounttitle_id, user_id),
+    FOREIGN KEY (accounttitle_id) REFERENCES accounttitles (accounttitle_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+)
