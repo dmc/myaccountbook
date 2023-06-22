@@ -30,7 +30,7 @@ import io.github.wtbyt298.accountbook.domain.shared.types.SummaryType;
  * 損益計算書のデータを取得するクラス
  */
 @Component
-public class ProfitAndLossStatementJooqQueryService implements ProfitAndLossStatementQueryService {
+class ProfitAndLossStatementJooqQueryService implements ProfitAndLossStatementQueryService {
 
 	@Autowired
 	private DSLContext jooq;

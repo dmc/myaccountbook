@@ -30,7 +30,7 @@ import io.github.wtbyt298.accountbook.domain.shared.types.SummaryType;
  * 貸借対照表のデータを取得するクラス
  */
 @Component
-public class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
+class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 	
 	@Autowired
 	private DSLContext jooq;
