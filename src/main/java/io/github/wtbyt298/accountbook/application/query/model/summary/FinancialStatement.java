@@ -2,7 +2,6 @@ package io.github.wtbyt298.accountbook.application.query.model.summary;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleId;
 
@@ -23,6 +22,16 @@ public class FinancialStatement {
 	public int calculateTotalAmount(AccountingType type) {
 		return breakDowns.stream()
 			.filter(each -> each.getAccountingType().equals(type))
+			.mapToInt(each ->  each.getBalance())
+			.sum();
+	}	
+	
+	/**
+	 * 勘定科目ごとの合計金額を計算する
+	 */
+	public int calculateTotalAmount(AccountTitleId accountTitleId) {
+		return breakDowns.stream()
+			.filter(each -> each.getAccountTitleId().equals(accountTitleId))
 			.mapToInt(each ->  each.getBalance())
 			.sum();
 	}	

@@ -25,7 +25,7 @@ public class JournalEntrySpecification {
 	public boolean isSatisfied(JournalEntry entry) {
 		List<AccountTitle> debitAccountTitles = fetchDebitAccountTitles(entry.entryDetails());
 		List<AccountTitle> creditAccountTitles = fetchCreditAccountTitles(entry.entryDetails());
-		
+
 		return debitAccountTitles.stream()
 			.allMatch(each -> ok(each, creditAccountTitles));
 	}

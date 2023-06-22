@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import io.github.wtbyt298.accountbook.application.query.service.summary.ProfitAndLossStatementQueryService;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
@@ -67,7 +66,7 @@ public class HomeController {
 		model.addAttribute("revenueLavels", revenueChart.labels());
 		model.addAttribute("revenueData", revenueChart.values());
 		model.addAttribute("totalOfRevenue", AmountPresentationFormatter.yen(revenueChart.total()));
-		
+
 		model.addAttribute("selectedYearMonth", yearMonth.toString());
 		
 		return "/user/home";

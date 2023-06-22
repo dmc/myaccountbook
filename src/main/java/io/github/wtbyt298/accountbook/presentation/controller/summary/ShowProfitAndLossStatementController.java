@@ -12,10 +12,13 @@ import io.github.wtbyt298.accountbook.application.query.model.summary.FinancialS
 import io.github.wtbyt298.accountbook.application.query.model.summary.MonthlyBalanceDto;
 import io.github.wtbyt298.accountbook.application.query.service.summary.ProfitAndLossStatementQueryService;
 import io.github.wtbyt298.accountbook.application.shared.usersession.UserSession;
+import io.github.wtbyt298.accountbook.application.usecase.budget.CalculateRatioOfBudgetUseCase;
+import io.github.wtbyt298.accountbook.application.usecase.budget.RatioOfBudgetDto;
 import io.github.wtbyt298.accountbook.domain.model.accountingelement.AccountingType;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitle;
 import io.github.wtbyt298.accountbook.domain.model.accounttitle.AccountTitleRepository;
 import io.github.wtbyt298.accountbook.presentation.shared.usersession.UserSessionProvider;
+import io.github.wtbyt298.accountbook.presentation.viewmodels.budget.RatioOfBudgetViewModel;
 import io.github.wtbyt298.accountbook.presentation.viewmodels.summary.FinancialStatementViewModel;
 import io.github.wtbyt298.accountbook.presentation.viewmodels.summary.SummaryOfProfitAndLossStatementViewModel;
 
@@ -24,6 +27,9 @@ import io.github.wtbyt298.accountbook.presentation.viewmodels.summary.SummaryOfP
  */
 @Controller
 public class ShowProfitAndLossStatementController {
+	
+	@Autowired
+	private CalculateRatioOfBudgetUseCase calculateRatioOfBudgetUseCase;
 
 	@Autowired
 	private ProfitAndLossStatementQueryService profitAndLossStatementQueryService; 
@@ -39,14 +45,24 @@ public class ShowProfitAndLossStatementController {
 	 */
 	@GetMapping("/summary/pl/{selectedYearMonth}")
 	public String load(@PathVariable String selectedYearMonth, Model model) {
+		UserSession userSession = userSessionProvider.getUserSession();
+		
 		//勘定科目ごとの合計金額を保持するビューモデルを取得する
-		FinancialStatement pl = fetchProfitAndLossStatement(selectedYearMonth);
+		FinancialStatement pl = fetchProfitAndLossStatement(selectedYearMonth, userSession);
 		List<FinancialStatementViewModel> viewModels = mapDtoToViewModel(pl);
-		model.addAttribute("financialStatements", viewModels);
+		model.addAttribute("expenses", filterByAccountingType(viewModels, AccountingType.EXPENSES));
+		model.addAttribute("revenues", filterByAccountingType(viewModels, AccountingType.REVENUE));
 		
 		//会計区分ごとの合計金額を保持するビューモデルを取得する
 		SummaryOfProfitAndLossStatementViewModel summaryViewModel = createSummary(pl);
 		model.addAttribute("summary", summaryViewModel);
+		
+		//予算と予算比を保持するビューモデルを取得する
+		List<RatioOfBudgetDto> data = calculateRatioOfBudgetUseCase.execute(pl, userSession);
+		List<RatioOfBudgetViewModel> budgetViewModels = data.stream()
+			.map(RatioOfBudgetViewModel::new)
+			.toList();
+		model.addAttribute("budgets", budgetViewModels);
 		
 		return "/summary/pl";
 	}
@@ -54,10 +70,8 @@ public class ShowProfitAndLossStatementController {
 	/**
 	 * 損益計算書を取得する
 	 */
-	private FinancialStatement fetchProfitAndLossStatement(String selectedYearMonth) {
+	private FinancialStatement fetchProfitAndLossStatement(String selectedYearMonth, UserSession userSession) {
 		YearMonth yearMonth = YearMonth.parse(selectedYearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
-		UserSession userSession = userSessionProvider.getUserSession();
-		
 		return profitAndLossStatementQueryService.aggregateIncludingSubAccountTitle(yearMonth, userSession.userId());
 	}
 	
@@ -91,6 +105,15 @@ public class ShowProfitAndLossStatementController {
 			entity.accountingType(), 
 			dto
 		);
+	}
+	
+	/**
+	 * ビューモデルを会計区分で絞り込んだリストを返す
+	 */
+	private List<FinancialStatementViewModel> filterByAccountingType(List<FinancialStatementViewModel> viewModels, AccountingType type) {
+		return viewModels.stream()
+			.filter(each -> each.getAccountingType().equals(type))
+			.toList();
 	}
 	
 }

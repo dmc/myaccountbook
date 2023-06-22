@@ -10,7 +10,7 @@ import io.github.wtbyt298.accountbook.presentation.forms.journalentry.RegisterJo
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * 仕訳登録画面のコントローラクラス
+ * 仕訳明細フォームの追加・削除処理のコントローラクラス
  */
 @Controller
 public class EditRegisterJournalEntryFormController {
