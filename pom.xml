@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.github.wtbyt298</groupId>
-	<artifactId>AccountBookApplication</artifactId>
+	<artifactId>myaccountbook</artifactId>
 	<version>0.0.1</version>
 	<name>My AccountBook</name>
 	<description>簿記の考え方を参考にした自作の家計管理アプリケーションです</description>
