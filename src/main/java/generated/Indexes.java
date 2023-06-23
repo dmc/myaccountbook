@@ -4,6 +4,7 @@
 package generated;
 
 
+import generated.tables.Budgets;
 import generated.tables.EntryDetails;
 import generated.tables.JournalEntries;
 import generated.tables.MonthlyBalances;
@@ -26,9 +27,9 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index ENTRY_DETAILS_ACCOUNTTITLE_ID = Internal.createIndex(DSL.name("accounttitle_id"), EntryDetails.ENTRY_DETAILS, new OrderField[] { EntryDetails.ENTRY_DETAILS.ACCOUNTTITLE_ID }, false);
-    public static final Index MONTHLY_BALANCES_ACCOUNTTITLE_ID = Internal.createIndex(DSL.name("accounttitle_id"), MonthlyBalances.MONTHLY_BALANCES, new OrderField[] { MonthlyBalances.MONTHLY_BALANCES.ACCOUNTTITLE_ID }, false);
     public static final Index SUB_ACCOUNTTITLES_ACCOUNTTITLE_ID = Internal.createIndex(DSL.name("accounttitle_id"), SubAccounttitles.SUB_ACCOUNTTITLES, new OrderField[] { SubAccounttitles.SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID }, false);
     public static final Index ENTRY_DETAILS_ENTRY_ID = Internal.createIndex(DSL.name("entry_id"), EntryDetails.ENTRY_DETAILS, new OrderField[] { EntryDetails.ENTRY_DETAILS.ENTRY_ID }, false);
+    public static final Index BUDGETS_USER_ID = Internal.createIndex(DSL.name("user_id"), Budgets.BUDGETS, new OrderField[] { Budgets.BUDGETS.USER_ID }, false);
     public static final Index JOURNAL_ENTRIES_USER_ID = Internal.createIndex(DSL.name("user_id"), JournalEntries.JOURNAL_ENTRIES, new OrderField[] { JournalEntries.JOURNAL_ENTRIES.USER_ID }, false);
     public static final Index MONTHLY_BALANCES_USER_ID = Internal.createIndex(DSL.name("user_id"), MonthlyBalances.MONTHLY_BALANCES, new OrderField[] { MonthlyBalances.MONTHLY_BALANCES.USER_ID }, false);
     public static final Index SUB_ACCOUNTTITLES_USER_ID = Internal.createIndex(DSL.name("user_id"), SubAccounttitles.SUB_ACCOUNTTITLES, new OrderField[] { SubAccounttitles.SUB_ACCOUNTTITLES.USER_ID }, false);

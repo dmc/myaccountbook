@@ -5,12 +5,14 @@ package generated;
 
 
 import generated.tables.Accounttitles;
+import generated.tables.Budgets;
 import generated.tables.EntryDetails;
 import generated.tables.JournalEntries;
 import generated.tables.MonthlyBalances;
 import generated.tables.SubAccounttitles;
 import generated.tables.Users;
 import generated.tables.records.AccounttitlesRecord;
+import generated.tables.records.BudgetsRecord;
 import generated.tables.records.EntryDetailsRecord;
 import generated.tables.records.JournalEntriesRecord;
 import generated.tables.records.MonthlyBalancesRecord;
@@ -36,7 +38,9 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<AccounttitlesRecord> KEY_ACCOUNTTITLES_PRIMARY = Internal.createUniqueKey(Accounttitles.ACCOUNTTITLES, DSL.name("KEY_accounttitles_PRIMARY"), new TableField[] { Accounttitles.ACCOUNTTITLES.ACCOUNTTITLE_ID }, true);
+    public static final UniqueKey<BudgetsRecord> KEY_BUDGETS_PRIMARY = Internal.createUniqueKey(Budgets.BUDGETS, DSL.name("KEY_budgets_PRIMARY"), new TableField[] { Budgets.BUDGETS.ACCOUNTTITLE_ID, Budgets.BUDGETS.USER_ID }, true);
     public static final UniqueKey<JournalEntriesRecord> KEY_JOURNAL_ENTRIES_PRIMARY = Internal.createUniqueKey(JournalEntries.JOURNAL_ENTRIES, DSL.name("KEY_journal_entries_PRIMARY"), new TableField[] { JournalEntries.JOURNAL_ENTRIES.ENTRY_ID }, true);
+    public static final UniqueKey<MonthlyBalancesRecord> KEY_MONTHLY_BALANCES_PRIMARY = Internal.createUniqueKey(MonthlyBalances.MONTHLY_BALANCES, DSL.name("KEY_monthly_balances_PRIMARY"), new TableField[] { MonthlyBalances.MONTHLY_BALANCES.ACCOUNTTITLE_ID, MonthlyBalances.MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID, MonthlyBalances.MONTHLY_BALANCES.USER_ID, MonthlyBalances.MONTHLY_BALANCES.FISCAL_YEARMONTH }, true);
     public static final UniqueKey<SubAccounttitlesRecord> KEY_SUB_ACCOUNTTITLES_PRIMARY = Internal.createUniqueKey(SubAccounttitles.SUB_ACCOUNTTITLES, DSL.name("KEY_sub_accounttitles_PRIMARY"), new TableField[] { SubAccounttitles.SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID, SubAccounttitles.SUB_ACCOUNTTITLES.ACCOUNTTITLE_ID, SubAccounttitles.SUB_ACCOUNTTITLES.USER_ID }, true);
     public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_PRIMARY"), new TableField[] { Users.USERS.USER_ID }, true);
 
@@ -44,6 +48,8 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<BudgetsRecord, AccounttitlesRecord> BUDGETS_IBFK_1 = Internal.createForeignKey(Budgets.BUDGETS, DSL.name("budgets_ibfk_1"), new TableField[] { Budgets.BUDGETS.ACCOUNTTITLE_ID }, Keys.KEY_ACCOUNTTITLES_PRIMARY, new TableField[] { Accounttitles.ACCOUNTTITLES.ACCOUNTTITLE_ID }, true);
+    public static final ForeignKey<BudgetsRecord, UsersRecord> BUDGETS_IBFK_2 = Internal.createForeignKey(Budgets.BUDGETS, DSL.name("budgets_ibfk_2"), new TableField[] { Budgets.BUDGETS.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.USER_ID }, true);
     public static final ForeignKey<EntryDetailsRecord, JournalEntriesRecord> ENTRY_DETAILS_IBFK_1 = Internal.createForeignKey(EntryDetails.ENTRY_DETAILS, DSL.name("entry_details_ibfk_1"), new TableField[] { EntryDetails.ENTRY_DETAILS.ENTRY_ID }, Keys.KEY_JOURNAL_ENTRIES_PRIMARY, new TableField[] { JournalEntries.JOURNAL_ENTRIES.ENTRY_ID }, true);
     public static final ForeignKey<EntryDetailsRecord, AccounttitlesRecord> ENTRY_DETAILS_IBFK_2 = Internal.createForeignKey(EntryDetails.ENTRY_DETAILS, DSL.name("entry_details_ibfk_2"), new TableField[] { EntryDetails.ENTRY_DETAILS.ACCOUNTTITLE_ID }, Keys.KEY_ACCOUNTTITLES_PRIMARY, new TableField[] { Accounttitles.ACCOUNTTITLES.ACCOUNTTITLE_ID }, true);
     public static final ForeignKey<JournalEntriesRecord, UsersRecord> JOURNAL_ENTRIES_IBFK_1 = Internal.createForeignKey(JournalEntries.JOURNAL_ENTRIES, DSL.name("journal_entries_ibfk_1"), new TableField[] { JournalEntries.JOURNAL_ENTRIES.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.USER_ID }, true);

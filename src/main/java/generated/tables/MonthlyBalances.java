@@ -26,6 +26,7 @@ import org.jooq.SelectField;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -55,27 +56,27 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
     /**
      * The column <code>accountbook.monthly_balances.accounttitle_id</code>.
      */
-    public final TableField<MonthlyBalancesRecord, String> ACCOUNTTITLE_ID = createField(DSL.name("accounttitle_id"), SQLDataType.VARCHAR(3), this, "");
+    public final TableField<MonthlyBalancesRecord, String> ACCOUNTTITLE_ID = createField(DSL.name("accounttitle_id"), SQLDataType.VARCHAR(3).nullable(false), this, "");
 
     /**
      * The column <code>accountbook.monthly_balances.sub_accounttitle_id</code>.
      */
-    public final TableField<MonthlyBalancesRecord, String> SUB_ACCOUNTTITLE_ID = createField(DSL.name("sub_accounttitle_id"), SQLDataType.VARCHAR(1), this, "");
+    public final TableField<MonthlyBalancesRecord, String> SUB_ACCOUNTTITLE_ID = createField(DSL.name("sub_accounttitle_id"), SQLDataType.VARCHAR(1).nullable(false), this, "");
 
     /**
      * The column <code>accountbook.monthly_balances.fiscal_yearmonth</code>.
      */
-    public final TableField<MonthlyBalancesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(7), this, "");
+    public final TableField<MonthlyBalancesRecord, String> FISCAL_YEARMONTH = createField(DSL.name("fiscal_yearmonth"), SQLDataType.VARCHAR(7).nullable(false), this, "");
 
     /**
      * The column <code>accountbook.monthly_balances.user_id</code>.
      */
-    public final TableField<MonthlyBalancesRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(32), this, "");
+    public final TableField<MonthlyBalancesRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
      * The column <code>accountbook.monthly_balances.balance</code>.
      */
-    public final TableField<MonthlyBalancesRecord, Integer> BALANCE = createField(DSL.name("balance"), SQLDataType.INTEGER, this, "");
+    public final TableField<MonthlyBalancesRecord, Integer> BALANCE = createField(DSL.name("balance"), SQLDataType.INTEGER.nullable(false), this, "");
 
     private MonthlyBalances(Name alias, Table<MonthlyBalancesRecord> aliased) {
         this(alias, aliased, null);
@@ -119,7 +120,12 @@ public class MonthlyBalances extends TableImpl<MonthlyBalancesRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.MONTHLY_BALANCES_ACCOUNTTITLE_ID, Indexes.MONTHLY_BALANCES_USER_ID);
+        return Arrays.asList(Indexes.MONTHLY_BALANCES_USER_ID);
+    }
+
+    @Override
+    public UniqueKey<MonthlyBalancesRecord> getPrimaryKey() {
+        return Keys.KEY_MONTHLY_BALANCES_PRIMARY;
     }
 
     @Override

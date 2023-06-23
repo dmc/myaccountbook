@@ -5,6 +5,7 @@ package generated;
 
 
 import generated.tables.Accounttitles;
+import generated.tables.Budgets;
 import generated.tables.EntryDetails;
 import generated.tables.JournalEntries;
 import generated.tables.MonthlyBalances;
@@ -36,6 +37,11 @@ public class Accountbook extends SchemaImpl {
      * The table <code>accountbook.accounttitles</code>.
      */
     public final Accounttitles ACCOUNTTITLES = Accounttitles.ACCOUNTTITLES;
+
+    /**
+     * The table <code>accountbook.budgets</code>.
+     */
+    public final Budgets BUDGETS = Budgets.BUDGETS;
 
     /**
      * The table <code>accountbook.entry_details</code>.
@@ -79,6 +85,7 @@ public class Accountbook extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Accounttitles.ACCOUNTTITLES,
+            Budgets.BUDGETS,
             EntryDetails.ENTRY_DETAILS,
             JournalEntries.JOURNAL_ENTRIES,
             MonthlyBalances.MONTHLY_BALANCES,
