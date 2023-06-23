@@ -11,8 +11,8 @@
 	<groupId>io.github.wtbyt298</groupId>
 	<artifactId>AccountBookApplication</artifactId>
 	<version>0.0.1</version>
-	<name>AccountBookApplication</name>
-	<description>家計管理アプリケーション</description>
+	<name>My AccountBook</name>
+	<description>簿記の考え方を参考にした自作の家計管理アプリケーションです</description>
 	<properties>
 		<java.version>19</java.version>
 	</properties>
