@@ -110,7 +110,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'資産計：' + summary.totalOfAssetsFormatted()}" th:classappend="${summary.totalOfAssets} < 0 ? 'text-danger'"></h6>
+      			<h4 class="text-end" th:text="${'資産計：' + summary.totalOfAssetsFormatted()}" th:classappend="${summary.totalOfAssets} < 0 ? 'text-danger'"></h4>
       		</div>
       		<div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 	        	<h5>負債の部</h5>
@@ -144,7 +144,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'負債計：' + summary.totalOfLiabilitiesFormatted()}" th:classappend="${summary.totalOfLiabilities} < 0 ? 'text-danger'"></h6>
+      			<h4 class="text-end" th:text="${'負債計：' + summary.totalOfLiabilitiesFormatted()}" th:classappend="${summary.totalOfLiabilities} < 0 ? 'text-danger'"></h4>
       		</div>	        
 			<div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 	        	<h5>純資産の部</h5>
@@ -190,7 +190,7 @@
       					</tr>
       				</tbody>
       			</table>
-      			<h6 class="text-end" th:text="${'純資産計：' + summary.totalOfEquityFormatted()}" th:classappend="${summary.actualTotalOfEquity} < 0 ? 'text-danger'"></h6>
+      			<h4 class="text-end" th:text="${'純資産計：' + summary.totalOfEquityFormatted()}" th:classappend="${summary.actualTotalOfEquity} < 0 ? 'text-danger'"></h4>
       		</div>	        
 		</main>
 	</div>
