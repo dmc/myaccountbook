@@ -6,14 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import wtbyt298.myaccountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import wtbyt298.myaccountbook.application.query.model.journalentry.EntryDetailDto;
 import wtbyt298.myaccountbook.application.query.model.journalentry.JournalEntryDto;
+import wtbyt298.myaccountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import wtbyt298.myaccountbook.application.query.service.journalentry.FetchJournalEntryDataQueryService;
+import wtbyt298.myaccountbook.application.shared.usersession.UserSession;
 import wtbyt298.myaccountbook.domain.model.journalentry.EntryId;
 import wtbyt298.myaccountbook.presentation.forms.journalentry.RegisterEntryDetailForm;
 import wtbyt298.myaccountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
+import wtbyt298.myaccountbook.presentation.shared.usersession.UserSessionProvider;
+import wtbyt298.myaccountbook.presentation.viewmodels.accounttitle.MergedAccountTitleViewModel;
 
 /**
  * 仕訳編集画面のコントローラクラス
@@ -23,6 +29,12 @@ public class FetchJournalEntryController {
 
 	@Autowired
 	private FetchJournalEntryDataQueryService fetchJournalEntryDataQueryService;
+	
+	@Autowired
+	private FetchListOfAccountTitleAndSubAccountTitleQueryService fetchListQueryService;
+	
+	@Autowired
+	private UserSessionProvider userSessionProvider;
 	
 	/**
 	 * 仕訳編集画面を表示する
@@ -76,6 +88,26 @@ public class FetchJournalEntryController {
 			mergedId,
 			dto.getAmount()
 		);
+	}
+	
+	/**
+	 * 勘定科目のセレクトボックスに表示するデータを取得する
+	 */
+	@ModelAttribute("selectBoxElements")
+	public List<MergedAccountTitleViewModel> selectBoxElements() {
+		UserSession userSession = userSessionProvider.getUserSession();
+		List<AccountTitleAndSubAccountTitleDto> data = fetchListQueryService.fetchAll(userSession.userId());
+		
+		return mapDtoToViewModel(data);
+	}
+	
+	/**
+	 * DTOをビューモデルに詰め替える
+	 */
+	private List<MergedAccountTitleViewModel> mapDtoToViewModel(List<AccountTitleAndSubAccountTitleDto> data) {
+		return data.stream()
+			.map(each -> new MergedAccountTitleViewModel(each))
+			.toList();
 	}
 	
 }

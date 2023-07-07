@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import wtbyt298.myaccountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
+import wtbyt298.myaccountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import wtbyt298.myaccountbook.application.shared.usersession.UserSession;
 import wtbyt298.myaccountbook.application.usecase.journalentry.RegisterEntryDetailCommand;
 import wtbyt298.myaccountbook.application.usecase.journalentry.RegisterJournalEntryCommand;
@@ -16,6 +18,7 @@ import wtbyt298.myaccountbook.domain.shared.exception.CannotCreateJournalEntryEx
 import wtbyt298.myaccountbook.presentation.forms.journalentry.RegisterEntryDetailForm;
 import wtbyt298.myaccountbook.presentation.forms.journalentry.RegisterJournalEntryForm;
 import wtbyt298.myaccountbook.presentation.shared.usersession.UserSessionProvider;
+import wtbyt298.myaccountbook.presentation.viewmodels.accounttitle.MergedAccountTitleViewModel;
 
 /**
  * 仕訳登録処理のコントローラクラス
@@ -25,6 +28,9 @@ public class RegisterJournalEntryController {
 	
 	@Autowired
 	private RegisterJournalEntryUseCase registerJournalEntryUseCase;
+	
+	@Autowired
+	private FetchListOfAccountTitleAndSubAccountTitleQueryService fetchListQueryService;
 	
 	@Autowired
 	private UserSessionProvider userSessionProvider;
@@ -86,6 +92,26 @@ public class RegisterJournalEntryController {
 			form.getDetailLoanType(),    
 			form.getAmount()
 		);
+	}
+	
+	/**
+	 * 勘定科目のセレクトボックスに表示するデータを取得する
+	 */
+	@ModelAttribute("selectBoxElements")
+	public List<MergedAccountTitleViewModel> selectBoxElements() {
+		UserSession userSession = userSessionProvider.getUserSession();
+		List<AccountTitleAndSubAccountTitleDto> data = fetchListQueryService.fetchAll(userSession.userId());
+		
+		return mapDtoToViewModel(data);
+	}
+	
+	/**
+	 * DTOをビューモデルに詰め替える
+	 */
+	private List<MergedAccountTitleViewModel> mapDtoToViewModel(List<AccountTitleAndSubAccountTitleDto> data) {
+		return data.stream()
+			.map(each -> new MergedAccountTitleViewModel(each))
+			.toList();
 	}
 	
 }
