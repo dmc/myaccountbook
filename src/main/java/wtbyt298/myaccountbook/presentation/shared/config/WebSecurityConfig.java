@@ -33,6 +33,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/").permitAll()
 				.requestMatchers(HttpMethod.GET, "/user/signup").permitAll()
 				.requestMatchers(HttpMethod.POST, "/signup").permitAll()
+				.requestMatchers(HttpMethod.POST, "/triallogin").permitAll()
 				.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 				.anyRequest().authenticated()
 			//CSRF対策

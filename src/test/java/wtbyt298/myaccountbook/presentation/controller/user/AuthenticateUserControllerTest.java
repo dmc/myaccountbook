@@ -1,7 +1,9 @@
 package wtbyt298.myaccountbook.presentation.controller.user;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +14,6 @@ import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
-import wtbyt298.myaccountbook.presentation.controller.user.AuthenticateUserController;
 
 @SpringBootTest
 class AuthenticateUserControllerTest {
@@ -43,6 +43,14 @@ class AuthenticateUserControllerTest {
 		mockMvc.perform(get("/user/login"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("/user/login"));
+	}
+	
+	@Test
+	void trialloginをパスに指定してPOSTリクエストを送信するとゲストユーザとしてログインを実行しホーム画面に遷移する() throws Exception {
+		//when:
+		mockMvc.perform(post("/triallogin").with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/user/home"));
 	}
 
 }

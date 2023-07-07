@@ -3,7 +3,10 @@ package wtbyt298.myaccountbook.presentation.controller.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import wtbyt298.myaccountbook.application.shared.usersession.UserSession;
 import wtbyt298.myaccountbook.presentation.shared.usersession.UserSessionProvider;
 
@@ -28,6 +31,23 @@ public class AuthenticateUserController {
 		}
 		
 		return "/user/login";
+	}
+	
+	/**
+	 * ゲストアカウントでログインする
+	 */
+	@PostMapping("/triallogin")
+	public String trialLogin(HttpServletRequest request) {
+		final String userId = "Guest_User";
+		final String password = "Guest0123";
+		
+		try {
+			request.login(userId, password);
+		} catch (ServletException exception) {
+			exception.printStackTrace();
+		}
+		
+		return "redirect:/user/home";
 	}
 	
 }
