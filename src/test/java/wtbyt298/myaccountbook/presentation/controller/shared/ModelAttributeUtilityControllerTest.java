@@ -68,33 +68,33 @@ class ModelAttributeUtilityControllerTest {
 			.andExpect(model().attribute("loginUser", "TEST_USER"));
 	}
 	
-//	@Test
-//	@WithMockUser("TEST_USER")
-//	void Modelの属性に勘定科目の一覧が追加される() throws Exception {
-//		//given:依存オブジェクトは戻り値を返す
-//		when(userSessionProvider.getUserSession()).thenReturn(new SpringSecurityUserSessionProvider().getUserSession());
-//		
-//		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
-//		data.add(new AccountTitleAndSubAccountTitleDto("101", "現金", "0", ""));
-//		data.add(new AccountTitleAndSubAccountTitleDto("401", "食費", "0", "その他"));
-//		
-//		when(fetchListQueryService.fetchAll(any())).thenReturn(data);
-//		
-//		//when:
-//		MvcResult result = mockMvc.perform(get("/user/signup"))
-//			.andExpect(model().attributeExists("selectBoxElements"))
-//			.andReturn();
-//				
-//		//then:ビューモデルへの詰め替え処理が正しく実行されている
-//		@SuppressWarnings("unchecked")
-//		List<MergedAccountTitleViewModel> viewModels = (List<MergedAccountTitleViewModel>) result.getModelAndView().getModel().get("selectBoxElements");
-//		assertAll(
-//			() -> assertEquals(data.size(), viewModels.size()),
-//			() -> assertEquals("101-0", viewModels.get(0).getMergedId()),
-//			() -> assertEquals("現金", viewModels.get(0).getMergedName()),
-//			() -> assertEquals("401-0", viewModels.get(1).getMergedId()),
-//			() -> assertEquals("食費：その他", viewModels.get(1).getMergedName())
-//		);
-//	}
+	@Test
+	@WithMockUser("TEST_USER")
+	void Modelの属性に勘定科目の一覧が追加される() throws Exception {
+		//given:依存オブジェクトは戻り値を返す
+		when(userSessionProvider.getUserSession()).thenReturn(new SpringSecurityUserSessionProvider().getUserSession());
+		
+		List<AccountTitleAndSubAccountTitleDto> data = new ArrayList<>();
+		data.add(new AccountTitleAndSubAccountTitleDto("101", "現金", "0", ""));
+		data.add(new AccountTitleAndSubAccountTitleDto("401", "食費", "0", "その他"));
+		
+		when(fetchListQueryService.fetchAll(any())).thenReturn(data);
+		
+		//when:
+		MvcResult result = mockMvc.perform(get("/user/signup"))
+			.andExpect(model().attributeExists("selectBoxElements"))
+			.andReturn();
+				
+		//then:ビューモデルへの詰め替え処理が正しく実行されている
+		@SuppressWarnings("unchecked")
+		List<MergedAccountTitleViewModel> viewModels = (List<MergedAccountTitleViewModel>) result.getModelAndView().getModel().get("selectBoxElements");
+		assertAll(
+			() -> assertEquals(data.size(), viewModels.size()),
+			() -> assertEquals("101-0", viewModels.get(0).getMergedId()),
+			() -> assertEquals("現金", viewModels.get(0).getMergedName()),
+			() -> assertEquals("401-0", viewModels.get(1).getMergedId()),
+			() -> assertEquals("食費：その他", viewModels.get(1).getMergedName())
+		);
+	}
 	
 }
