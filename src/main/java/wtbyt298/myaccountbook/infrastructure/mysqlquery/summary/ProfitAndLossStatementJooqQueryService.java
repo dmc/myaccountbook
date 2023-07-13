@@ -4,10 +4,12 @@ import org.jooq.DSLContext;
 import org.jooq.Record2;
 import org.jooq.Record4;
 import org.jooq.Result;
-import static org.jooq.impl.DSL.*;
-import static generated.tables.MonthlyBalances.*;
+
 import static generated.tables.Accounttitles.*;
+import static generated.tables.MonthlyBalances.*;
 import static generated.tables.SubAccounttitles.*;
+import static org.jooq.impl.DSL.*;
+
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ class ProfitAndLossStatementJooqQueryService implements ProfitAndLossStatementQu
 				.and(ACCOUNTTITLES.ACCOUNTING_TYPE.eq(accountingType.toString()))
 				.and(MONTHLY_BALANCES.BALANCE.gt(0))
 			.groupBy(ACCOUNTTITLES.ACCOUNTTITLE_ID)
+			.orderBy(ACCOUNTTITLES.ACCOUNTTITLE_ID)
 			.fetch();
 		
 		//取得結果をMapに詰め替える
@@ -86,6 +89,7 @@ class ProfitAndLossStatementJooqQueryService implements ProfitAndLossStatementQu
 				.and(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.eq(MONTHLY_BALANCES.SUB_ACCOUNTTITLE_ID)
 					.or(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.isNull()))
 			.where(ACCOUNTTITLES.SUMMARY_TYPE.eq(SummaryType.PL.toString()))
+			.orderBy(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
 			.fetch()
 			.map(record -> mapRecordToDto(record));
 		

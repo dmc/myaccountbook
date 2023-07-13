@@ -18,7 +18,6 @@ import org.jooq.Record4;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import wtbyt298.myaccountbook.application.query.model.summary.FinancialStatement;
 import wtbyt298.myaccountbook.application.query.model.summary.MonthlyBalanceDto;
 import wtbyt298.myaccountbook.application.query.service.summary.BalanceSheetQueryService;
@@ -52,6 +51,7 @@ class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 			.where(ACCOUNTTITLES.SUMMARY_TYPE.eq(SummaryType.BS.toString()))
 				.and(ACCOUNTTITLES.ACCOUNTING_TYPE.eq(accountingType.toString()))
 			.groupBy(ACCOUNTTITLES.ACCOUNTTITLE_ID)
+			.orderBy(ACCOUNTTITLES.ACCOUNTTITLE_ID)
 			.fetch();
 	
 		//取得結果をMapに詰め替える
@@ -86,6 +86,7 @@ class BalanceSheetJooqQueryService implements BalanceSheetQueryService {
 					.or(SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID.isNull()))
 			.where(ACCOUNTTITLES.SUMMARY_TYPE.eq(SummaryType.BS.toString()))
 			.groupBy(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
+			.orderBy(ACCOUNTTITLES.ACCOUNTTITLE_ID, SUB_ACCOUNTTITLES.SUB_ACCOUNTTITLE_ID)
 			.fetch()
 			.map(record -> mapRecordToDto(record));
 		

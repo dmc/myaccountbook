@@ -1,5 +1,7 @@
 package wtbyt298.myaccountbook.infrastructure.mysqlquery.accounttitle;
 
+import static generated.Tables.*;
+
 import java.util.*;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -9,8 +11,6 @@ import org.springframework.stereotype.Component;
 import wtbyt298.myaccountbook.application.query.model.accounttitle.AccountTitleAndSubAccountTitleDto;
 import wtbyt298.myaccountbook.application.query.service.accounttitle.FetchListOfAccountTitleAndSubAccountTitleQueryService;
 import wtbyt298.myaccountbook.domain.model.user.UserId;
-
-import static generated.Tables.*;
 
 /**
  * 勘定科目と補助科目の一覧取得処理クラス
