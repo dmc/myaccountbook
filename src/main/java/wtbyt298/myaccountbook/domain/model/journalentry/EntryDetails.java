@@ -2,7 +2,7 @@ package wtbyt298.myaccountbook.domain.model.journalentry;
 
 import java.util.*;
 
-import wtbyt298.myaccountbook.domain.shared.exception.DomainException;
+import wtbyt298.myaccountbook.domain.shared.exception.CannotCreateJournalEntryException;
 
 /**
  * 仕訳明細のコレクションオブジェクト
@@ -13,9 +13,16 @@ public class EntryDetails {
 	
 	public EntryDetails(List<EntryDetail> elements) {
 		if (elements.stream().allMatch(each -> each.isDebit()) || elements.stream().allMatch(each -> each.isCredit())) {
-			throw new DomainException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
+			throw new CannotCreateJournalEntryException("貸借それぞれに少なくとも1件ずつの明細が必要です。");
 		}
 		this.elements = elements;
+	}
+	
+	/**
+	 * @return 仕訳合計金額
+	 */
+	Amount totalAmount() {
+		return debitSum();
 	}
 	
 	/**
@@ -28,7 +35,7 @@ public class EntryDetails {
 	/**
 	 * @return 借方合計金額
 	 */
-    Amount debitSum() {
+    private Amount debitSum() {
     	final int total = elements.stream()
     		.filter(each -> each.isDebit())
     		.mapToInt(each -> each.amount().value())
@@ -40,7 +47,7 @@ public class EntryDetails {
 	/**
 	 * @return 貸方合計金額
 	 */
-	Amount creditSum() {
+	private Amount creditSum() {
     	final int total = elements.stream()
     		.filter(each -> each.isCredit())
     		.mapToInt(each -> each.amount().value())

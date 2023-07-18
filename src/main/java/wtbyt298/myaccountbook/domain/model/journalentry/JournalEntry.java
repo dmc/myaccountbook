@@ -51,7 +51,7 @@ public class JournalEntry {
 	 * @return 仕訳合計金額
 	 */
 	public Amount totalAmount() {
-		return entryDetails.debitSum(); //貸借で金額は一致するので借方合計を返している
+		return entryDetails.totalAmount();
 	}
 	
 	/**
