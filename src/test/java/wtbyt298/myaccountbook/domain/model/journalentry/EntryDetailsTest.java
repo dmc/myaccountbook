@@ -4,10 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-
-import wtbyt298.myaccountbook.domain.model.journalentry.Amount;
-import wtbyt298.myaccountbook.domain.model.journalentry.EntryDetail;
-import wtbyt298.myaccountbook.domain.model.journalentry.EntryDetails;
 import wtbyt298.myaccountbook.domain.shared.types.LoanType;
 import wtbyt298.myaccountbook.helper.testfactory.EntryDetailTestFactory;
 
@@ -54,7 +50,7 @@ class EntryDetailsTest {
 	}
 	
 	@Test
-	void 保持している仕訳明細の合計金額を計算できる() {
+	void 保持している仕訳明細から仕訳合計金額を計算できる() {
 		//given:貸借それぞれに2件ずつの仕訳明細が存在している
 		List<EntryDetail> list = new ArrayList<>();
 		list.add(EntryDetailTestFactory.create(LoanType.DEBIT, 100));
@@ -65,9 +61,8 @@ class EntryDetailsTest {
 		//when:
 		EntryDetails entryDetails = new EntryDetails(list);
 		
-		//then:借方合計、貸方合計が正しく計算できる
-		assertEquals(Amount.valueOf(300), entryDetails.debitSum());
-		assertEquals(Amount.valueOf(300), entryDetails.creditSum());
+		//then:仕訳合計金額が正しく計算できる
+		assertEquals(Amount.valueOf(300), entryDetails.totalAmount());
 	}
 	
 	@Test
