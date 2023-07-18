@@ -2,6 +2,7 @@ package wtbyt298.myaccountbook.application.usecase.journalentry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import wtbyt298.myaccountbook.application.shared.usersession.UserSession;
 import wtbyt298.myaccountbook.domain.model.journalentry.EntryId;
@@ -24,7 +25,7 @@ public class CorrectJournalEntryUseCase {
 	 * @param entryId 削除対象の仕訳ID
 	 * @param command 仕訳登録用のDTO
 	 */
-	@Transactional
+	@Transactional(propagation = Propagation.NESTED)
 	public void execute(EntryId entryId, RegisterJournalEntryCommand command, UserSession userSession) {
 		cancelJournalEntryUseCase.execute(entryId, userSession);
 		registerJournalEntryUseCase.execute(command, userSession);
